@@ -58,17 +58,6 @@ CREATE TABLE saved_questions (
 );
 ```
 
-### **Chats Table** (stores user chat history)
-```sql
-CREATE TABLE chats (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    message TEXT NOT NULL,
-    is_user BOOLEAN NOT NULL, -- TRUE for user messages, FALSE for AI responses
-    created_at TIMESTAMP DEFAULT NOW()
-);
-```
-
 ---
 
 ## 📡 API Endpoints
@@ -97,12 +86,6 @@ POST /api/users/save-question
 GET /api/users/saved-questions
 ```
 
-### **Chat Storage and Retrieval**
-```http
-POST /api/chats/send-message
-GET /api/chats/0402205
-```
-
 ---
 
 <img src="https://github.com/user-attachments/assets/3cc52ef8-e239-4c5b-b6a8-61c59c058892" width="150" height="250" alt="Young woman on top of the world">
@@ -112,7 +95,6 @@ GET /api/chats/0402205
 ### **Week 1: Core Setup, Chat Interface, and Web Scraping**
 - ✅ Set up **React frontend + Node.js backend** 
 - ✅ Set up **PostgreSQL on Render** for storing questions
-- ✅ Build **chat UI**
 - ✅ **Connect OpenAI API**
 - ✅ **Web Scraping (Puppeteer)**: Fetch language-learning questions
 - ✅ Store **questions in PostgreSQL**, categorized by **purpose**
@@ -131,11 +113,11 @@ GET /api/chats/0402205
 ---
 
 ### **Week 3: Pagination, Web Accessibility, and Enhancements**
-- ✅ Add **pagination for chat history & questions**
 - ✅ Implement **rate limiting to prevent API abuse**
 - ✅ Improve **web accessibility (ARIA labels, keyboard navigation, color contrast fixes)**
 - ✅ Add **client-side form validation**
 - ✅ Allow **users to favorite & save questions** for later
+- ✅ Add **pagination for saved questions**
 
 ---
 
@@ -168,7 +150,7 @@ GET /api/chats/0402205
 | **API Rate Limits** (OpenAI, Google Speech-to-Text) | Medium | High | Implement caching & exponential backoff for API calls. Use alternative APIs if necessary. |  
 | **Web Scraping Blocks** | Medium | High | Store scraped data locally to reduce frequent requests. |  
 | **Authentication Issues** | Low | High | Use Firebase authentication with proper session management and token expiration handling. |   
-| **Performance Bottlenecks** (Large chat histories, API calls) | Medium | Medium | Implement pagination & optimize queries for fetching chat history. Use indexed DB fields for faster lookups. |
+| **Performance Bottlenecks** (API calls) | Medium | Medium | Implement pagination & optimize queries for questions. Use indexed DB fields for faster lookups. |
 | **Project Scope Creep** | Medium | Medium | Stick to MVP features, prioritize critical features, and defer enhancements to a later phase. |  
 
 

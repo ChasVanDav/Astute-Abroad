@@ -213,7 +213,7 @@ GET /api/users/progress
 - Develop a Puppeteer-based web scraper to fetch language-learning questions.
 - Process and store scraped questions in PostgreSQL, categorized by purpose and difficulty.
 - Build an API endpoint to fetch questions by category.
-- Add robust error handling and logging for the scraping process.
+- Add error handling and logging for the scraping process.
 
 ---
 
@@ -224,7 +224,7 @@ GET /api/users/progress
 - Develop AI-driven pronunciation feedback using STT confidence scores.
 - Set up Firebase authentication for login/signup.
 - Create a search functionality to filter stored questions by category and difficulty.
-- Optionally, integrate basic AI-based question suggestions based on user conversation history.
+- Integrate basic AI-based question suggestions based on user conversation history.
 
 ---
 

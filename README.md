@@ -1,14 +1,9 @@
 # 🌏 Astute Abroad
 
----
-
 ## 📌 Project Plan Overview
 This project is a **language learning app** that integrates Google speech-to-text, Google translate, real-time AI-powered feedback, and a database of language-learning questions categorized by purpose (e.g., Travel, Business, Casual Conversations). It is built using **React, Node.js, PostgreSQL, and Puppeteer for web scraping**.
 
 <img width="539" alt="Screenshot 2025-04-04 at 2 46 40 PM" src="https://github.com/user-attachments/assets/2a99d537-4aec-4105-9890-6d33aeb42205" />
-
-
-<img src="https://github.com/user-attachments/assets/3cc52ef8-e239-4c5b-b6a8-61c59c058892" width="150" height="250" alt="Young woman on top of the world">
 
 ---
 

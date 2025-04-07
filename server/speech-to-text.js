@@ -1,8 +1,17 @@
 // Imports the Google Cloud client library
 import speech from "@google-cloud/speech"
+import { SpeechClient } from "@google-cloud/speech"
+import { fileURLToPath } from "url"
+import { join } from "path"
+
+// Convert __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = join(__filename, "..")
 
 // Creates a client
-const client = new speech.SpeechClient()
+const client = new speech.SpeechClient({
+  keyFilename: join(__dirname, "languageproject-0525-9e51cc60157d.json"),
+})
 
 async function quickstart() {
   // The path to the remote LINEAR16 file

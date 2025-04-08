@@ -15,26 +15,84 @@ function App() {
   }
 
   return (
-    <div>
-      <a href="https://github.com/ChasVanDav/AstuteAbroad" target="_blank">
-        <img src={astuteAbroadLogo} className="logo" alt="Astute Abroad logo" />
-      </a>
-      <h1>Welcome to Astute Abroad</h1>
-      <div className="card">
-        <button onClick={() => setCount(count + 1)}>count is {count}</button>
-      </div>
-      <div class="bg-sky-400 text-black p-4 rounded">
-        Testing Tailwind: This is a sky blue background with black text.
-      </div>
+    <div className="bg-sky-200 min-h-screen flex items-center justify-center">
+      <div className="bg-sky-300 w-[90%] border border-black rounded-xl flex flex-col shadow-lg">
+        {/* header */}
+        <header className="flex items-center justify-between p-4 border-b border-black">
+          <h1 className="bg-white text-3xl font-light text-black py-3 p-4 rounded-2xl border border-black">
+            Welcome to Astute Abroad!
+          </h1>
+          <a href="/" target="_blank">
+            <img
+              src={astuteAbroadLogo}
+              className="w-20 h-24 mr-4"
+              alt="Astute Abroad logo - wise fox with top hat and monacle"
+            />
+          </a>
+        </header>
 
-      <div className="chat-box">
-        <input
-          value={userInput}
-          onChange={(e) => setUserInput(e.target.value)}
-          placeholder="Ask something..."
-        />
-        <button onClick={sendMessage}>Ask ChatGPT</button>
-        <p>{response}</p>
+        {/* body */}
+        <div className="flex flex-1">
+          {/* main content */}
+          <main className="flex-1 p-6">
+            <h2 className="text-2xl font-light text-black mb-4">Welcome!</h2>
+
+            <div className="flex flex-col space-y-4">
+              <p className="text-black mb-4">main content area</p>
+              <p className="bg-sky-100 text-black rounded-2xl border border-black p-4">
+                Do you feel nervous speaking in front of others?
+              </p>
+              <p className="bg-sky-200 text-black rounded-2xl border border-black p-4">
+                Do you wish to gain confidence to travel overseas & meet new
+                friends?
+              </p>
+              <p className="bg-sky-300 text-black rounded-2xl border border-black p-4">
+                Start speaking a foreign language more fluently and improve your
+                pronunciation!
+              </p>
+              <p className="bg-sky-400 text-black rounded-2xl border border-black p-4">
+                Register with Astute Abroad today and start practicing your
+                speaking skills with real time feedback powered by AI & language
+                acquisition specialists!
+              </p>
+            </div>
+          </main>
+
+          {/* navigation bar - right side */}
+          <aside className="w-1/4 border-l border-black p-4 flex flex-col gap-4 items-stretch bg-sky-300">
+            <button className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200	 transition">
+              About
+            </button>
+            <button className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition">
+              Watch Demo
+            </button>
+            <button className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition">
+              Register
+            </button>
+            <button className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition">
+              Log in
+            </button>
+          </aside>
+
+          {/* <div className="bg-sky-400 text-black p-4 rounded">
+            <button onClick={() => setCount(count + 1)}>
+              count is {count}
+            </button>
+          </div>
+          <div class="bg-sky-300 text-white p-4 rounded">
+            Testing Tailwind: This is a sky blue background with white text.
+          </div>
+
+          <div className="bg-gray-200 text-blue p-3 rounded">
+            <input
+              value={userInput}
+              onChange={(e) => setUserInput(e.target.value)}
+              placeholder="Ask something..."
+            />
+            <button onClick={sendMessage}>Ask ChatGPT</button>
+            <p>{response}</p>
+          </div> */}
+        </div>
       </div>
     </div>
   )

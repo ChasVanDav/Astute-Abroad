@@ -22,7 +22,7 @@ function App() {
           <h1 className="bg-white text-3xl font-light text-black py-3 p-4 rounded-2xl border border-black">
             Welcome to Astute Abroad!
           </h1>
-          <a href="https://github.com/ChasVanDav/AstuteAbroad" target="_blank">
+          <a href="/" target="_blank">
             <img
               src={astuteAbroadLogo}
               className="w-20 h-24 mr-4"
@@ -36,11 +36,30 @@ function App() {
           {/* main content */}
           <main className="flex-1 p-6">
             <h2 className="text-2xl font-light text-black mb-4">Welcome!</h2>
-            <p className="text-black mb-4">main content area</p>
+
+            <div className="flex flex-col space-y-4">
+              <p className="text-black mb-4">main content area</p>
+              <p className="bg-sky-100 text-black rounded-2xl border border-black p-4">
+                Do you feel nervous speaking in front of others?
+              </p>
+              <p className="bg-sky-200 text-black rounded-2xl border border-black p-4">
+                Do you wish to gain confidence to travel overseas & meet new
+                friends?
+              </p>
+              <p className="bg-sky-300 text-black rounded-2xl border border-black p-4">
+                Start speaking a foreign language more fluently and improve your
+                pronunciation!
+              </p>
+              <p className="bg-sky-400 text-black rounded-2xl border border-black p-4">
+                Register with Astute Abroad today and start practicing your
+                speaking skills with real time feedback powered by AI & language
+                acquisition specialists!
+              </p>
+            </div>
           </main>
 
           {/* navigation bar - right side */}
-          <aside className="w-1/3 border-l border-black p-4 flex flex-col gap-4 items-stretch bg-sky-300">
+          <aside className="w-1/4 border-l border-black p-4 flex flex-col gap-4 items-stretch bg-sky-300">
             <button className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200	 transition">
               About
             </button>

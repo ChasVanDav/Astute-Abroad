@@ -23,6 +23,9 @@ function App() {
       <div className="card">
         <button onClick={() => setCount(count + 1)}>count is {count}</button>
       </div>
+      <div class="bg-sky-400 text-black p-4 rounded">
+        Testing Tailwind: This is a sky blue background with black text.
+      </div>
 
       <div className="chat-box">
         <input

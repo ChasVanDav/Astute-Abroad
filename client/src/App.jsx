@@ -15,19 +15,19 @@ function App() {
   }
 
   return (
-    <div>
+    <div class="bg-sky-200 text-black p-4 rounded">
+      <h1>Welcome to Astute Abroad</h1>
       <a href="https://github.com/ChasVanDav/AstuteAbroad" target="_blank">
         <img src={astuteAbroadLogo} className="logo" alt="Astute Abroad logo" />
       </a>
-      <h1>Welcome to Astute Abroad</h1>
-      <div className="card">
+      <div className="bg-sky-400 text-black p-4 rounded">
         <button onClick={() => setCount(count + 1)}>count is {count}</button>
       </div>
-      <div class="bg-sky-400 text-black p-4 rounded">
-        Testing Tailwind: This is a sky blue background with black text.
+      <div class="bg-sky-300 text-white p-4 rounded">
+        Testing Tailwind: This is a sky blue background with white text.
       </div>
 
-      <div className="chat-box">
+      <div className="bg-gray-200 text-blue p-3 rounded">
         <input
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}

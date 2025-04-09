@@ -1,9 +1,10 @@
 import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
-import axios from "axios"
-import pool from "./db.js"
+// import axios from "axios"
+// import pool from "./db.js"
 import scrapeRoute from "./routes/scrape.js"
+import logger from "./logger.js"
 
 dotenv.config()
 
@@ -19,7 +20,7 @@ app.use(cors())
 app.use("/scrape", scrapeRoute)
 
 app.listen(5000, () => {
-  console.log("Server running on http://localhost:5000")
+  logger.info("Server running on http://localhost:5000")
 })
 
 // app.get("/users", async (req, res) => {

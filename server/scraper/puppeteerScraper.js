@@ -15,15 +15,22 @@ const puppeteerScraper = async () => {
   for (const url of urls) {
     console.log(`Scraping: ${url}`)
     await page.goto(url, { waitUntil: "networkidle2" })
-
     await page.waitForSelector("td.questionStyle b")
 
-    const data = await page.evaluate(() => {
-      const elements = document.querySelectorAll("td.questionStyle b")
-      return Array.from(elements).map((el) => el.textContent.trim())
-    })
+    // Grab all <b> inside .questionStyle, return an array of strings
+    const texts = await page.$$eval("td.questionStyle b", (els) =>
+      els.map((el) => el.innerText.trim())
+    )
 
-    allResults.push(...data)
+    // remove duplicates within this page
+    const uniqueTexts = Array.from(new Set(texts))
+
+    // Map each string to an object with its source URL
+    uniqueTexts.forEach((text) => {
+      if (text) {
+        allResults.push({ text, url })
+      }
+    })
   }
 
   await browser.close()

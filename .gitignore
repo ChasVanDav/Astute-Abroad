@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+languageproject-0525-9e51cc60157d.json
+client_secret*
+.env

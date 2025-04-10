@@ -7,6 +7,7 @@ import About from "./pages/About"
 import Register from "./pages/Register"
 import Login from "./pages/Login"
 import WatchDemo from "./pages/WatchDemo"
+import Questions from "./pages/Questions.jsx"
 
 function Home() {
   return (
@@ -62,6 +63,7 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
               <Route path="/watch-demo" element={<WatchDemo />} />
+              <Route path="/questions" element={<Questions />} />
             </Routes>
           </main>
 
@@ -90,6 +92,12 @@ function App() {
               className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
             >
               Log in
+            </button>
+            <button
+              onClick={() => navigate("/questions")}
+              className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
+            >
+              Practice Questions
             </button>
           </aside>
         </div>

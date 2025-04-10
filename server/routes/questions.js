@@ -5,7 +5,8 @@ import logger from "../logger.js"
 const router = Router()
 
 router.get("/", async (req, res) => {
-  const { category, difficulty } = req.query
+  const { category, difficulty, page = 1, limit = 5 } = req.query
+
   const conditions = []
   const values = []
 
@@ -22,7 +23,14 @@ router.get("/", async (req, res) => {
   const whereClause = conditions.length
     ? `WHERE ${conditions.join(" AND ")}`
     : ""
-  const query = `SELECT * FROM questions ${whereClause}`
+
+  const offset = (page - 1) * limit
+
+  const query = `SELECT * FROM questions ${whereClause} LIMIT $${
+    values.length + 1
+  } OFFSET $${values.length + 2} `
+
+  values.push(limit, offset)
 
   try {
     const result = await pool.query(query, values)

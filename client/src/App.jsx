@@ -37,20 +37,16 @@ function App() {
   const navigate = useNavigate()
 
   return (
-    <div className="bg-sky-200 min-h-screen flex items-center justify-center">
+    <div className="bg-sky-200 min-h-screen flex items-center">
       <div className="bg-sky-300 w-[90%] border border-black rounded-xl flex flex-col shadow-lg">
         {/* header */}
         <header className="flex items-center justify-between p-4 border-b border-black">
-          <h1 className="bg-white text-3xl font-light text-black py-3 p-4 rounded-2xl border border-black">
-            Welcome to Astute Abroad!
+          <h1 className="italic text-3xl font-light text-black py-3 p-4">
+            speak fluently, travel fluidly with Astute Abroad
           </h1>
-          <Link to="/">
-            <img
-              src={astuteAbroadLogo}
-              className="w-20 h-24 mr-4"
-              alt="Astute Abroad logo - wise fox with top hat and monacle"
-            />
-          </Link>
+          <h1 className="text-4xl font-light text-black py-3 p-4">
+            /əˈsto͞ot əˈbrôd/
+          </h1>
         </header>
 
         {/* body */}
@@ -69,6 +65,13 @@ function App() {
 
           {/* navigation bar - right side */}
           <aside className="w-1/4 border-l border-black p-4 flex flex-col gap-4 items-stretch bg-sky-300">
+            <Link to="/" className="flex justify-center">
+              <img
+                src={astuteAbroadLogo}
+                className="w-20 h-24 justify-center"
+                alt="Astute Abroad logo - wise fox with top hat and monacle"
+              />
+            </Link>
             <button
               onClick={() => navigate("/about")}
               className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200	 transition"

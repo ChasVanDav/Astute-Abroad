@@ -3,7 +3,8 @@ import cors from "cors"
 import dotenv from "dotenv"
 // import axios from "axios"
 // import pool from "./db.js"
-import scrapeRoute from "./routes/scrape.js"
+// import scrapeRoute from "./routes/scrape.js"
+import questionsRoute from "./routes/questions.js"
 import logger from "./logger.js"
 
 dotenv.config()
@@ -16,8 +17,8 @@ app.get("/", (req, res) => {
   res.send("Hello from the Astute Abroad's backend!")
 })
 
-app.use(cors())
-app.use("/scrape", scrapeRoute)
+// app.use("/scrape", scrapeRoute)
+app.use("/questions", questionsRoute)
 
 app.listen(5000, () => {
   logger.info("Server running on http://localhost:5000")

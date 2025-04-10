@@ -8,6 +8,7 @@
     "concurrently": "^8.0.0"
   },
   "dependencies": {
-    "@google-cloud/speech": "^7.0.1"
+    "@google-cloud/speech": "^7.0.1",
+    "winston": "^3.17.0"
   }
 }

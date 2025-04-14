@@ -10,6 +10,18 @@ import speech from "@google-cloud/speech"
 import { fileURLToPath } from "url"
 import { join } from "path"
 
+const app = express()
+app.use(cors())
+app.use(express.json())
+
+dotenv.config()
+
+app.get("/", (req, res) => {
+  res.send("Hello from the Astute Abroad's backend!")
+})
+
+app.use("/questions", questionsRoute)
+
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = join(__filename, "..")
 
@@ -18,20 +30,8 @@ const client = new speech.SpeechClient({
   keyFilename: join(__dirname, "languageproject-0525-9e51cc60157d.json"),
 })
 
-dotenv.config()
-
-const app = express()
-app.use(cors())
-app.use(express.json())
-
 const server = http.createServer(app)
 const wss = new WebSocketServer({ server })
-
-app.get("/", (req, res) => {
-  res.send("Hello from the Astute Abroad's backend!")
-})
-
-app.use("/questions", questionsRoute)
 
 wss.on("connection", (ws) => {
   let recognizeStream = null
@@ -46,7 +46,8 @@ wss.on("connection", (ws) => {
   }
 
   function startRecognitionStream() {
-    recognizeStream = SpeechClient.streamingRecognize(request)
+    recognizeStream = client
+      .streamingRecognize(request)
       .on("error", (err) => {
         console.error("Speech API error:", err)
       })
@@ -59,7 +60,6 @@ wss.on("connection", (ws) => {
 
   ws.on("message", (msg) => {
     console.log("📦 Received audio chunk:", msg.length)
-
     if (!recognizeStream) startRecognitionStream()
     recognizeStream.write(msg)
   })

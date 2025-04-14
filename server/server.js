@@ -5,16 +5,15 @@ import questionsRoute from "./routes/questions.js"
 import logger from "./logger.js"
 import http from "http"
 import { WebSocketServer } from "ws"
-import { SpeechClient } from "@google-cloud/speech"
 import speech from "@google-cloud/speech"
 import { fileURLToPath } from "url"
-import { join } from "path"
+import { join, dirname } from "path"
+
+dotenv.config()
 
 const app = express()
 app.use(cors())
 app.use(express.json())
-
-dotenv.config()
 
 app.get("/", (req, res) => {
   res.send("Hello from the Astute Abroad's backend!")
@@ -23,9 +22,9 @@ app.get("/", (req, res) => {
 app.use("/questions", questionsRoute)
 
 const __filename = fileURLToPath(import.meta.url)
-const __dirname = join(__filename, "..")
+const __dirname = dirname(__filename)
 
-// Creates a client
+// Google Speech client
 const client = new speech.SpeechClient({
   keyFilename: join(__dirname, "languageproject-0525-9e51cc60157d.json"),
 })
@@ -40,7 +39,8 @@ wss.on("connection", (ws) => {
     config: {
       encoding: "WEBM_OPUS",
       sampleRateHertz: 16000,
-      languageCode: "en-US",
+      languageCode: "ko-KR",
+      maxAlternatives: 5,
     },
     interimResults: true,
   }
@@ -50,23 +50,31 @@ wss.on("connection", (ws) => {
       .streamingRecognize(request)
       .on("error", (err) => {
         console.error("Speech API error:", err)
+        if (recognizeStream) {
+          recognizeStream.destroy()
+          recognizeStream = null
+        }
       })
       .on("data", (data) => {
         const transcript =
           data.results?.[0]?.alternatives?.[0]?.transcript || ""
-        ws.send(JSON.stringify({ transcript }))
+        const isFinal = data.results?.[0]?.isFinal
+        ws.send(JSON.stringify({ transcript, isFinal }))
       })
   }
 
   ws.on("message", (msg) => {
     console.log("📦 Received audio chunk:", msg.length)
     if (!recognizeStream) startRecognitionStream()
-    recognizeStream.write(msg)
+    if (recognizeStream?.writable) {
+      recognizeStream.write(msg)
+    }
   })
 
   ws.on("close", () => {
     if (recognizeStream) {
       recognizeStream.end()
+      recognizeStream = null
     }
   })
 })

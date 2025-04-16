@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import QuestionDetail from "./QuestionDetail"
 
 function Questions() {
   const [questions, setQuestions] = useState([])
@@ -104,17 +105,11 @@ function Questions() {
       ) : questions.length === 0 ? (
         <p className="text-center text-gray-500"> No questions found.</p>
       ) : (
-        <ul>
+        <div className="space-y-4">
           {questions.map((q) => (
-            <li
-              key={q.i}
-              className="mb-4 p-4 text-center bg-white border border-black rounded-md hover:bg-yellow-200"
-            >
-              <strong>{q.question_text}</strong>
-              {/* ({q.category} - {q.difficulty}) */}
-            </li>
+            <QuestionDetail key={q.id} question={q} />
           ))}
-        </ul>
+        </div>
       )}
 
       {/* pagination */}

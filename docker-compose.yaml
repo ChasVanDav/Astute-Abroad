@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  app:
+    image: astuteabroad-app:dev
+    environment:
+      - DOCKER_ENV=true
+      - DB_HOST=host.docker.internal
+      - DB_PORT=5432
+      - DB_USER=tpl522_6
+      - DB_NAME=astuteabroad
+    ports:
+      - "5173:5173"
+      - "5000:5000"
+    volumes:
+      - .:/app

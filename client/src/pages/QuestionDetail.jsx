@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import LiveTranscription from "./LiveTranscriptionv2"
+import LiveTranscription from "./LiveTranscription"
 
 function QuestionDetail({ question }) {
   const [expanded, setExpanded] = useState(false)

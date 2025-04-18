@@ -8,7 +8,7 @@ import Register from "./pages/Register"
 import Login from "./pages/Login"
 import WatchDemo from "./pages/WatchDemo"
 import Questions from "./pages/Questions.jsx"
-import LiveTranscription from "./pages/LiveTranscriptionv2.jsx"
+import LiveTranscription from "./pages/LiveTranscription.jsx"
 
 function Home() {
   return (

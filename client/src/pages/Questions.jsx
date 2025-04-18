@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import QuestionDetail from "./QuestionDetail"
 
 function Questions() {
   const [questions, setQuestions] = useState([])
@@ -68,10 +69,14 @@ function Questions() {
             onChange={(e) => setCategory(e.target.value)}
             className="mt-2 p-2 w-full border bg-white border-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="">Select</option>
+            <option value="">View All</option>
             <option value="greeting">Greeting</option>
-            {/* <option value=""></option>
-                <option value=""></option> */}
+            <option value="introduction">Introduction</option>
+            <option value="travel">Travel</option>
+            <option value="weather">Weather</option>
+            <option value="shopping">Shopping</option>
+            <option value="datetime">Date/Time</option>
+            {/* <option value=""></option> */}
           </select>
         </label>{" "}
         <br></br>
@@ -82,10 +87,10 @@ function Questions() {
             onChange={(e) => setDifficulty(e.target.value)}
             className="mt-2 p-2 w-full bg-white border border-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="">Select</option>
+            <option value="">View All</option>
             <option value="beginner">Beginner</option>
-            {/* <option value=""></option>
-                <option value=""></option> */}
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
           </select>
         </label>{" "}
         <br />
@@ -100,17 +105,11 @@ function Questions() {
       ) : questions.length === 0 ? (
         <p className="text-center text-gray-500"> No questions found.</p>
       ) : (
-        <ul>
+        <div className="space-y-4">
           {questions.map((q) => (
-            <li
-              key={q.i}
-              className="mb-4 p-4 bg-white border border-black rounded-md hover:bg-yellow-200"
-            >
-              {q.id} -<strong>{q.question_text}</strong> ({q.category} -{" "}
-              {q.difficulty})
-            </li>
+            <QuestionDetail key={q.id} question={q} />
           ))}
-        </ul>
+        </div>
       )}
 
       {/* pagination */}

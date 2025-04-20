@@ -1,9 +1,10 @@
-FROM node:23.10.0
+FROM node:18
 
 WORKDIR /app
 
 # Copy root package.json and install root deps
 COPY package*.json ./
+RUN npm install
 
 # Copy and install server deps
 COPY server/package*.json ./server/

@@ -101,17 +101,12 @@ function App() {
             >
               Record Audio
             </button>
-            <button
-              onClick={() => navigate("/register")}
-              className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
-            >
-              Register
-            </button>
+
             <button
               onClick={() => navigate("/login")}
               className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
             >
-              Log in
+              Log in / Register
             </button>
           </aside>
         </div>

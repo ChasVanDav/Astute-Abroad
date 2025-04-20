@@ -4,19 +4,28 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth"
+import { useNavigate } from "react-router-dom"
 
 export default function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const navigate = useNavigate()
 
   const handleSignUp = async () => {
     try {
-      const userCredential =
-        await createUserWithEmailAndPassword.user.getIdToken()
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      )
       const idToken = await userCredential.user.getIdToken()
+      console.log("ID Token retrieved:", idToken)
+
       await sendUserToBackend(idToken)
+      console.log("Registration successful! Welcome to Astute Abroad! 👋🏽")
+      navigate("/questions")
     } catch (error) {
-      console.error(error.message)
+      console.error("Registration error:", error.message)
     }
   }
 
@@ -28,19 +37,36 @@ export default function Login() {
         password
       )
       const idToken = await userCredential.user.getIdToken()
+      console.log("ID Token retrieved:", idToken)
+
+      await sendUserToBackend(idToken)
+      console.log("Login successful! Welcome back! 😎")
+      navigate("/questions")
     } catch (error) {
       console.error(error.message)
     }
   }
 
   const sendUserToBackend = async (token) => {
-    await fetch("http://localhost:5000/api/auth", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    console.log("Sending token to backend:", token)
+    try {
+      const response = await fetch("http://localhost:5000/api/auth", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      const responseText = await response.text()
+      console.log("Backend response:", response.status, responseText)
+
+      if (!response.ok) {
+        throw new Error("Backend auth failed 😓")
+      }
+    } catch (err) {
+      console.error("Failed to authenticate with backend:", err.message)
+    }
   }
 
   return (
@@ -49,7 +75,7 @@ export default function Login() {
         <h2 className="text-2xl font-semibold text-black mb-6 text-center">
           Log In
         </h2>
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
           <input
             type="email"
             value={email}
@@ -65,12 +91,14 @@ export default function Login() {
             className="w-full px-4 py-2 border border-black rounded-md text-black bg-white"
           />
           <button
+            type="button"
             onClick={handleSignIn}
             className="w-full py-2 px-4 bg-sky-400 text-white rounded-lg hover:bg-orange-300 transition"
           >
             Log In
           </button>
           <button
+            type="button"
             onClick={handleSignUp}
             className="w-full py-2 px-4 bg-sky-400 text-white rounded-lg hover:bg-orange-300 transition"
           >

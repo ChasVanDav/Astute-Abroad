@@ -1,6 +1,6 @@
 import express from "express"
-import admin from "../firebaseAdmin"
-import pool from "../db"
+import admin from "../firebaseAdmin.js"
+import pool from "../db.js"
 
 const router = express.Router()
 

@@ -5,7 +5,6 @@ import astuteAbroadLogo from "/favicon.png"
 
 // import components
 import About from "./pages/About"
-import Register from "./pages/Register"
 import Login from "./pages/Login"
 import WatchDemo from "./pages/WatchDemo"
 import Questions from "./pages/Questions.jsx"
@@ -59,7 +58,6 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
-              <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
               <Route path="/watch-demo" element={<WatchDemo />} />
               <Route path="/questions" element={<Questions />} />

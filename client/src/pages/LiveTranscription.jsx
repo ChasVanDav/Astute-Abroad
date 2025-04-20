@@ -14,7 +14,7 @@ export default function LiveTranscription({
   const transcriptEndRef = useRef(null)
   const timerRef = useRef(null)
   const timeoutRef = useRef(null)
-  const lastConfidenceRef = useRef(null)
+  const lastConfidenceRef = useRef(null) //google stt confidence rating (need just last rating)
 
   const startRecording = async () => {
     onStatusChange?.("listening")

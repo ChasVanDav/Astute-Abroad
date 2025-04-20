@@ -10,6 +10,7 @@ import { fileURLToPath } from "url"
 import { join, dirname } from "path"
 import OpenAI from "openai"
 import db from "./db.js"
+import authRoute from "./routes/authRoutes.js"
 
 dotenv.config()
 
@@ -20,6 +21,8 @@ app.use(express.json())
 app.get("/", (req, res) => {
   res.send("Hello from the Astute Abroad's backend!")
 })
+
+app.use("/api", authRoute)
 
 app.use("/questions", questionsRoute)
 
@@ -58,8 +61,7 @@ wss.on("connection", (ws) => {
         }
       })
       .on("data", (data) => {
-        console.log("Raw Google STT Response:", JSON.stringify(data, null, 2))
-
+        // console.log("Raw Google STT Response:", JSON.stringify(data, null, 2))
         const transcript =
           data.results?.[0]?.alternatives?.[0]?.transcript || ""
         const isFinal = data.results?.[0]?.isFinal
@@ -82,7 +84,7 @@ wss.on("connection", (ws) => {
     }
   })
 })
-
+// confirm google stt credentials recognized and connected
 async function quickTest() {
   const [result] = await client.getProjectId()
   console.log("✅ Auth successful for project:", result)

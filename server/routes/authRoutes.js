@@ -15,6 +15,15 @@ router.post("/auth", async (req, res) => {
   }
 
   try {
+    const decodedToken = await admin.auth().verifyIdToken(idToken)
+    const { uid: firebase_uid, email } = decodedToken
+
+    await pool.query(
+      `INSERT INTO users (firebase_uid, email) VALUES ($1, $2) ON CONFLICT (firebase_uid) DO UPDATE SET email = EXCLUDED.email`,
+      [firebase_uid, email]
+    )
+    console.log("New user registered! " + firebase_uid, email)
+    res.status(200).json({ message: "User authenticated and stored" })
   } catch (error) {
     console.error(error)
     res.status(401).send("Unauthorized")

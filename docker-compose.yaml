@@ -4,7 +4,7 @@ services:
     image: astuteabroad-app:dev
     environment:
       - DOCKER_ENV=true
-      - DB_HOST=host.docker.internal
+      - DB_HOST=db
       - DB_PORT=5432
       - DB_USER=tpl522_6
       - DB_NAME=astuteabroad
@@ -13,3 +13,19 @@ services:
       - "5000:5000"
     volumes:
       - .:/app
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    container_name: astuteabroad-db
+    restart: always
+    environment: POSTGRES_USER
+      POSTGRES_DB
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

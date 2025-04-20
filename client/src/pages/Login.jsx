@@ -5,6 +5,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth"
 import { useNavigate } from "react-router-dom"
+import { signOut } from "firebase/auth"
 
 export default function Login() {
   const [email, setEmail] = useState("")
@@ -19,7 +20,7 @@ export default function Login() {
         password
       )
       const idToken = await userCredential.user.getIdToken()
-      console.log("ID Token retrieved:", idToken)
+      console.log("ID Token retrieved 🪙")
 
       await sendUserToBackend(idToken)
       console.log("Registration successful! Welcome to Astute Abroad! 👋🏽")
@@ -37,7 +38,7 @@ export default function Login() {
         password
       )
       const idToken = await userCredential.user.getIdToken()
-      console.log("ID Token retrieved:", idToken)
+      console.log("ID Token retrieved 🪙")
 
       await sendUserToBackend(idToken)
       console.log("Login successful! Welcome back! 😎")
@@ -48,7 +49,7 @@ export default function Login() {
   }
 
   const sendUserToBackend = async (token) => {
-    console.log("Sending token to backend:", token)
+    console.log("Sending token to backend 🪙")
     try {
       const response = await fetch("http://localhost:5000/api/auth", {
         method: "POST",
@@ -59,13 +60,23 @@ export default function Login() {
       })
 
       const responseText = await response.text()
-      console.log("Backend response:", response.status, responseText)
+      // console.log("Backend response:", response.status, responseText)
 
       if (!response.ok) {
         throw new Error("Backend auth failed 😓")
       }
     } catch (err) {
       console.error("Failed to authenticate with backend:", err.message)
+    }
+  }
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth)
+      console.log("User signed out successfully ✌🏽")
+      navigate("/login")
+    } catch (error) {
+      console.error("Logout error: ", error.message)
     }
   }
 
@@ -103,6 +114,13 @@ export default function Login() {
             className="w-full py-2 px-4 bg-sky-400 text-white rounded-lg hover:bg-orange-300 transition"
           >
             Register
+          </button>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="w-full py-2 px-4 bg-red-400 text-white rounded-lg hover:bg-red-500 transition"
+          >
+            Logout
           </button>
         </form>
       </div>

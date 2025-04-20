@@ -6,9 +6,9 @@ import astuteAbroadLogo from "/favicon.png"
 // import components
 import About from "./pages/About"
 import Login from "./pages/Login"
-import WatchDemo from "./pages/WatchDemo"
+// import WatchDemo from "./pages/WatchDemo"
 import Questions from "./pages/Questions.jsx"
-import LiveTranscription from "./pages/LiveTranscription.jsx"
+// import LiveTranscription from "./pages/LiveTranscription.jsx"
 
 // to do: move to Home.jsx? add animation for each text block
 function Home() {
@@ -34,6 +34,7 @@ function Home() {
 
 function App() {
   const navigate = useNavigate()
+
   return (
     <div className="bg-sky-200 min-h-screen flex items-center justify-center">
       <div className="bg-sky-300 w-[90%] border border-black rounded-xl flex flex-col shadow-lg">
@@ -59,9 +60,9 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/watch-demo" element={<WatchDemo />} />
+              {/* <Route path="/watch-demo" element={<WatchDemo />} /> */}
               <Route path="/questions" element={<Questions />} />
-              <Route path="/record" element={<LiveTranscription />} />
+              {/* <Route path="/record" element={<LiveTranscription />} /> */}
             </Routes>
           </main>
 
@@ -83,24 +84,24 @@ function App() {
             >
               About Astute Abroad
             </button>
-            <button
+            {/* <button
               onClick={() => navigate("/watch-demo")}
               className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
             >
               Watch Demo
-            </button>
+            </button> */}
             <button
               onClick={() => navigate("/questions")}
               className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
             >
               Practice Questions
             </button>
-            <button
+            {/* <button
               onClick={() => navigate("/record")}
               className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
             >
               Record Audio
-            </button>
+            </button> */}
 
             <button
               onClick={() => navigate("/login")}

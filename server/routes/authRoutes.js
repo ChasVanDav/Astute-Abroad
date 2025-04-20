@@ -22,7 +22,7 @@ router.post("/auth", async (req, res) => {
       `INSERT INTO users (firebase_uid, email) VALUES ($1, $2) ON CONFLICT (firebase_uid) DO UPDATE SET email = EXCLUDED.email`,
       [firebase_uid, email]
     )
-    console.log("New user registered! " + firebase_uid, email)
+    console.log("User " + firebase_uid, email + " has logged in!")
     res.status(200).json({ message: "User authenticated and stored" })
   } catch (error) {
     console.error(error)

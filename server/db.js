@@ -9,6 +9,7 @@ const connectionOptions = {
   host: process.env.DB_HOST || "localhost",
   database: process.env.DB_NAME,
   port: Number(process.env.DB_PORT),
+  password: process.env.DB_PASSWORD,
 }
 
 const pool = new Pool(connectionOptions)

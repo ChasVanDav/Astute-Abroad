@@ -33,8 +33,11 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - root_node_modules:/app/node_modules
 
 volumes:
   pgdata:
   client_node_modules:
   server_node_modules:
+  root_node_modules:

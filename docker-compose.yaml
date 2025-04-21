@@ -1,10 +1,11 @@
-version: "3.8"
 services:
   app:
-    image: astuteabroad-app:dev
+    build:
+      context: .
+    container_name: astuteabroad-app
     environment:
       - DOCKER_ENV=true
-      - DB_HOST=host.docker.internal
+      - DB_HOST=db
       - DB_PORT=5432
       - DB_USER=tpl522_6
       - DB_NAME=astuteabroad
@@ -13,3 +14,26 @@ services:
       - "5000:5000"
     volumes:
       - .:/app
+      - client_node_modules:/app/client/node_modules
+      - server_node_modules:/app/server/node_modules
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    container_name: astuteabroad-db
+    restart: always
+    environment:
+      POSTGRES_USER: tpl522_6
+      POSTGRES_DB: astuteabroad
+      POSTGRES_PASSWORD: dockeraccess
+      POSTGRES_HOST_AUTH_METHOD: md5
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+  client_node_modules:
+  server_node_modules:

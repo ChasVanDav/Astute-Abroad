@@ -2,13 +2,14 @@ services:
   app:
     build:
       context: .
-    container_name: astuteabroad-app
+    container_name: my-app
     environment:
       - DOCKER_ENV=true
       - DB_HOST=db
       - DB_PORT=5432
       - DB_USER=tpl522_6
       - DB_NAME=astuteabroad
+      - DB_PASSWORD=dockeraccess
     ports:
       - "5173:5173"
       - "5000:5000"

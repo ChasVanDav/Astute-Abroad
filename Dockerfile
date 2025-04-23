@@ -8,16 +8,13 @@ RUN npm install
 
 # Copy and install server deps
 COPY server/package*.json ./server/
-WORKDIR /app/server
-RUN npm install
+RUN cd server && npm install
 
 # Copy and install client deps
-COPY ../client/package*.json ../client/
-WORKDIR /app/client
-RUN npm install
+COPY /client/package*.json ./client/
+RUN cd client && npm install
 
 # Copy all source code
-WORKDIR /app
 COPY . .
 
 # Expose both frontend and backend ports

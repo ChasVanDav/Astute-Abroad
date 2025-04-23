@@ -11,6 +11,7 @@ import { join, dirname } from "path"
 import OpenAI from "openai"
 import db from "./db.js"
 import authRoute from "./routes/authRoutes.js"
+import faveQuestionsRoute from "./routes/faveQuestions.js"
 
 dotenv.config()
 
@@ -25,6 +26,7 @@ app.get("/", (req, res) => {
 app.use("/api", authRoute)
 
 app.use("/questions", questionsRoute)
+app.use("/favequestions", faveQuestionsRoute)
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)

@@ -20,7 +20,7 @@ router.post("/:userId", async (req, res) => {
     res.status(201).json(result.rows[0])
   } catch (err) {
     logger.info(`[POST /faveQuestions/${userId}] ${err.message}`)
-    res.status(500).json({ error: "Failed to save favorited question." })
+    res.status(500).json({ error: "Failed to favorite question." })
   }
 })
 

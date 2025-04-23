@@ -1,11 +1,11 @@
 import admin from "firebase-admin"
-import fs from "fs"
+import dotenv from "dotenv"
 
-const serviceAccount = JSON.parse(
-  fs.readFileSync(
-    new URL("./astuteabroad-0525-80e19672d343.json", import.meta.url)
-  )
-)
+dotenv.config()
+
+const serviceAccount = JSON.parse(process.env.FIREBASE_ADMIN_KEY)
+
+console.log("Parsed Firebase Admin Key:", serviceAccount)
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),

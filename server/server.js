@@ -23,9 +23,11 @@ app.get("/", (req, res) => {
   res.send("Hello from the Astute Abroad's backend!")
 })
 
+// user registration and login
 app.use("/api", authRoute)
-
+// display all questions, with filter options
 app.use("/questions", questionsRoute)
+// display, add, delete favorite questions
 app.use("/favequestions", faveQuestionsRoute)
 
 const __filename = fileURLToPath(import.meta.url)

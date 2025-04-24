@@ -1,7 +1,9 @@
+import { getAuth, onAuthStateChanged } from "firebase/auth"
 import { useEffect, useState } from "react"
 import QuestionDetail from "./QuestionDetail"
 
 function Questions() {
+  const [user, setUser] = useState(null)
   const [questions, setQuestions] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -13,6 +15,21 @@ function Questions() {
   const limit = 5
 
   useEffect(() => {
+    const auth = getAuth()
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        setUser(firebaseUser)
+      } else {
+        setUser(null)
+      }
+    })
+
+    return () => unsubscribe()
+  }, [])
+
+  useEffect(() => {
+    if (!user) return // don't fetch questions if no user
+
     const fetchQuestions = async () => {
       setLoading(true)
       console.log("Fetching questions...")
@@ -44,7 +61,7 @@ function Questions() {
     }
 
     fetchQuestions()
-  }, [category, difficulty, page])
+  }, [category, difficulty, page, user])
 
   const handleFilter = (e) => {
     e.preventDefault()
@@ -98,7 +115,11 @@ function Questions() {
       </form>
 
       {/* Loading/Error/List */}
-      {loading ? (
+      {!user ? (
+        <p className="text-center text-red-500">
+          Please log in to view questions.
+        </p>
+      ) : loading ? (
         <p className="text-center text-blue-500">Loading...</p>
       ) : error ? (
         <p className="text-center text-red-500">Error: {error}</p>
@@ -107,7 +128,7 @@ function Questions() {
       ) : (
         <div className="space-y-4">
           {questions.map((q) => (
-            <QuestionDetail key={q.id} question={q} />
+            <QuestionDetail key={q.id} question={q} user={user} />
           ))}
         </div>
       )}

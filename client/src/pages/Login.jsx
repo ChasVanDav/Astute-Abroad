@@ -12,6 +12,7 @@ export default function Login() {
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
 
+  // user registration
   const handleSignUp = async () => {
     try {
       const userCredential = await createUserWithEmailAndPassword(
@@ -20,9 +21,10 @@ export default function Login() {
         password
       )
       const idToken = await userCredential.user.getIdToken()
-      console.log("ID Token retrieved 🪙")
+      console.log("Registration ID Token retrieved 🪙", idToken)
 
       await sendUserToBackend(idToken)
+
       console.log("Registration successful! Welcome to Astute Abroad! 👋🏽")
       navigate("/questions")
     } catch (error) {
@@ -38,16 +40,18 @@ export default function Login() {
         password
       )
       const idToken = await userCredential.user.getIdToken()
-      console.log("ID Token retrieved 🪙")
+      console.log("Login ID Token retrieved 🪙", idToken)
 
       await sendUserToBackend(idToken)
+
       console.log("Login successful! Welcome back! 😎")
       navigate("/questions")
     } catch (error) {
-      console.error(error.message)
+      console.error("Login error: ", error.message)
     }
   }
 
+  // send firebase ID token to backend for authentication and save in database
   const sendUserToBackend = async (token) => {
     console.log("Sending token to backend 🪙")
     try {
@@ -60,7 +64,7 @@ export default function Login() {
       })
 
       const responseText = await response.text()
-      // console.log("Backend response:", response.status, responseText)
+      console.log("Backend response:", response.status, responseText)
 
       if (!response.ok) {
         throw new Error("Backend auth failed 😓")
@@ -69,12 +73,12 @@ export default function Login() {
       console.error("Failed to authenticate with backend:", err.message)
     }
   }
-
+  // user log out function
   const handleLogout = async () => {
     try {
       await signOut(auth)
       console.log("User signed out successfully ✌🏽")
-      navigate("/login")
+      navigate("/")
     } catch (error) {
       console.error("Logout error: ", error.message)
     }

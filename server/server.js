@@ -6,8 +6,6 @@ import logger from "./logger.js"
 import http from "http"
 import { WebSocketServer } from "ws"
 import speech from "@google-cloud/speech"
-import { fileURLToPath } from "url"
-import { join, dirname } from "path"
 import OpenAI from "openai"
 import db from "./db.js"
 import authRoute from "./routes/authRoutes.js"
@@ -30,13 +28,11 @@ app.use("/questions", questionsRoute)
 // display, add, delete favorite questions
 app.use("/favequestions", faveQuestionsRoute)
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+// import credentials from dotenv file
+const credentials = JSON.parse(process.env.GOOGLE_STT_API_KEY)
 
 // Google Speech client
-const client = new speech.SpeechClient({
-  keyFilename: join(__dirname, "languageproject-0525-9e51cc60157d.json"),
-})
+const client = new speech.SpeechClient({ credentials })
 
 const server = http.createServer(app)
 const wss = new WebSocketServer({ server })
@@ -99,10 +95,14 @@ quickTest().catch(console.error)
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
 app.post("/practice_attempts", async (req, res) => {
-  const { questionId, spokenText, transcriptionConfidence } = req.body
-  const userId = 1 // placeholder user
+  const {
+    userId: firebaseUid,
+    questionId,
+    spokenText,
+    transcriptionConfidence,
+  } = req.body
 
-  if (!questionId || !spokenText) {
+  if (!firebaseUid || !questionId || !spokenText) {
     return res.status(400).json({ error: "Missing required fields." })
   }
 
@@ -183,7 +183,9 @@ app.post("/practice_attempts", async (req, res) => {
         user_id, question_id, spoken_text, transcription_confidence,
         ai_feedback, content_score, pronunciation_score, is_relevant
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      SELECT id, $2, $3, $4, $5, $6, $7, $8
+      FROM users
+      WHERE firebase_uid = $1
       RETURNING *;
     `
 
@@ -194,7 +196,7 @@ app.post("/practice_attempts", async (req, res) => {
     }
 
     const values = [
-      userId,
+      firebaseUid,
       questionId,
       spokenText,
       transcriptionConfidence,
@@ -205,13 +207,16 @@ app.post("/practice_attempts", async (req, res) => {
     ]
 
     console.log(`${values}`)
-    console.log(
-      "Pronunciation Score (raw):",
-      pronunciationScore,
-      transcriptionConfidence
-    )
+    // console.log(
+    //   "Pronunciation Score (raw):",
+    //   pronunciationScore,
+    //   transcriptionConfidence
+    // )
 
     const { rows } = await db.query(insertQuery, values)
+    if (!rows.length) {
+      return res.status(404).json({ error: "User not found." })
+    }
 
     res.json({ success: true, attempt: rows[0] })
   } catch (err) {

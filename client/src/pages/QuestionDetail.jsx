@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import LiveTranscription from "./LiveTranscription"
 
-function QuestionDetail({ question }) {
+function QuestionDetail({ question, user }) {
   const [expanded, setExpanded] = useState(false)
   const [status, setStatus] = useState("idle") // idle | listening | processing | done
   const [feedback, setFeedback] = useState("")
@@ -9,9 +9,18 @@ function QuestionDetail({ question }) {
   const [contentScore, setContentScore] = useState(null)
   const [spokenText, setSpokenText] = useState("")
 
+  if (!user) {
+    return <p className="text-red-500">Please log in to practice questions</p>
+  }
+
   const toggleExpand = () => setExpanded(!expanded)
 
   const handleTranscriptUpdate = async (transcript, confidence) => {
+    if (!user || !user.uid) {
+      console.error("User not authenticated.")
+      return
+    }
+
     setStatus("processing")
 
     try {
@@ -19,6 +28,7 @@ function QuestionDetail({ question }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          userId: user.uid,
           questionId: question.id,
           spokenText: transcript,
           transcriptionConfidence: confidence,
@@ -26,6 +36,11 @@ function QuestionDetail({ question }) {
       })
 
       const data = await res.json()
+
+      if (!res.ok || !data.attempt) {
+        throw new Error(data.error || "Unexpected response format.")
+      }
+
       setFeedback(data.attempt.ai_feedback)
       setPronunciationScore(data.attempt.pronunciation_score)
       setContentScore(data.attempt.content_score)

@@ -79,10 +79,18 @@ function Dashboard() {
       <h2 className="text-2xl font-bold text-black">Your Practice Dashboard</h2>
       {/* progress bar */}
       <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
-        <div className="bg-green-500 h-full transition-all duration-300"></div>
+        <div
+          className="bg-green-500 h-full transition-all duration-300"
+          style={{
+            width:
+              questions.length > 0
+                ? `${(completedQuestions.size / questions.length) * 100}%`
+                : "0%",
+          }}
+        ></div>
       </div>
-
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-gray-600 mt-1">
+        {" "}
         ✅ You’ve completed {completedQuestions.size} of {questions.length}{" "}
         questions
       </p>

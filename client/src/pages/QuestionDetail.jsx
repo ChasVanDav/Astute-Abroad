@@ -10,7 +10,16 @@ function QuestionDetail({ question, user, onComplete }) {
   const [contentScore, setContentScore] = useState(null)
   const [spokenText, setSpokenText] = useState("")
   const [isFavorited, setIsFavorited] = useState(false)
+  const [hasCompleted, setHasCompleted] = useState(false)
 
+  // Reset whenever question changes
+  useEffect(() => {
+    resetFeedback()
+    setHasCompleted(false)
+    setExpanded(false)
+  }, [question])
+
+  // check favorite status of question
   useEffect(() => {
     if (user && question.id) {
       // Check if the question is already favorited when component mounts
@@ -37,6 +46,7 @@ function QuestionDetail({ question, user, onComplete }) {
     return <p className="text-red-500">Please log in to practice questions</p>
   }
 
+  // click expand question to record audio
   const toggleExpand = () => {
     setExpanded((prev) => {
       const newExpanded = !prev
@@ -47,6 +57,7 @@ function QuestionDetail({ question, user, onComplete }) {
     })
   }
 
+  // send transcript data to user and backend
   const handleTranscriptUpdate = async (transcript, confidence) => {
     if (!user || !user.uid) {
       console.error("User not authenticated.")
@@ -92,9 +103,12 @@ function QuestionDetail({ question, user, onComplete }) {
     setSpokenText("")
   }
 
-  const handleNextQuestion = () => {
-    resetFeedback()
-  }
+  useEffect(() => {
+    if (status === "done" && onComplete && !hasCompleted) {
+      setHasCompleted(true)
+      onComplete()
+    }
+  }, [status, onComplete, hasCompleted])
 
   const handleToggleFavorite = async () => {
     if (!user || !user.uid) return
@@ -120,17 +134,6 @@ function QuestionDetail({ question, user, onComplete }) {
       alert("There was an error while updating your favorite.")
     }
   }
-
-  useEffect(() => {
-    if (status === "done" && onComplete) {
-      const timer = setTimeout(() => {
-        onComplete()
-        resetFeedback()
-      }, 3000)
-
-      return () => clearTimeout(timer)
-    }
-  }, [status, onComplete])
 
   return (
     <div className="mb-6 border border-gray-300 rounded-md bg-white p-4 shadow-sm">
@@ -232,16 +235,6 @@ function QuestionDetail({ question, user, onComplete }) {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* clear button */}
-      <div className="mt-4 flex justify-between">
-        <button
-          onClick={handleNextQuestion}
-          className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-        >
-          RESET
-        </button>
-      </div>
     </div>
   )
 }

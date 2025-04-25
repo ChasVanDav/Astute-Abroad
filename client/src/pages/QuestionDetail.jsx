@@ -125,16 +125,16 @@ function QuestionDetail({ question, user, onComplete }) {
     }
   }
 
-  useEffect(() => {
-    if (status === "done" && onComplete) {
-      const timer = setTimeout(() => {
-        onComplete()
-        resetFeedback()
-      }, 3000)
+  // useEffect(() => {
+  //   if (status === "done" && onComplete) {
+  //     const timer = setTimeout(() => {
+  //       onComplete()
+  //       resetFeedback()
+  //     }, 5000)
 
-      return () => clearTimeout(timer)
-    }
-  }, [status, onComplete])
+  //     return () => clearTimeout(timer)
+  //   }
+  // }, [status, onComplete])
 
   return (
     <div className="mb-6 border border-gray-300 rounded-md bg-white p-4 shadow-sm">

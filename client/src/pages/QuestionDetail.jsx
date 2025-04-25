@@ -151,12 +151,10 @@ function QuestionDetail({ question, user, onComplete }) {
             transition={{ duration: 0.3 }}
             className="mt-4 space-y-4 overflow-hidden"
           >
-            {(status === "idle" || status === "error") && (
-              <LiveTranscription
-                onTranscriptUpdate={handleTranscriptUpdate}
-                onStatusChange={setStatus}
-              />
-            )}
+            <LiveTranscription
+              onTranscriptUpdate={handleTranscriptUpdate}
+              onStatusChange={setStatus}
+            />
 
             {/* Status and Feedback */}
             {status === "listening" && (

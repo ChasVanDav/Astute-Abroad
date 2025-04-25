@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import LiveTranscription from "./LiveTranscription"
 
 function QuestionDetail({ question, user }) {
@@ -52,6 +53,14 @@ function QuestionDetail({ question, user }) {
     }
   }
 
+  const resetFeedback = () => {
+    setStatus("idle")
+    setFeedback("")
+    setPronunciationScore(null)
+    setContentScore(null)
+    setSpokenText("")
+  }
+
   return (
     <div className="mb-6 border border-gray-300 rounded-md bg-white p-4 shadow-sm">
       <button
@@ -61,71 +70,89 @@ function QuestionDetail({ question, user }) {
         {question.question_text}
       </button>
 
-      {expanded && (
-        <div className="mt-4 space-y-4">
-          <LiveTranscription
-            onTranscriptUpdate={handleTranscriptUpdate}
-            onStatusChange={setStatus}
-          />
+      <AnimatePresence>
+        {expanded && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="mt-4 space-y-4 overflow-hidden"
+          >
+            {/* <div className="mt-4 space-y-4"> */}
+            <LiveTranscription
+              onTranscriptUpdate={handleTranscriptUpdate}
+              onStatusChange={setStatus}
+            />
 
-          {/* Status and Feedback */}
-          {status === "processing" && (
-            <p className="text-sm text-gray-600">
-              ⏳ Analyzing your response...
-            </p>
-          )}
+            {/* Status and Feedback */}
+            {status === "listening" && (
+              <p className="text-blue-500">
+                🎤 Listening... Start speaking when ready!
+              </p>
+            )}
 
-          {status === "done" && (
-            <div className="bg-gray-50 border border-gray-300 rounded-md p-4 space-y-3">
-              <div>
-                <h3 className="text-md font-semibold">🗣️ Transcript</h3>
-                <p className="text-gray-800 ml-2">{spokenText}</p>
-              </div>
+            {status === "processing" && (
+              <p className="text-sm text-gray-600">
+                ⏳ Analyzing your response...
+              </p>
+            )}
 
-              <div className="flex items-center space-x-6">
+            {status === "done" && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-gray-50 border border-gray-300 rounded-md p-4 space-y-3"
+              >
                 <div>
-                  <h3 className="text-md font-semibold">
-                    🔊 Pronunciation Score
-                  </h3>
-                  <p>
-                    <strong>Pronunciation Score:</strong>{" "}
-                    {Math.round(pronunciationScore * 100)}%
+                  <h3 className="text-md font-semibold">🗣️ Transcript</h3>
+                  <p className="text-gray-800 ml-2">{spokenText}</p>
+                </div>
+                {/* pronunciation score displayed */}
+                <div className="flex items-center space-x-6">
+                  {typeof pronunciationScore === "number" && (
+                    <div>
+                      <h3 className="text-md font-semibold">
+                        🔊 Pronunciation Score
+                      </h3>
+                      <p>
+                        <strong>Pronunciation Score:</strong>{" "}
+                        {Math.round(pronunciationScore * 100)}%
+                      </p>
+                    </div>
+                  )}
+                  {/* content score displayed */}
+                  <div>
+                    <h3 className="text-md font-semibold">🧠 Content Score</h3>
+                    <p className="text-green-700 ml-2">{contentScore}/10</p>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-md font-semibold">💬 Feedback</h3>
+                  <p className="text-gray-700 whitespace-pre-line ml-2">
+                    {feedback}
                   </p>
                 </div>
+              </motion.div>
+            )}
+
+            {status === "error" && (
+              <div className="text-red-600">
+                ❌ Something went wrong. Please try again.
                 <div>
-                  <h3 className="text-md font-semibold">🧠 Content Score</h3>
-                  <p className="text-green-700 ml-2">{contentScore}/10</p>
+                  <button
+                    onClick={resetFeedback}
+                    className="mt-2 underline text-blue-600 hover:text-blue-800"
+                  >
+                    Retry
+                  </button>
                 </div>
               </div>
-
-              <div>
-                <h3 className="text-md font-semibold">💬 Feedback</h3>
-                <p className="text-gray-700 whitespace-pre-line ml-2">
-                  {feedback}
-                </p>
-              </div>
-            </div>
-          )}
-
-          {status === "error" && (
-            <p className="text-red-600">
-              ❌ Something went wrong. Please try again.
-              <button
-                onClick={() => setStatus("idle")}
-                className="mt-2 underline text-blue-600 hover:text-blue-800"
-              >
-                Retry
-              </button>
-            </p>
-          )}
-
-          {status === "listening" && (
-            <p className="text-blue-500">
-              🎤 Listening... Start speaking when ready!
-            </p>
-          )}
-        </div>
-      )}
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

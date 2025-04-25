@@ -5,7 +5,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth"
 import { useNavigate } from "react-router-dom"
-import { signOut } from "firebase/auth"
+// import { signOut } from "firebase/auth"
 
 export default function Login() {
   const [email, setEmail] = useState("")
@@ -40,7 +40,7 @@ export default function Login() {
         password
       )
       const idToken = await userCredential.user.getIdToken()
-      console.log("Login ID Token retrieved 🪙", idToken)
+      console.log("Login ID Token retrieved 🪙")
 
       await sendUserToBackend(idToken)
 
@@ -74,15 +74,15 @@ export default function Login() {
     }
   }
   // user log out function
-  const handleLogout = async () => {
-    try {
-      await signOut(auth)
-      console.log("User signed out successfully ✌🏽")
-      navigate("/")
-    } catch (error) {
-      console.error("Logout error: ", error.message)
-    }
-  }
+  // const handleLogout = async () => {
+  //   try {
+  //     await signOut(auth)
+  //     console.log("User signed out successfully ✌🏽")
+  //     navigate("/")
+  //   } catch (error) {
+  //     console.error("Logout error: ", error.message)
+  //   }
+  // }
 
   return (
     <div className="flex items-center justify-center">
@@ -119,13 +119,13 @@ export default function Login() {
           >
             Register
           </button>
-          <button
+          {/* <button
             type="button"
             onClick={handleLogout}
             className="w-full py-2 px-4 bg-red-400 text-white rounded-lg hover:bg-red-500 transition"
           >
             Logout
-          </button>
+          </button> */}
         </form>
       </div>
     </div>

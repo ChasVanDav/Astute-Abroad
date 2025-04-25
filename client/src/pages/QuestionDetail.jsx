@@ -110,6 +110,18 @@ function QuestionDetail({ question, user }) {
           {status === "error" && (
             <p className="text-red-600">
               ❌ Something went wrong. Please try again.
+              <button
+                onClick={() => setStatus("idle")}
+                className="mt-2 underline text-blue-600 hover:text-blue-800"
+              >
+                Retry
+              </button>
+            </p>
+          )}
+
+          {status === "listening" && (
+            <p className="text-blue-500">
+              🎤 Listening... Start speaking when ready!
             </p>
           )}
         </div>

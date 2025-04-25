@@ -37,7 +37,15 @@ function QuestionDetail({ question, user, onComplete }) {
     return <p className="text-red-500">Please log in to practice questions</p>
   }
 
-  const toggleExpand = () => setExpanded(!expanded)
+  const toggleExpand = () => {
+    setExpanded((prev) => {
+      const newExpanded = !prev
+      if (newExpanded) {
+        resetFeedback()
+      }
+      return newExpanded
+    })
+  }
 
   const handleTranscriptUpdate = async (transcript, confidence) => {
     if (!user || !user.uid) {

@@ -70,11 +70,22 @@ function Dashboard() {
     )
   }
 
+  const allComplete = completedQuestions.size === questions.length
   const question = questions[currentIndex]
 
   return (
     <div className="space-y-10">
+      {/* title */}
       <h2 className="text-2xl font-bold text-black">Your Practice Dashboard</h2>
+      {/* progress bar */}
+      <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+        <div className="bg-green-500 h-full transition-all duration-300"></div>
+      </div>
+
+      <p className="text-sm text-gray-600">
+        ✅ You’ve completed {completedQuestions.size} of {questions.length}{" "}
+        questions
+      </p>
 
       {!user ? (
         <p className="text-red-600">Please log in to view your dashboard.</p>
@@ -82,6 +93,10 @@ function Dashboard() {
         <p className="text-blue-600">Loading...</p>
       ) : error ? (
         <p className="text-red-600">Error: {error}</p>
+      ) : allComplete ? (
+        <div className="text-green-600 font-semibold text-lg">
+          🎉 Great job! You've completed all {questions.length} questions.
+        </div>
       ) : !question ? (
         <p>No questions found.</p>
       ) : (

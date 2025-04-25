@@ -46,7 +46,7 @@ router.get("/:userId", async (req, res) => {
     const dbUserId = userResult.rows[0].id
 
     const query = `
-      SELECT q.id as question_id, q.question_text
+      SELECT q.id AS question_id, q.question_text
       FROM saved_questions sq
       JOIN questions q ON q.id = sq.question_id
       WHERE sq.user_id = $1 

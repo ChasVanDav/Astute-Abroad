@@ -7,6 +7,7 @@ function Dashboard() {
   const [user, setUser] = useState(null)
   const [questions, setQuestions] = useState([])
   const [completedQuestions, setCompletedQuestions] = useState(new Set())
+  const [savedQuestions, setSavedQuestions] = useState([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -36,7 +37,26 @@ function Dashboard() {
       }
     }
 
+    const fetchSavedQuestions = async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:5000/faveQuestions/${user.uid}`
+        )
+        if (!res.ok) throw new Error("Failed to fetch saved questions")
+        const data = await res.json()
+
+        const normalized = data.map((q) => ({
+          id: q.question_id,
+          question_text: q.question_text,
+        }))
+        setSavedQuestions(normalized)
+      } catch (err) {
+        console.error("Error fetching saved questions:", err)
+      }
+    }
+
     fetchQuestions()
+    fetchSavedQuestions()
   }, [user])
 
   const markQuestionComplete = (index) => {
@@ -52,7 +72,7 @@ function Dashboard() {
   const question = questions[currentIndex]
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-10">
       <h2 className="text-2xl font-bold text-black">Your Practice Dashboard</h2>
 
       {!user ? (
@@ -86,6 +106,19 @@ function Dashboard() {
             Next ▶
           </button>
         </>
+      )}
+
+      {savedQuestions.length > 0 && (
+        <div className="mt-10">
+          <h3 className="text-xl font-semibold text-black mb-4">
+            ⭐ Saved Questions
+          </h3>
+          <div className="space-y-4">
+            {savedQuestions.map((q) => (
+              <QuestionDetail key={q.id} question={q} user={user} />
+            ))}
+          </div>
+        </div>
       )}
     </div>
   )

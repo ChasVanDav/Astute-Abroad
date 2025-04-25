@@ -6,11 +6,11 @@ import { onAuthStateChanged, signOut } from "firebase/auth"
 import { auth } from "./firebase"
 
 // import components
-import About from "./pages/About"
-import Login from "./pages/Login"
-import Questions from "./pages/Questions"
+import About from "./pages/About.jsx"
+import Login from "./pages/Login.jsx"
+import Questions from "./pages/Questions.jsx"
 // import WatchDemo from "./pages/WatchDemo"
-// import Dashboard from "./pages/Dashboard"
+import Dashboard from "./pages/Dashboard.jsx"
 
 // Homepage component
 function Home() {
@@ -88,6 +88,7 @@ function App() {
               {/* <Route path="/watch-demo" element={<WatchDemo />} /> */}
               <Route path="/questions" element={<Questions />} />
               {/* <Route path="/record" element={<LiveTranscription />} /> */}
+              <Route path="/dashboard" element={<Dashboard />} />
             </Routes>
           </main>
 
@@ -131,7 +132,12 @@ function App() {
                 >
                   Logout
                 </button>
-                <button onClick={() => navigate("/")}>Dashboard</button>
+                <button
+                  onClick={() => navigate("/dashboard")}
+                  className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
+                >
+                  Dashboard
+                </button>
               </>
             ) : (
               <button

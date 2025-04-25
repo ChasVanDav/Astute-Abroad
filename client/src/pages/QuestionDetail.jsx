@@ -1,14 +1,15 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import LiveTranscription from "./LiveTranscription"
 
-function QuestionDetail({ question, user }) {
+function QuestionDetail({ question, user, onComplete }) {
   const [expanded, setExpanded] = useState(false)
   const [status, setStatus] = useState("idle") // idle | listening | processing | done
   const [feedback, setFeedback] = useState("")
   const [pronunciationScore, setPronunciationScore] = useState(null)
   const [contentScore, setContentScore] = useState(null)
   const [spokenText, setSpokenText] = useState("")
+  const [isFavorited, setIsFavorited] = useState(false)
 
   if (!user) {
     return <p className="text-red-500">Please log in to practice questions</p>
@@ -61,14 +62,52 @@ function QuestionDetail({ question, user }) {
     setSpokenText("")
   }
 
+  const handleToggleFavorite = async () => {
+    if (!user || !useruid) return
+    const url = `http://localhost:5000/faveQuestions/${user.uid}`
+    const method = isFavorited ? "DELETE" : "POST"
+    const targetUrl = isFavorited ? `${url}/${question.id}` : url
+
+    try {
+      const res = await fetch(targetUrl, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body:
+          method === "POST"
+            ? JSON.stringify({ question_id: question.id })
+            : null,
+      })
+      if (!res.ok) throw new Error("Failed to update favorite")
+      setIsFavorited(!isFavorited)
+    } catch (err) {
+      console.error("Error toggling favorite: ", err)
+    }
+  }
+
+  useEffect(() => {
+    if (status === "done" && onComplete) {
+      onComplete()
+    }
+  }, [status, onComplete])
+
   return (
     <div className="mb-6 border border-gray-300 rounded-md bg-white p-4 shadow-sm">
-      <button
-        onClick={toggleExpand}
-        className="w-full text-left text-lg font-semibold hover:bg-yellow-100 rounded-md p-2 transition-all duration-150"
-      >
-        {question.question_text}
-      </button>
+      <div className="flex items-center justify-between">
+        <button
+          onClick={handleToggleFavorite}
+          className="text-yellow-400 hover:text-yellow-500 text-2xl focus:outline-none"
+          title={isFavorited ? "Unfavorite" : "Favorite"}
+        >
+          {isFavorited ? "★" : "☆"}
+        </button>
+
+        <button
+          onClick={toggleExpand}
+          className="text-left text-lg font-semibold hover:bg-yellow-100 rounded-md p-2 transition-all duration-150 flex-1 ml-4"
+        >
+          {question.question_text}
+        </button>
+      </div>
 
       <AnimatePresence>
         {expanded && (

@@ -26,7 +26,7 @@ export default function Login() {
       await sendUserToBackend(idToken)
 
       console.log("Registration successful! Welcome to Astute Abroad! 👋🏽")
-      navigate("/questions")
+      navigate("/dashboard")
     } catch (error) {
       console.error("Registration error:", error.message)
     }
@@ -45,7 +45,7 @@ export default function Login() {
       await sendUserToBackend(idToken)
 
       console.log("Login successful! Welcome back! 😎")
-      navigate("/questions")
+      navigate("/dashboard")
     } catch (error) {
       console.error("Login error: ", error.message)
     }

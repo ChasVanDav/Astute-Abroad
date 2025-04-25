@@ -37,7 +37,15 @@ function QuestionDetail({ question, user, onComplete }) {
     return <p className="text-red-500">Please log in to practice questions</p>
   }
 
-  const toggleExpand = () => setExpanded(!expanded)
+  const toggleExpand = () => {
+    setExpanded((prev) => {
+      const newExpanded = !prev
+      if (newExpanded) {
+        resetFeedback()
+      }
+      return newExpanded
+    })
+  }
 
   const handleTranscriptUpdate = async (transcript, confidence) => {
     if (!user || !user.uid) {
@@ -84,6 +92,10 @@ function QuestionDetail({ question, user, onComplete }) {
     setSpokenText("")
   }
 
+  const handleNextQuestion = () => {
+    resetFeedback()
+  }
+
   const handleToggleFavorite = async () => {
     if (!user || !user.uid) return
     const url = `http://localhost:5000/faveQuestions/${user.uid}`
@@ -111,7 +123,12 @@ function QuestionDetail({ question, user, onComplete }) {
 
   useEffect(() => {
     if (status === "done" && onComplete) {
-      onComplete()
+      const timer = setTimeout(() => {
+        onComplete()
+        resetFeedback()
+      }, 3000)
+
+      return () => clearTimeout(timer)
     }
   }, [status, onComplete])
 
@@ -215,6 +232,16 @@ function QuestionDetail({ question, user, onComplete }) {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* clear button */}
+      <div className="mt-4 flex justify-between">
+        <button
+          onClick={handleNextQuestion}
+          className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+        >
+          RESET
+        </button>
+      </div>
     </div>
   )
 }

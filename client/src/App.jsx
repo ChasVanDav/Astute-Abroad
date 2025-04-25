@@ -8,7 +8,7 @@ import { auth } from "./firebase"
 // import components
 import About from "./pages/About.jsx"
 import Login from "./pages/Login.jsx"
-import Questions from "./pages/Questions.jsx"
+// import Questions from "./pages/Questions.jsx"
 // import WatchDemo from "./pages/WatchDemo"
 import Dashboard from "./pages/Dashboard.jsx"
 
@@ -86,7 +86,7 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/login" element={<Login />} />
               {/* <Route path="/watch-demo" element={<WatchDemo />} /> */}
-              <Route path="/questions" element={<Questions />} />
+              {/* <Route path="/questions" element={<Questions />} /> */}
               {/* <Route path="/record" element={<LiveTranscription />} /> */}
               <Route path="/dashboard" element={<Dashboard />} />
             </Routes>
@@ -110,33 +110,33 @@ function App() {
             >
               About Astute Abroad
             </button>
-            <button
+            {/* <button
               onClick={() => navigate("/watch-demo")}
               className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
             >
               Watch Demo
-            </button>
-            <button
+            </button> */}
+            {/* <button
               onClick={() => navigate("/questions")}
               className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
             >
               Practice Questions
-            </button>
+            </button> */}
 
             {/* conditional rendering of login/logout */}
             {user ? (
               <>
                 <button
-                  onClick={handleLogout}
-                  className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
-                >
-                  Logout
-                </button>
-                <button
                   onClick={() => navigate("/dashboard")}
                   className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
                 >
                   Dashboard
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
+                >
+                  Logout
                 </button>
               </>
             ) : (

@@ -1,20 +1,20 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { Routes, Route, useNavigate } from "react-router-dom"
 import { Link } from "react-router-dom"
 import astuteAbroadLogo from "/favicon.png"
+import { onAuthStateChanged, signOut } from "firebase/auth"
+import { auth } from "./firebase"
 
-import About from "./pages/About"
-import Register from "./pages/Register"
-import Login from "./pages/Login"
-import WatchDemo from "./pages/WatchDemo"
-import Questions from "./pages/Questions.jsx"
-import LiveTranscription from "./pages/LiveTranscription.jsx"
+// import components
+import About from "./pages/About.jsx"
+import Login from "./pages/Login.jsx"
+// import Questions from "./pages/Questions.jsx"
+// import WatchDemo from "./pages/WatchDemo"
+import Dashboard from "./pages/Dashboard.jsx"
 
+// Homepage component
 function Home() {
   return (
-    // <h2 className="text-2xl font-light text-black mb-4">Welcome!</h2>
-    //   <p className="text-black mb-4">main content area</p>
-    // <div className="h-screen flex items-center justify-center">
     <div className="flex flex-col space-y-10 px-8 items-stretch">
       <p className="bg-sky-100 text-black rounded-2xl border border-black p-4">
         Do you feel nervous speaking in front of others?
@@ -31,17 +31,39 @@ function Home() {
         skills with real-time feedback powered by AI!
       </p>
     </div>
-    // </div>
   )
 }
 
 function App() {
   const navigate = useNavigate()
+  const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    // check user auth state
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser)
+      } else {
+        setUser(null)
+      }
+    })
+
+    return () => unsubscribe()
+  }, [])
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth)
+      console.log("User signed out successfully ✌🏽")
+    } catch (error) {
+      console.error("Logout error: ", error.message)
+    }
+  }
 
   return (
     <div className="bg-sky-200 min-h-screen flex items-center justify-center">
       <div className="bg-sky-300 w-[90%] border border-black rounded-xl flex flex-col shadow-lg">
-        {/* header */}
+        {/* HEADER */}
         <header className="flex items-center justify-between p-4 border-b border-black">
           <div className="w-full px-6 py-4 flex flex-col sm:flex-row items-center justify-between">
             <p className="text-sm sm:text-base text-gray-600 italic">
@@ -54,31 +76,25 @@ function App() {
               </span>
             </h1>
           </div>
-          {/* <h1 className="italic text-3xl font-light text-black py-3 p-4">
-            speak fluently, travel fluidly
-          </h1>
-          <h1 className="text-4xl font-light text-black py-3 p-4">
-            Astute Abroad /əˈsto͞ot əˈbrôd/
-          </h1> */}
         </header>
 
-        {/* body */}
+        {/* BODY  */}
         <div className="flex flex-1">
-          {/* main content */}
           <main className="flex-1 p-6">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
-              <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/watch-demo" element={<WatchDemo />} />
-              <Route path="/questions" element={<Questions />} />
-              <Route path="/record" element={<LiveTranscription />} />
+              {/* <Route path="/watch-demo" element={<WatchDemo />} /> */}
+              {/* <Route path="/questions" element={<Questions />} /> */}
+              {/* <Route path="/record" element={<LiveTranscription />} /> */}
+              <Route path="/dashboard" element={<Dashboard />} />
             </Routes>
           </main>
 
-          {/* navigation bar - right side */}
+          {/* NAVIGATION SIDE BAR */}
           <aside className="w-1/4 border-l border-black p-4 flex flex-col gap-4 items-stretch bg-sky-300">
+            {/* click logo to return to homepage */}
             <Link to="/" className="flex justify-center">
               <img
                 src={astuteAbroadLogo}
@@ -86,42 +102,51 @@ function App() {
                 alt="Astute Abroad logo - wise fox with top hat and monacle"
               />
             </Link>
+
+            {/* buttons to page routes */}
             <button
               onClick={() => navigate("/about")}
               className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200	 transition"
             >
-              About
+              About Astute Abroad
             </button>
-            <button
+            {/* <button
               onClick={() => navigate("/watch-demo")}
               className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
             >
               Watch Demo
-            </button>
-            <button
+            </button> */}
+            {/* <button
               onClick={() => navigate("/questions")}
               className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
             >
               Practice Questions
-            </button>
-            <button
-              onClick={() => navigate("/record")}
-              className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
-            >
-              Record Audio
-            </button>
-            <button
-              onClick={() => navigate("/register")}
-              className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
-            >
-              Register
-            </button>
-            <button
-              onClick={() => navigate("/login")}
-              className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
-            >
-              Log in
-            </button>
+            </button> */}
+
+            {/* conditional rendering of login/logout */}
+            {user ? (
+              <>
+                <button
+                  onClick={() => navigate("/dashboard")}
+                  className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
+                >
+                  Dashboard
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => navigate("/login")}
+                className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
+              >
+                Log in / Register
+              </button>
+            )}
           </aside>
         </div>
       </div>

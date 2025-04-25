@@ -5,10 +5,13 @@
     "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\""
   },
   "devDependencies": {
-    "concurrently": "^8.0.0"
+    "concurrently": "^8.2.2"
   },
   "dependencies": {
     "@google-cloud/speech": "^7.0.1",
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "rollup": "^4.40.0",
     "winston": "^3.17.0"
   }
 }

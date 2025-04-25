@@ -89,11 +89,11 @@ function Dashboard() {
           }}
         ></div>
       </div>
-      <p className="text-sm text-gray-600 mt-1">
+      {/* <p className="text-sm text-gray-600 mt-1">
         {" "}
         ✅ You’ve completed {completedQuestions.size} of {questions.length}{" "}
         questions
-      </p>
+      </p> */}
 
       {!user ? (
         <p className="text-red-600">Please log in to view your dashboard.</p>

@@ -93,16 +93,7 @@ function QuestionDetail({ question, user, onComplete }) {
   }
 
   const handleNextQuestion = () => {
-    // Reset transcription state for the next question
     resetFeedback()
-
-    // Reset timer
-    setTimeLeft(duration) // Reset the timer to the default duration
-
-    // Call onComplete function to trigger the next question
-    if (onComplete) {
-      onComplete()
-    }
   }
 
   const handleToggleFavorite = async () => {
@@ -132,7 +123,12 @@ function QuestionDetail({ question, user, onComplete }) {
 
   useEffect(() => {
     if (status === "done" && onComplete) {
-      onComplete()
+      const timer = setTimeout(() => {
+        onComplete()
+        resetFeedback()
+      }, 3000)
+
+      return () => clearTimeout(timer)
     }
   }, [status, onComplete])
 
@@ -237,13 +233,13 @@ function QuestionDetail({ question, user, onComplete }) {
         )}
       </AnimatePresence>
 
-      {/* next button */}
+      {/* clear button */}
       <div className="mt-4 flex justify-between">
         <button
           onClick={handleNextQuestion}
           className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
         >
-          Next ▶
+          RESET
         </button>
       </div>
     </div>

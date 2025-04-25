@@ -92,9 +92,13 @@ function QuestionDetail({ question, user, onComplete }) {
     setSpokenText("")
   }
 
-  const handleNextQuestion = () => {
+  useEffect(() => {
     resetFeedback()
-  }
+  }, [question])
+
+  // const handleNextQuestion = () => {
+  //   resetFeedback()
+  // }
 
   const handleToggleFavorite = async () => {
     if (!user || !user.uid) return
@@ -234,14 +238,14 @@ function QuestionDetail({ question, user, onComplete }) {
       </AnimatePresence>
 
       {/* clear button */}
-      <div className="mt-4 flex justify-between">
+      {/* <div className="mt-4 flex justify-between">
         <button
           onClick={handleNextQuestion}
           className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
         >
           RESET
         </button>
-      </div>
+      </div> */}
     </div>
   )
 }

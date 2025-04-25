@@ -116,10 +116,15 @@ function Dashboard() {
           <QuestionDetail
             question={question}
             user={user}
-            onComplete={() => markQuestionComplete(currentIndex)}
+            onComplete={() => {
+              markQuestionComplete(currentIndex)
+              setTimeout(() => {
+                handleNext()
+              }, 3000)
+            }}
           />
           <div className="flex gap-4 mt-4">
-            <button
+            {/* <button
               onClick={handleNext}
               disabled={
                 currentIndex >= questions.length - 1 ||
@@ -128,7 +133,7 @@ function Dashboard() {
               className="bg-orange-400 text-white px-4 py-2 rounded-lg hover:bg-orange-500 disabled:bg-gray-300"
             >
               Next ▶
-            </button>
+            </button> */}
 
             {savedQuestions.length > 0 && (
               <button

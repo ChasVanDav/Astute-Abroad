@@ -10,6 +10,7 @@ function QuestionDetail({ question, user, onComplete }) {
   const [contentScore, setContentScore] = useState(null)
   const [spokenText, setSpokenText] = useState("")
   const [isFavorited, setIsFavorited] = useState(false)
+  const [hasCompleted, setHasCompleted] = useState(false)
 
   useEffect(() => {
     if (user && question.id) {
@@ -96,10 +97,6 @@ function QuestionDetail({ question, user, onComplete }) {
     resetFeedback()
   }, [question])
 
-  // const handleNextQuestion = () => {
-  //   resetFeedback()
-  // }
-
   const handleToggleFavorite = async () => {
     if (!user || !user.uid) return
     const url = `http://localhost:5000/faveQuestions/${user.uid}`
@@ -125,16 +122,12 @@ function QuestionDetail({ question, user, onComplete }) {
     }
   }
 
-  // useEffect(() => {
-  //   if (status === "done" && onComplete) {
-  //     const timer = setTimeout(() => {
-  //       onComplete()
-  //       resetFeedback()
-  //     }, 5000)
-
-  //     return () => clearTimeout(timer)
-  //   }
-  // }, [status, onComplete])
+  useEffect(() => {
+    if (status === "done" && onComplete && !hasCompleted) {
+      setHasCompleted(true)
+      onComplete()
+    }
+  }, [status, onComplete, hasCompleted])
 
   return (
     <div className="mb-6 border border-gray-300 rounded-md bg-white p-4 shadow-sm">
@@ -236,16 +229,6 @@ function QuestionDetail({ question, user, onComplete }) {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* clear button */}
-      {/* <div className="mt-4 flex justify-between">
-        <button
-          onClick={handleNextQuestion}
-          className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-        >
-          RESET
-        </button>
-      </div> */}
     </div>
   )
 }

@@ -11,6 +11,28 @@ function QuestionDetail({ question, user, onComplete }) {
   const [spokenText, setSpokenText] = useState("")
   const [isFavorited, setIsFavorited] = useState(false)
 
+  useEffect(() => {
+    if (user && question.id) {
+      // Check if the question is already favorited when component mounts
+      const checkFavoriteStatus = async () => {
+        try {
+          const res = await fetch(
+            `http://localhost:5000/faveQuestions/${user.uid}`
+          )
+          const data = await res.json()
+          console.log(data)
+          if (res.ok) {
+            // Check if the question is in the list of favorited questions
+            setIsFavorited(data.some((fav) => fav.question_id === question.id))
+          }
+        } catch (err) {
+          console.error("Error fetching favorite status:", err)
+        }
+      }
+      checkFavoriteStatus()
+    }
+  }, [user, question.id])
+
   if (!user) {
     return <p className="text-red-500">Please log in to practice questions</p>
   }
@@ -63,7 +85,7 @@ function QuestionDetail({ question, user, onComplete }) {
   }
 
   const handleToggleFavorite = async () => {
-    if (!user || !useruid) return
+    if (!user || !user.uid) return
     const url = `http://localhost:5000/faveQuestions/${user.uid}`
     const method = isFavorited ? "DELETE" : "POST"
     const targetUrl = isFavorited ? `${url}/${question.id}` : url
@@ -77,10 +99,13 @@ function QuestionDetail({ question, user, onComplete }) {
             ? JSON.stringify({ question_id: question.id })
             : null,
       })
+
       if (!res.ok) throw new Error("Failed to update favorite")
+
       setIsFavorited(!isFavorited)
     } catch (err) {
       console.error("Error toggling favorite: ", err)
+      alert("There was an error while updating your favorite.")
     }
   }
 
@@ -118,7 +143,6 @@ function QuestionDetail({ question, user, onComplete }) {
             transition={{ duration: 0.3 }}
             className="mt-4 space-y-4 overflow-hidden"
           >
-            {/* <div className="mt-4 space-y-4"> */}
             <LiveTranscription
               onTranscriptUpdate={handleTranscriptUpdate}
               onStatusChange={setStatus}
@@ -147,7 +171,7 @@ function QuestionDetail({ question, user, onComplete }) {
                   <h3 className="text-md font-semibold">🗣️ Transcript</h3>
                   <p className="text-gray-800 ml-2">{spokenText}</p>
                 </div>
-                {/* pronunciation score displayed */}
+
                 <div className="flex items-center space-x-6">
                   {typeof pronunciationScore === "number" && (
                     <div>
@@ -160,7 +184,6 @@ function QuestionDetail({ question, user, onComplete }) {
                       </p>
                     </div>
                   )}
-                  {/* content score displayed */}
                   <div>
                     <h3 className="text-md font-semibold">🧠 Content Score</h3>
                     <p className="text-green-700 ml-2">{contentScore}/10</p>

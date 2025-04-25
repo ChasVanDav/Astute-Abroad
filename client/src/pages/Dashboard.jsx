@@ -120,7 +120,7 @@ function Dashboard() {
               markQuestionComplete(currentIndex)
               setTimeout(() => {
                 handleNext()
-              }, 3000)
+              }, 7000)
             }}
           />
           <div className="flex gap-4 mt-4">

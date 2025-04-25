@@ -12,6 +12,13 @@ function QuestionDetail({ question, user, onComplete }) {
   const [isFavorited, setIsFavorited] = useState(false)
   const [hasCompleted, setHasCompleted] = useState(false)
 
+  // Reset whenever question changes
+  useEffect(() => {
+    resetFeedback()
+    setHasCompleted(false)
+    setExpanded(false)
+  }, [question])
+
   useEffect(() => {
     if (user && question.id) {
       // Check if the question is already favorited when component mounts

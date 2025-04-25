@@ -88,10 +88,6 @@ function QuestionDetail({ question, user }) {
                     🔊 Pronunciation Score
                   </h3>
                   <p>
-                    <strong>Pronunciation Score:</strong> {pronunciationScore}
-                    /10
-                  </p>
-                  <p>
                     <strong>Pronunciation Score:</strong>{" "}
                     {Math.round(pronunciationScore * 100)}%
                   </p>

@@ -92,6 +92,19 @@ function QuestionDetail({ question, user, onComplete }) {
     setSpokenText("")
   }
 
+  const handleNextQuestion = () => {
+    // Reset transcription state for the next question
+    resetFeedback()
+
+    // Reset timer
+    setTimeLeft(duration) // Reset the timer to the default duration
+
+    // Call onComplete function to trigger the next question
+    if (onComplete) {
+      onComplete()
+    }
+  }
+
   const handleToggleFavorite = async () => {
     if (!user || !user.uid) return
     const url = `http://localhost:5000/faveQuestions/${user.uid}`
@@ -223,6 +236,16 @@ function QuestionDetail({ question, user, onComplete }) {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* next button */}
+      <div className="mt-4 flex justify-between">
+        <button
+          onClick={handleNextQuestion}
+          className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+        >
+          Next ▶
+        </button>
+      </div>
     </div>
   )
 }

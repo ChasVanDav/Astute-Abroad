@@ -1,16 +1,18 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { Routes, Route, useNavigate } from "react-router-dom"
 import { Link } from "react-router-dom"
 import astuteAbroadLogo from "/favicon.png"
+import { onAuthStateChanged, signOut } from "firebase/auth"
+import { auth } from "./firebase"
 
 // import components
-import About from "./pages/About"
-import Login from "./pages/Login"
-// import WatchDemo from "./pages/WatchDemo"
+import About from "./pages/About.jsx"
+import Login from "./pages/Login.jsx"
 import Questions from "./pages/Questions.jsx"
-// import LiveTranscription from "./pages/LiveTranscription.jsx"
+// import WatchDemo from "./pages/WatchDemo"
+import Dashboard from "./pages/Dashboard.jsx"
 
-// to do: move to Home.jsx? add animation for each text block
+// Homepage component
 function Home() {
   return (
     <div className="flex flex-col space-y-10 px-8 items-stretch">
@@ -34,6 +36,29 @@ function Home() {
 
 function App() {
   const navigate = useNavigate()
+  const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    // check user auth state
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser)
+      } else {
+        setUser(null)
+      }
+    })
+
+    return () => unsubscribe()
+  }, [])
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth)
+      console.log("User signed out successfully ✌🏽")
+    } catch (error) {
+      console.error("Logout error: ", error.message)
+    }
+  }
 
   return (
     <div className="bg-sky-200 min-h-screen flex items-center justify-center">
@@ -63,6 +88,7 @@ function App() {
               {/* <Route path="/watch-demo" element={<WatchDemo />} /> */}
               <Route path="/questions" element={<Questions />} />
               {/* <Route path="/record" element={<LiveTranscription />} /> */}
+              <Route path="/dashboard" element={<Dashboard />} />
             </Routes>
           </main>
 
@@ -84,31 +110,43 @@ function App() {
             >
               About Astute Abroad
             </button>
-            {/* <button
+            <button
               onClick={() => navigate("/watch-demo")}
               className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
             >
               Watch Demo
-            </button> */}
+            </button>
             <button
               onClick={() => navigate("/questions")}
               className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
             >
               Practice Questions
             </button>
-            {/* <button
-              onClick={() => navigate("/record")}
-              className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
-            >
-              Record Audio
-            </button> */}
 
-            <button
-              onClick={() => navigate("/login")}
-              className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
-            >
-              Log in / Register
-            </button>
+            {/* conditional rendering of login/logout */}
+            {user ? (
+              <>
+                <button
+                  onClick={handleLogout}
+                  className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
+                >
+                  Logout
+                </button>
+                <button
+                  onClick={() => navigate("/dashboard")}
+                  className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
+                >
+                  Dashboard
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => navigate("/login")}
+                className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
+              >
+                Log in / Register
+              </button>
+            )}
           </aside>
         </div>
       </div>

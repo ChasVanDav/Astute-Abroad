@@ -19,6 +19,7 @@ function QuestionDetail({ question, user, onComplete }) {
     setExpanded(false)
   }, [question])
 
+  // check favorite status of question
   useEffect(() => {
     if (user && question.id) {
       // Check if the question is already favorited when component mounts
@@ -45,6 +46,7 @@ function QuestionDetail({ question, user, onComplete }) {
     return <p className="text-red-500">Please log in to practice questions</p>
   }
 
+  // click expand question to record audio
   const toggleExpand = () => {
     setExpanded((prev) => {
       const newExpanded = !prev
@@ -55,6 +57,7 @@ function QuestionDetail({ question, user, onComplete }) {
     })
   }
 
+  // send transcript data to user and backend
   const handleTranscriptUpdate = async (transcript, confidence) => {
     if (!user || !user.uid) {
       console.error("User not authenticated.")
@@ -101,8 +104,11 @@ function QuestionDetail({ question, user, onComplete }) {
   }
 
   useEffect(() => {
-    resetFeedback()
-  }, [question])
+    if (status === "done" && onComplete && !hasCompleted) {
+      setHasCompleted(true)
+      onComplete()
+    }
+  }, [status, onComplete, hasCompleted])
 
   const handleToggleFavorite = async () => {
     if (!user || !user.uid) return
@@ -128,13 +134,6 @@ function QuestionDetail({ question, user, onComplete }) {
       alert("There was an error while updating your favorite.")
     }
   }
-
-  useEffect(() => {
-    if (status === "done" && onComplete && !hasCompleted) {
-      setHasCompleted(true)
-      onComplete()
-    }
-  }, [status, onComplete, hasCompleted])
 
   return (
     <div className="mb-6 border border-gray-300 rounded-md bg-white p-4 shadow-sm">

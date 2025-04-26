@@ -12,7 +12,7 @@ function Questions() {
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
 
-  const limit = 5
+  const limit = 10
 
   useEffect(() => {
     const auth = getAuth()

@@ -1,34 +1,28 @@
+// react libraries
 import React, { useEffect, useState } from "react"
 import { Routes, Route, useNavigate } from "react-router-dom"
 import { Link } from "react-router-dom"
+// import logo
 import astuteAbroadLogo from "/favicon.png"
+// firebase imports
 import { onAuthStateChanged, signOut } from "firebase/auth"
 import { auth } from "./firebase"
-
 // import components
 import About from "./pages/About.jsx"
 import Login from "./pages/Login.jsx"
-// import Questions from "./pages/Questions.jsx"
-// import WatchDemo from "./pages/WatchDemo"
 import Dashboard from "./pages/Dashboard.jsx"
+import WatchDemo from "./pages/WatchDemo.jsx"
 
 // Homepage component
 function Home() {
   return (
     <div className="flex flex-col space-y-10 px-8 items-stretch">
       <p className="bg-sky-100 text-black rounded-2xl border border-black p-4">
-        Do you feel nervous speaking in front of others?
-      </p>
-      <p className="bg-sky-200 text-black rounded-2xl border border-black p-4">
-        Do you wish to gain confidence to travel overseas & meet new friends?
-      </p>
-      <p className="bg-sky-300 text-black rounded-2xl border border-black p-4">
-        Start speaking a foreign language more fluently and improve your
-        pronunciation!
-      </p>
-      <p className="bg-sky-400 text-black rounded-2xl border border-black p-4">
-        Register with Astute Abroad today and start practicing your speaking
-        skills with real-time feedback powered by AI!
+        Do you feel nervous speaking in front of others? Do you wish to gain
+        confidence to travel overseas & meet new friends? Start speaking a
+        foreign language more fluently and improve your pronunciation! Register
+        with Astute Abroad today and start practicing your speaking skills with
+        real-time feedback powered by AI!
       </p>
     </div>
   )
@@ -54,6 +48,9 @@ function App() {
   const handleLogout = async () => {
     try {
       await signOut(auth)
+
+      navigate("/")
+
       console.log("User signed out successfully ✌🏽")
     } catch (error) {
       console.error("Logout error: ", error.message)
@@ -83,11 +80,9 @@ function App() {
           <main className="flex-1 p-6">
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/watch-demo" element={<WatchDemo />} />
               <Route path="/about" element={<About />} />
               <Route path="/login" element={<Login />} />
-              {/* <Route path="/watch-demo" element={<WatchDemo />} /> */}
-              {/* <Route path="/questions" element={<Questions />} /> */}
-              {/* <Route path="/record" element={<LiveTranscription />} /> */}
               <Route path="/dashboard" element={<Dashboard />} />
             </Routes>
           </main>
@@ -108,20 +103,14 @@ function App() {
               onClick={() => navigate("/about")}
               className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200	 transition"
             >
-              About Astute Abroad
+              About
             </button>
-            {/* <button
+            <button
               onClick={() => navigate("/watch-demo")}
               className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
             >
               Watch Demo
-            </button> */}
-            {/* <button
-              onClick={() => navigate("/questions")}
-              className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
-            >
-              Practice Questions
-            </button> */}
+            </button>
 
             {/* conditional rendering of login/logout */}
             {user ? (

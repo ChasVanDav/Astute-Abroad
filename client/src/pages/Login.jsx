@@ -103,7 +103,7 @@ export default function Login() {
             />
             <span
               onClick={handleToggle}
-              className="flex justify-around items-center"
+              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-600"
             >
               {type === "password" ? (
                 <FiEyeOff size={20} />

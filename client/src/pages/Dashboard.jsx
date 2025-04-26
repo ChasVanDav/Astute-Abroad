@@ -116,7 +116,7 @@ function Dashboard() {
               setTimeout(() => {
                 // resetFeedback()
                 handleNext()
-              }, 2000)
+              }, 7000)
             }}
           />
           <div className="flex gap-4 mt-4">

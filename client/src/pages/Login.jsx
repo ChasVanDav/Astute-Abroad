@@ -12,16 +12,9 @@ export default function Login() {
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
   const [type, setType] = useState("password")
-  const [icon, setIcon] = useState(eyeOff)
 
   const handleToggle = () => {
-    if (type === "password") {
-      setIcon(eye)
-      setType("text")
-    } else {
-      setIcon(eyeOff)
-      setType("password")
-    }
+    setType((prevType) => (prevType === "password" ? "text" : "password"))
   }
 
   // user registration
@@ -109,8 +102,8 @@ export default function Login() {
               className="w-full px-4 py-2 border border-black rounded-md text-black bg-white"
             />
             <span
-              className="flex justify-around items-center"
               onClick={handleToggle}
+              className="flex justify-around items-center"
             >
               {type === "password" ? (
                 <FiEyeOff size={20} />

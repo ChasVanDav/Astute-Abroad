@@ -5,9 +5,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth"
 import { useNavigate } from "react-router-dom"
-import { Icon } from "react-icons-kit"
-import { eyeOff } from "react-icons-kit/feather/eyeOff"
-import { eye } from "react-icons-kit/feather/eye"
+import { FiEye, FiEyeOff } from "react-icons/fi"
 
 export default function Login() {
   const [email, setEmail] = useState("")
@@ -114,7 +112,11 @@ export default function Login() {
               className="flex justify-around items-center"
               onClick={handleToggle}
             >
-              <Icon icon={icon} size={25} />
+              {type === "password" ? (
+                <FiEyeOff size={20} />
+              ) : (
+                <FiEye size={20} />
+              )}
             </span>
           </div>
           <button

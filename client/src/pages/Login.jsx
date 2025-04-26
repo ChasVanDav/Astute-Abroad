@@ -88,7 +88,6 @@ export default function Login() {
     }
   }
 
-
   return (
     <div className="flex items-center justify-center">
       <div className="max-w-md w-full bg-white p-8 rounded-xl shadow-md border border-black">
@@ -103,18 +102,22 @@ export default function Login() {
             placeholder="Email"
             className="w-full px-4 py-2 border border-black rounded-md text-black bg-white"
           />
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            className="w-full px-4 py-2 border border-black rounded-md text-black bg-white"
-          />
-          <span class="flex justify-around items-center" onClick={handleToggle}>
-            <Icon class="absolute mr-10 icon={icon} size={25}/>
-          </span>
+          <div className="relative">
+            <input
+              type={type}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              className="w-full px-4 py-2 border border-black rounded-md text-black bg-white"
+            />
+            <span
+              className="flex justify-around items-center"
+              onClick={handleToggle}
+            >
+              <Icon icon={icon} size={25} />
+            </span>
+          </div>
           <button
-            type="button"
             onClick={handleSignIn}
             className="w-full py-2 px-4 bg-sky-400 text-white rounded-lg hover:bg-orange-300 transition"
           >
@@ -127,13 +130,6 @@ export default function Login() {
           >
             Register
           </button>
-          {/* <button
-            type="button"
-            onClick={handleLogout}
-            className="w-full py-2 px-4 bg-red-400 text-white rounded-lg hover:bg-red-500 transition"
-          >
-            Logout
-          </button> */}
         </form>
       </div>
     </div>

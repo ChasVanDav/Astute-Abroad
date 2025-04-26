@@ -13,6 +13,8 @@ export default function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
+  const [type, setType] = useState("password")
+  const [icon, setIcon] = useState(eyeOff)
 
   // user registration
   const handleSignUp = async () => {

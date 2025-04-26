@@ -5,12 +5,17 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth"
 import { useNavigate } from "react-router-dom"
-// import { signOut } from "firebase/auth"
+import { FiEye, FiEyeOff } from "react-icons/fi"
 
 export default function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
+  const [type, setType] = useState("password")
+
+  const handleToggle = () => {
+    setType((prevType) => (prevType === "password" ? "text" : "password"))
+  }
 
   // user registration
   const handleSignUp = async () => {
@@ -73,16 +78,6 @@ export default function Login() {
       console.error("Failed to authenticate with backend:", err.message)
     }
   }
-  // user log out function
-  // const handleLogout = async () => {
-  //   try {
-  //     await signOut(auth)
-  //     console.log("User signed out successfully ✌🏽")
-  //     navigate("/")
-  //   } catch (error) {
-  //     console.error("Logout error: ", error.message)
-  //   }
-  // }
 
   return (
     <div className="flex items-center justify-center">
@@ -98,15 +93,26 @@ export default function Login() {
             placeholder="Email"
             className="w-full px-4 py-2 border border-black rounded-md text-black bg-white"
           />
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            className="w-full px-4 py-2 border border-black rounded-md text-black bg-white"
-          />
+          <div className="relative">
+            <input
+              type={type}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              className="w-full px-4 py-2 border border-black rounded-md text-black bg-white"
+            />
+            <span
+              onClick={handleToggle}
+              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-600"
+            >
+              {type === "password" ? (
+                <FiEyeOff size={20} />
+              ) : (
+                <FiEye size={20} />
+              )}
+            </span>
+          </div>
           <button
-            type="button"
             onClick={handleSignIn}
             className="w-full py-2 px-4 bg-sky-400 text-white rounded-lg hover:bg-orange-300 transition"
           >
@@ -119,13 +125,6 @@ export default function Login() {
           >
             Register
           </button>
-          {/* <button
-            type="button"
-            onClick={handleLogout}
-            className="w-full py-2 px-4 bg-red-400 text-white rounded-lg hover:bg-red-500 transition"
-          >
-            Logout
-          </button> */}
         </form>
       </div>
     </div>

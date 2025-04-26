@@ -17,8 +17,12 @@
     "axios": "^1.8.4",
     "firebase": "^11.6.0",
     "framer-motion": "^12.9.1",
+    "icons": "^1.0.0",
+    "kit": "^1.0.26",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-icons": "^5.5.0",
+    "react-icons-kit": "^2.0.0",
     "react-router-dom": "^7.5.0",
     "tailwindcss": "^4.1.3"
   }

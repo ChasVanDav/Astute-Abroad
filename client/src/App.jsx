@@ -58,7 +58,7 @@ function App() {
   }
 
   return (
-    <div className="bg-sky-200 min-h-screen flex items-center justify-center">
+    <div className="bg-sky-200 min-h-screen pt-10 flex flex-col items-center">
       <div className="bg-sky-300 w-[90%] border border-black rounded-xl flex flex-col shadow-lg">
         {/* HEADER */}
         <header className="flex items-center justify-between p-4 border-b border-black">

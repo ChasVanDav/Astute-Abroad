@@ -16,6 +16,16 @@ export default function Login() {
   const [type, setType] = useState("password")
   const [icon, setIcon] = useState(eyeOff)
 
+  const handleToggle = () => {
+    if (type === "password") {
+      setIcon(eye)
+      setType("text")
+    } else {
+      setIcon(eyeOff)
+      setType("password")
+    }
+  }
+
   // user registration
   const handleSignUp = async () => {
     try {
@@ -77,16 +87,7 @@ export default function Login() {
       console.error("Failed to authenticate with backend:", err.message)
     }
   }
-  // user log out function
-  // const handleLogout = async () => {
-  //   try {
-  //     await signOut(auth)
-  //     console.log("User signed out successfully ✌🏽")
-  //     navigate("/")
-  //   } catch (error) {
-  //     console.error("Logout error: ", error.message)
-  //   }
-  // }
+
 
   return (
     <div className="flex items-center justify-center">
@@ -109,6 +110,9 @@ export default function Login() {
             placeholder="Password"
             className="w-full px-4 py-2 border border-black rounded-md text-black bg-white"
           />
+          <span class="flex justify-around items-center" onClick={handleToggle}>
+            <Icon class="absolute mr-10 icon={icon} size={25}/>
+          </span>
           <button
             type="button"
             onClick={handleSignIn}

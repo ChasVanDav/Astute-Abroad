@@ -5,7 +5,9 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth"
 import { useNavigate } from "react-router-dom"
-// import { signOut } from "firebase/auth"
+import { Icon } from "react-icons-kit"
+import { eyeOff } from "react-icons-kit/feather/eyeOff"
+import { eye } from "react-icons-kit/feather/eye"
 
 export default function Login() {
   const [email, setEmail] = useState("")

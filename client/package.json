@@ -17,6 +17,8 @@
     "axios": "^1.8.4",
     "firebase": "^11.6.0",
     "framer-motion": "^12.9.1",
+    "icons": "^1.0.0",
+    "kit": "^1.0.26",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.5.0",

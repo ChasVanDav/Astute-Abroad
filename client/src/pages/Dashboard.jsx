@@ -113,10 +113,10 @@ function Dashboard() {
             user={user}
             onComplete={() => {
               markQuestionComplete(currentIndex)
-              resetFeedback()
               setTimeout(() => {
+                // resetFeedback()
                 handleNext()
-              }, 5000)
+              }, 2000)
             }}
           />
           <div className="flex gap-4 mt-4">

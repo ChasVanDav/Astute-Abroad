@@ -7,7 +7,7 @@ export default function WatchDemo() {
       <Link to="/" className="flex justify-center">
         <img
           src="/youtubelogo.png"
-          className="w-140 h-140 justify-center"
+          className="w-100 h-100 justify-center"
           alt="YouTube logo"
         />
       </Link>

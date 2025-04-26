@@ -82,9 +82,9 @@ export default function Login() {
   return (
     <div className="flex items-center justify-center">
       <div className="max-w-md w-full bg-white p-8 rounded-xl shadow-md border border-black">
-        <h2 className="text-2xl font-semibold text-black mb-6 text-center">
-          Log In
-        </h2>
+        {/* <h2 className="text-2xl font-semibold text-black mb-6 text-center">
+          Log In or Register
+        </h2> */}
         <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
           <input
             type="email"

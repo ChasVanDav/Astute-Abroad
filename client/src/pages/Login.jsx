@@ -19,6 +19,11 @@ export default function Login() {
     setType((prevType) => (prevType === "password" ? "text" : "password"))
   }
 
+  const handleCaptchaChange = (token) => {
+    console.log("reCAPTCHA token: ", token)
+    setRecaptchaToken(token)
+  }
+
   // user registration
   const handleSignUp = async () => {
     try {
@@ -33,6 +38,7 @@ export default function Login() {
       await sendUserToBackend(idToken)
 
       console.log("Registration successful! Welcome to Astute Abroad! 👋🏽")
+      alert("Registration successful! Welcome to Astute Abroad! 👋🏽")
       navigate("/dashboard")
     } catch (error) {
       console.error("Registration error:", error.message)
@@ -52,6 +58,7 @@ export default function Login() {
       await sendUserToBackend(idToken)
 
       console.log("Login successful! Welcome back! 😎")
+      alert("Login successful! Welcome back! 😎")
       navigate("/dashboard")
     } catch (error) {
       console.error("Login error: ", error.message)

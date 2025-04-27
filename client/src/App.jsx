@@ -19,36 +19,46 @@ function Home() {
 
   return (
     <div className="bg-white border border-black rounded-2xl p-6 shadow-md text-center space-y-4">
-      <section className="bg-white border border-black rounded-2xl p-6 shadow-md text-center space-y-8 mt-10">
-        {/* Heading */}
-        <h2 className="text-2xl font-bold text-black">
-          Start Speaking Korean with Confidence
-        </h2>
+      {/* Heading */}
+      <h2 className="text-3xl font-bold text-black text-center leading-tight mt-8 mb-4">
+        Boarding Soon: Your Journey to Korean Fluency! <br />
+        <span className="text-xl font-medium text-gray-600">
+          powered by ChatGPT
+        </span>
+      </h2>
 
+      <section className="bg-white rounded-2xl p-6 shadow-md text-center space-y-8 mt-10">
         {/* Flex container for image and paragraph */}
         <div className="flex items-center space-x-8">
-          {/* Image */}
+          {/* Gif */}
           <img
-            src="/worldglobeflags.jpg"
-            alt="cartoon rabbits coming out to say hello in hangeul"
-            className="w-80 h-auto rounded-xl"
+            src="/airplanegif2.gif"
+            alt="airplane flying through the clouds"
+            className="w-75 h-auto rounded-xl"
           />
 
           {/* Paragraph */}
-          <p className="text-gray-700 max-w-lg">
+          <p className="text-gray-700 max-w-lg text-xl">
             Do you feel nervous speaking in front of others? Do you wish to gain
-            confidence to travel overseas & meet new friends? Start speaking a
-            foreign language more fluently and improve your pronunciation!
-            Register with Astute Abroad today and start practicing your speaking
-            skills with real-time feedback powered by AI!
+            confidence to travel overseas & meet new friends? Start speaking
+            Korean more fluently and improve your pronunciation! Register with
+            Astute Abroad today and start practicing your speaking skills with
+            real-time feedback powered by AI!
           </p>
         </div>
       </section>
 
       <section className="bg-white border border-black rounded-2xl p-6 shadow-md text-center space-y-8 mt-10">
         <h2 className="text-2xl sm:text-3xl font-bold text-black">
-          Why Astute Abroad is Your Perfect Language Companion
+          Astute Abroad - A First Class Ticket to Success
         </h2>
+
+        {/* Image */}
+        <img
+          src="/boarding_pass.jpeg"
+          alt="image of a blank boarding pass"
+          className="w-100 h-auto rounded-xl"
+        />
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-6">
           {/* Card 1 */}
@@ -59,23 +69,20 @@ function Home() {
             <p className="text-gray-600 text-med">
               Practice smarter, not harder. With Astute Abroad, you’ll get
               AI-powered feedback to guide you through real conversations, not
-              just memorizing lists of words. We adapt lessons to your level, so
-              you’re always learning what matters most, in the most fun and
-              efficient way possible.
+              just memorizing lists of words.
             </p>
           </div>
 
           {/* Card 2 */}
           <div className="flex flex-col items-center space-y-2">
             <h3 className="text-xl font-semibold text-black">
-              Speak with Confidence Everywhere You Go
+              Speak with Confidence
             </h3>
             <p className="text-gray-600 text-med">
               Imagine ordering your favorite dish in Korean, chatting with
               locals, and navigating new cities with ease. Astute Abroad helps
               you learn practical, everyday conversations that will prepare you
-              for real-world adventures. Whether traveling or meeting new
-              friends, you’ll speak confidently in no time!
+              for real-world adventures.
             </p>
           </div>
 
@@ -88,8 +95,6 @@ function Home() {
               Get instant feedback on your pronunciation and conversation
               skills. With AI-driven insights, Astute Abroad helps you improve
               faster, offering tips that are tailored to your unique progress.
-              Practice, learn, and level up with real-time coaching designed to
-              keep you moving forward.
             </p>
           </div>
         </div>

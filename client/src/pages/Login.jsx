@@ -7,13 +7,10 @@ import {
 import { useNavigate } from "react-router-dom"
 import { FiEye, FiEyeOff } from "react-icons/fi"
 import ReCAPTCHA from "react-google-recaptcha"
-import dotenv from "dotenv"
-
-dotenv.config()
-
-const siteKey = process.env.VITE_RECAPTCHA_SITE_KEY
 
 export default function Login() {
+  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY
+
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
@@ -30,7 +27,7 @@ export default function Login() {
   }
 
   // user registration
-  const handleSignUp = async () => {
+  const handleSignUp = async (e) => {
     e.preventDefault()
     if (!recaptchaToken) {
       alert("Please verify you're not a robot")
@@ -55,7 +52,7 @@ export default function Login() {
     }
   }
 
-  const handleSignIn = async () => {
+  const handleSignIn = async (e) => {
     e.preventDefault()
     if (!recaptchaToken) {
       alert("Please verify you're not a robot")

@@ -29,16 +29,16 @@ function Home() {
 
       <section className="bg-white rounded-2xl p-6 shadow-md text-center space-y-8 mt-10">
         {/* Flex container for image and paragraph */}
-        <div className="flex items-center space-x-8">
+        <div className="flex flex-col sm:flex-row items-center space-y-6 sm:space-y-0 sm:space-x-8">
           {/* Gif */}
           <img
             src="/airplanegif2.gif"
             alt="airplane flying through the clouds"
-            className="w-75 h-auto rounded-xl"
+            className="w-75 h-auto rounded-xl max-w-xs sm:max-w-sm object-cover"
           />
 
           {/* Paragraph */}
-          <p className="text-gray-700 max-w-lg text-xl">
+          <p className="text-gray-700 max-w-lg text-xl text-center sm:text-left">
             Do you feel nervous speaking in front of others? Do you wish to gain
             confidence to travel overseas & meet new friends? Start speaking
             Korean more fluently and improve your pronunciation! Register with
@@ -48,53 +48,51 @@ function Home() {
         </div>
       </section>
 
-      <section className="bg-white border border-black rounded-2xl p-6 shadow-md text-center space-y-8 mt-10">
-        <h2 className="text-2xl sm:text-3xl font-bold text-black">
-          Astute Abroad - A First Class Ticket to Success
-        </h2>
+      <section className="bg-white rounded-2xl p-6 shadow-md text-center space-y-8 mt-10">
+        {/* FLEX layout for Image + Header side-by-side */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-8">
+          {/* Left side - Heading */}
+          <div className="flex-1 text-center sm:text-left space-y-4">
+            <h2 className="text-2xl sm:text-4xl font-bold text-black">
+              A First Class Ticket to Success
+            </h2>
+            <p className="text-gray-600 text-lg">
+              Your journey to fluency starts here. Real practice, real feedback,
+              real growth.
+            </p>
+          </div>
 
-        {/* Image */}
-        <img
-          src="/boarding_pass.jpeg"
-          alt="image of a blank boarding pass"
-          className="w-100 h-auto rounded-xl"
-        />
+          {/* Right side - Image */}
+          <div className="flex-1 flex justify-center">
+            <img
+              src="/boarding_pass.jpeg"
+              alt="image of a blank boarding pass"
+              className="rounded-xl shadow-md w-full max-w-sm object-cover"
+            />
+          </div>
+        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-6">
+        {/* GRID layout for 2 cards instead of 3 */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-10">
           {/* Card 1 */}
-          <div className="flex flex-col items-center space-y-2">
+          <div className="flex flex-col items-center text-center space-y-3 p-4">
             <h3 className="text-xl font-semibold text-black">
-              Learn the Smart Way
+              Learn & Speak Fluently
             </h3>
-            <p className="text-gray-600 text-med">
-              Practice smarter, not harder. With Astute Abroad, you’ll get
-              AI-powered feedback to guide you through real conversations, not
-              just memorizing lists of words.
+            <p className="text-gray-600 text-base">
+              Practice smarter, not harder. Learn real-world Korean for everyday
+              situations — travel, food, friends, and more.
             </p>
           </div>
 
           {/* Card 2 */}
-          <div className="flex flex-col items-center space-y-2">
+          <div className="flex flex-col items-center text-center space-y-3 p-4">
             <h3 className="text-xl font-semibold text-black">
-              Speak with Confidence
+              Instant AI Feedback
             </h3>
-            <p className="text-gray-600 text-med">
-              Imagine ordering your favorite dish in Korean, chatting with
-              locals, and navigating new cities with ease. Astute Abroad helps
-              you learn practical, everyday conversations that will prepare you
-              for real-world adventures.
-            </p>
-          </div>
-
-          {/* Card 3 */}
-          <div className="flex flex-col items-center space-y-2">
-            <h3 className="text-xl font-semibold text-black">
-              AI Feedback, Just for You
-            </h3>
-            <p className="text-gray-600 text-med">
-              Get instant feedback on your pronunciation and conversation
-              skills. With AI-driven insights, Astute Abroad helps you improve
-              faster, offering tips that are tailored to your unique progress.
+            <p className="text-gray-600 text-base">
+              Real-time pronunciation tips tailored to YOU. Boost your fluency
+              faster with personalized insights powered by AI.
             </p>
           </div>
         </div>
@@ -102,7 +100,7 @@ function Home() {
         {/* Button */}
         <button
           onClick={() => navigate("/login")}
-          className="bg-orange-400 hover:bg-orange-500 text-white font-semibold py-2 px-6 rounded-full transition shadow-md"
+          className="bg-blue-400 hover:bg-orange-400 text-white font-semibold py-2 px-8 rounded-full transition shadow-md mt-8"
         >
           Get Started
         </button>
@@ -223,6 +221,13 @@ function App() {
             )}
           </aside>
         </div>
+        <footer className="mt-10 text-center py-6 text-gray-700 text-sm">
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+            <p>
+              © {new Date().getFullYear()} Astute Abroad. All rights reserved.
+            </p>
+          </div>
+        </footer>
       </div>
     </div>
   )

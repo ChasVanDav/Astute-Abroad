@@ -6,19 +6,33 @@ import {
 } from "firebase/auth"
 import { useNavigate } from "react-router-dom"
 import { FiEye, FiEyeOff } from "react-icons/fi"
+import ReCAPTCHA from "react-google-recaptcha"
 
 export default function Login() {
+  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY
+
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
   const [type, setType] = useState("password")
+  const [recaptchaToken, setRecaptchaToken] = useState(null)
 
   const handleToggle = () => {
     setType((prevType) => (prevType === "password" ? "text" : "password"))
   }
 
+  const handleCaptchaChange = (token) => {
+    console.log("reCAPTCHA token: ", token)
+    setRecaptchaToken(token)
+  }
+
   // user registration
-  const handleSignUp = async () => {
+  const handleSignUp = async (e) => {
+    e.preventDefault()
+    if (!recaptchaToken) {
+      alert("Please verify you're not a robot")
+      return
+    }
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -31,13 +45,20 @@ export default function Login() {
       await sendUserToBackend(idToken)
 
       console.log("Registration successful! Welcome to Astute Abroad! 👋🏽")
+      alert("Registration successful! Welcome to Astute Abroad! 👋🏽")
       navigate("/dashboard")
     } catch (error) {
       console.error("Registration error:", error.message)
     }
   }
 
-  const handleSignIn = async () => {
+  const handleSignIn = async (e) => {
+    e.preventDefault()
+    if (!recaptchaToken) {
+      alert("Please verify you're not a robot")
+      return
+    }
+
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -50,6 +71,7 @@ export default function Login() {
       await sendUserToBackend(idToken)
 
       console.log("Login successful! Welcome back! 😎")
+      alert("Login successful! Welcome back! 😎")
       navigate("/dashboard")
     } catch (error) {
       console.error("Login error: ", error.message)
@@ -109,6 +131,9 @@ export default function Login() {
               )}
             </span>
           </div>
+
+          <ReCAPTCHA sitekey={siteKey} onChange={handleCaptchaChange} />
+
           <button
             onClick={handleSignIn}
             className="w-full py-2 px-4 bg-sky-400 text-white rounded-lg hover:bg-orange-300 transition"

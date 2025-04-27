@@ -13,6 +13,7 @@ export default function Login() {
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
   const [type, setType] = useState("password")
+  const [recaptchaToken, setRecaptchaToken] = useState(null)
 
   const handleToggle = () => {
     setType((prevType) => (prevType === "password" ? "text" : "password"))

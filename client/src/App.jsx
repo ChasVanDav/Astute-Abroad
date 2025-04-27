@@ -19,62 +19,88 @@ function Home() {
 
   return (
     <div className="bg-white border border-black rounded-2xl p-6 shadow-md text-center space-y-4">
-      <h2 className="text-2xl font-bold text-black">
-        Start Speaking Korean with Confidence
-      </h2>
-      <p className="text-gray-700">
-        Do you feel nervous speaking in front of others? Do you wish to gain
-        confidence to travel overseas & meet new friends? Start speaking a
-        foreign language more fluently and improve your pronunciation! Register
-        with Astute Abroad today and start practicing your speaking skills with
-        real-time feedback powered by AI!
-      </p>
-      <button
-        onClick={() => navigate("/login")}
-        className="bg-orange-400 hover:bg-orange-500 text-white font-semibold py-2 px-6 rounded-full transition shadow-md"
-      >
-        Get Started
-      </button>
+      <section className="bg-white border border-black rounded-2xl p-6 shadow-md text-center space-y-8 mt-10">
+        {/* Heading */}
+        <h2 className="text-2xl font-bold text-black">
+          Start Speaking Korean with Confidence
+        </h2>
+
+        {/* Flex container for image and paragraph */}
+        <div className="flex items-center space-x-8">
+          {/* Image */}
+          <img
+            src="/cutehello.gif"
+            alt="cartoon rabbits coming out to say hello in hangeul"
+            className="w-80 h-auto rounded-xl"
+          />
+
+          {/* Paragraph */}
+          <p className="text-gray-700 max-w-lg">
+            Do you feel nervous speaking in front of others? Do you wish to gain
+            confidence to travel overseas & meet new friends? Start speaking a
+            foreign language more fluently and improve your pronunciation!
+            Register with Astute Abroad today and start practicing your speaking
+            skills with real-time feedback powered by AI!
+          </p>
+        </div>
+      </section>
+
       <section className="bg-white border border-black rounded-2xl p-6 shadow-md text-center space-y-8 mt-10">
         <h2 className="text-2xl sm:text-3xl font-bold text-black">
-          Why Choose Astute Abroad?
+          Why Astute Abroad is Your Perfect Language Companion
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-6">
           {/* Card 1 */}
           <div className="flex flex-col items-center space-y-2">
-            <div className="text-5xl">🦊🎩</div>
-            <h3 className="text-xl font-semibold text-black">Learn Smartly</h3>
-            <p className="text-gray-600 text-sm">
-              Practice smarter, not harder. Our wise fox helps you master
-              conversations efficiently.
+            <h3 className="text-xl font-semibold text-black">
+              Learn the Smart Way
+            </h3>
+            <p className="text-gray-600 text-med">
+              Practice smarter, not harder. With Astute Abroad, you’ll get
+              AI-powered feedback to guide you through real conversations, not
+              just memorizing lists of words. We adapt lessons to your level, so
+              you’re always learning what matters most, in the most fun and
+              efficient way possible.
             </p>
           </div>
 
           {/* Card 2 */}
           <div className="flex flex-col items-center space-y-2">
-            <div className="text-5xl">🛫🇰🇷</div>
             <h3 className="text-xl font-semibold text-black">
-              Travel Confidently
+              Speak with Confidence Everywhere You Go
             </h3>
-            <p className="text-gray-600 text-sm">
-              Speak Korean naturally when you travel abroad — order food, meet
-              locals, and explore freely!
+            <p className="text-gray-600 text-med">
+              Imagine ordering your favorite dish in Korean, chatting with
+              locals, and navigating new cities with ease. Astute Abroad helps
+              you learn practical, everyday conversations that will prepare you
+              for real-world adventures. Whether traveling or meeting new
+              friends, you’ll speak confidently in no time!
             </p>
           </div>
 
           {/* Card 3 */}
           <div className="flex flex-col items-center space-y-2">
-            <div className="text-5xl">🧠⚡</div>
             <h3 className="text-xl font-semibold text-black">
-              AI-Powered Feedback
+              AI Feedback, Just for You
             </h3>
-            <p className="text-gray-600 text-sm">
-              Improve faster with real-time pronunciation tips and instant
-              conversation coaching.
+            <p className="text-gray-600 text-med">
+              Get instant feedback on your pronunciation and conversation
+              skills. With AI-driven insights, Astute Abroad helps you improve
+              faster, offering tips that are tailored to your unique progress.
+              Practice, learn, and level up with real-time coaching designed to
+              keep you moving forward.
             </p>
           </div>
         </div>
+
+        {/* Button */}
+        <button
+          onClick={() => navigate("/login")}
+          className="bg-orange-400 hover:bg-orange-500 text-white font-semibold py-2 px-6 rounded-full transition shadow-md"
+        >
+          Get Started
+        </button>
       </section>
     </div>
   )

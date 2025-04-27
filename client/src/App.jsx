@@ -1,35 +1,107 @@
+// react libraries
 import React, { useEffect, useState } from "react"
 import { Routes, Route, useNavigate } from "react-router-dom"
 import { Link } from "react-router-dom"
+// import logo
 import astuteAbroadLogo from "/favicon.png"
+// firebase imports
 import { onAuthStateChanged, signOut } from "firebase/auth"
 import { auth } from "./firebase"
-
 // import components
 import About from "./pages/About.jsx"
 import Login from "./pages/Login.jsx"
-// import Questions from "./pages/Questions.jsx"
-// import WatchDemo from "./pages/WatchDemo"
 import Dashboard from "./pages/Dashboard.jsx"
+import WatchDemo from "./pages/WatchDemo.jsx"
 
 // Homepage component
 function Home() {
+  const navigate = useNavigate()
+
   return (
-    <div className="flex flex-col space-y-10 px-8 items-stretch">
-      <p className="bg-sky-100 text-black rounded-2xl border border-black p-4">
-        Do you feel nervous speaking in front of others?
-      </p>
-      <p className="bg-sky-200 text-black rounded-2xl border border-black p-4">
-        Do you wish to gain confidence to travel overseas & meet new friends?
-      </p>
-      <p className="bg-sky-300 text-black rounded-2xl border border-black p-4">
-        Start speaking a foreign language more fluently and improve your
-        pronunciation!
-      </p>
-      <p className="bg-sky-400 text-black rounded-2xl border border-black p-4">
-        Register with Astute Abroad today and start practicing your speaking
-        skills with real-time feedback powered by AI!
-      </p>
+    <div className="bg-white border border-black rounded-2xl p-6 shadow-md text-center space-y-4">
+      <section className="bg-white border border-black rounded-2xl p-6 shadow-md text-center space-y-8 mt-10">
+        {/* Heading */}
+        <h2 className="text-2xl font-bold text-black">
+          Start Speaking Korean with Confidence
+        </h2>
+
+        {/* Flex container for image and paragraph */}
+        <div className="flex items-center space-x-8">
+          {/* Image */}
+          <img
+            src="/worldglobeflags.jpg"
+            alt="cartoon rabbits coming out to say hello in hangeul"
+            className="w-80 h-auto rounded-xl"
+          />
+
+          {/* Paragraph */}
+          <p className="text-gray-700 max-w-lg">
+            Do you feel nervous speaking in front of others? Do you wish to gain
+            confidence to travel overseas & meet new friends? Start speaking a
+            foreign language more fluently and improve your pronunciation!
+            Register with Astute Abroad today and start practicing your speaking
+            skills with real-time feedback powered by AI!
+          </p>
+        </div>
+      </section>
+
+      <section className="bg-white border border-black rounded-2xl p-6 shadow-md text-center space-y-8 mt-10">
+        <h2 className="text-2xl sm:text-3xl font-bold text-black">
+          Why Astute Abroad is Your Perfect Language Companion
+        </h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-6">
+          {/* Card 1 */}
+          <div className="flex flex-col items-center space-y-2">
+            <h3 className="text-xl font-semibold text-black">
+              Learn the Smart Way
+            </h3>
+            <p className="text-gray-600 text-med">
+              Practice smarter, not harder. With Astute Abroad, you’ll get
+              AI-powered feedback to guide you through real conversations, not
+              just memorizing lists of words. We adapt lessons to your level, so
+              you’re always learning what matters most, in the most fun and
+              efficient way possible.
+            </p>
+          </div>
+
+          {/* Card 2 */}
+          <div className="flex flex-col items-center space-y-2">
+            <h3 className="text-xl font-semibold text-black">
+              Speak with Confidence Everywhere You Go
+            </h3>
+            <p className="text-gray-600 text-med">
+              Imagine ordering your favorite dish in Korean, chatting with
+              locals, and navigating new cities with ease. Astute Abroad helps
+              you learn practical, everyday conversations that will prepare you
+              for real-world adventures. Whether traveling or meeting new
+              friends, you’ll speak confidently in no time!
+            </p>
+          </div>
+
+          {/* Card 3 */}
+          <div className="flex flex-col items-center space-y-2">
+            <h3 className="text-xl font-semibold text-black">
+              AI Feedback, Just for You
+            </h3>
+            <p className="text-gray-600 text-med">
+              Get instant feedback on your pronunciation and conversation
+              skills. With AI-driven insights, Astute Abroad helps you improve
+              faster, offering tips that are tailored to your unique progress.
+              Practice, learn, and level up with real-time coaching designed to
+              keep you moving forward.
+            </p>
+          </div>
+        </div>
+
+        {/* Button */}
+        <button
+          onClick={() => navigate("/login")}
+          className="bg-orange-400 hover:bg-orange-500 text-white font-semibold py-2 px-6 rounded-full transition shadow-md"
+        >
+          Get Started
+        </button>
+      </section>
     </div>
   )
 }
@@ -54,6 +126,9 @@ function App() {
   const handleLogout = async () => {
     try {
       await signOut(auth)
+
+      navigate("/")
+
       console.log("User signed out successfully ✌🏽")
     } catch (error) {
       console.error("Logout error: ", error.message)
@@ -61,20 +136,22 @@ function App() {
   }
 
   return (
-    <div className="bg-sky-200 min-h-screen flex items-center justify-center">
+    <div className="bg-sky-200 min-h-screen pt-10 flex flex-col items-center">
       <div className="bg-sky-300 w-[90%] border border-black rounded-xl flex flex-col shadow-lg">
         {/* HEADER */}
         <header className="flex items-center justify-between p-4 border-b border-black">
-          <div className="w-full px-6 py-4 flex flex-col sm:flex-row items-center justify-between">
-            <p className="text-sm sm:text-base text-gray-600 italic">
-              speak fluently, travel fluidly
-            </p>
-            <h1 className="text-xl sm:text-2xl font-semibold text-black mt-2 sm:mt-0 text-center sm:text-right">
-              Astute Abroad{" "}
-              <span className="text-sm font-normal text-gray-600">
+          <div className="flex flex-col sm:flex-row items-center justify-between w-full">
+            <div className="flex flex-col items-center sm:items-start">
+              <h1 className="text-3xl sm:text-4xl font-bold text-black">
+                Astute Abroad
+              </h1>
+              <span className="text-base font-normal text-gray-600">
                 /əˈsto͞ot əˈbrôd/
               </span>
-            </h1>
+            </div>
+            <p className="mt-4 sm:mt-0 text-sm sm:text-base text-gray-700 italic">
+              Speak fluently, travel fluidly
+            </p>
           </div>
         </header>
 
@@ -83,11 +160,9 @@ function App() {
           <main className="flex-1 p-6">
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/watch-demo" element={<WatchDemo />} />
               <Route path="/about" element={<About />} />
               <Route path="/login" element={<Login />} />
-              {/* <Route path="/watch-demo" element={<WatchDemo />} /> */}
-              {/* <Route path="/questions" element={<Questions />} /> */}
-              {/* <Route path="/record" element={<LiveTranscription />} /> */}
               <Route path="/dashboard" element={<Dashboard />} />
             </Routes>
           </main>
@@ -106,35 +181,29 @@ function App() {
             {/* buttons to page routes */}
             <button
               onClick={() => navigate("/about")}
-              className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200	 transition"
+              className="bg-white text-black font-semibold py-3 rounded-2xl border border-black hover:bg-orange-300 transition shadow-sm"
             >
-              About Astute Abroad
+              About
             </button>
-            {/* <button
+            <button
               onClick={() => navigate("/watch-demo")}
-              className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
+              className="bg-white text-black font-semibold py-3 rounded-2xl border border-black hover:bg-orange-300 transition shadow-sm"
             >
               Watch Demo
-            </button> */}
-            {/* <button
-              onClick={() => navigate("/questions")}
-              className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
-            >
-              Practice Questions
-            </button> */}
+            </button>
 
             {/* conditional rendering of login/logout */}
             {user ? (
               <>
                 <button
                   onClick={() => navigate("/dashboard")}
-                  className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
+                  className="bg-white text-black font-semibold py-3 rounded-2xl border border-black hover:bg-orange-300 transition shadow-sm"
                 >
                   Dashboard
                 </button>
                 <button
                   onClick={handleLogout}
-                  className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
+                  className="bg-white text-black font-semibold py-3 rounded-2xl border border-black hover:bg-orange-300 transition shadow-sm"
                 >
                   Logout
                 </button>
@@ -142,7 +211,7 @@ function App() {
             ) : (
               <button
                 onClick={() => navigate("/login")}
-                className="bg-white text-black font-semihold py-3 rounded-2xl border border-black hover:bg-orange-200 transition"
+                className="bg-white text-black font-semibold py-3 rounded-2xl border border-black hover:bg-orange-300 transition shadow-sm"
               >
                 Log in / Register
               </button>

@@ -7,6 +7,11 @@ import {
 import { useNavigate } from "react-router-dom"
 import { FiEye, FiEyeOff } from "react-icons/fi"
 import ReCAPTCHA from "react-google-recaptcha"
+import dotenv from "dotenv"
+
+dotenv.config()
+
+const siteKey = process.env.VITE_RECAPTCHA_SITE_KEY
 
 export default function Login() {
   const [email, setEmail] = useState("")
@@ -129,6 +134,9 @@ export default function Login() {
               )}
             </span>
           </div>
+
+          <ReCAPTCHA sitekey={siteKey} onChange={handleCaptchaChange} />
+
           <button
             onClick={handleSignIn}
             className="w-full py-2 px-4 bg-sky-400 text-white rounded-lg hover:bg-orange-300 transition"

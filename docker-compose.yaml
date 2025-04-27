@@ -17,6 +17,7 @@ services:
       - .:/app
       - client_node_modules:/app/client/node_modules
       - server_node_modules:/app/server/node_modules
+      - root_node_modules:/app/node_modules
     depends_on:
       - db
 
@@ -34,7 +35,6 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-      - root_node_modules:/app/node_modules
 
 volumes:
   pgdata:

@@ -4,10 +4,11 @@ export default function About() {
       {/* CEO Introduction Section */}
       <div className="text-center mb-12">
         <p className="text-gray-700 text-lg leading-relaxed mx-auto max-w-3xl">
-          Astute Abroad was founded by Vanessa Davis, a passionate globetrotter
-          and polyglot who has lived in multiple countries and speaks several
-          languages. After years of experiencing life abroad, Vanessa recognized
-          the challenges that language learners face when trying to communicate
+          <span className="font-bold text-2xl text-black">Astute Abroad</span>{" "}
+          was founded by Vanessa Davis, a passionate globetrotter and polyglot
+          who has lived in multiple countries and speaks several languages.
+          After years of experiencing life abroad, Vanessa recognized the
+          challenges that language learners face when trying to communicate
           confidently in a foreign country. With a deep desire to make language
           learning more accessible and effective, Astute Abroad was born—a
           platform designed to help you speak fluently and travel fluidly, just
@@ -32,7 +33,10 @@ export default function About() {
               the journey smoother for others, Astute Abroad is more than just a
               language app or travel resource. It's a comprehensive platform
               designed to empower learners to{" "}
-              <span className="italic">speak fluently and travel fluidly</span>.
+              <span className="font-semibold">
+                speak fluently and travel fluidly
+              </span>
+              .
             </p>
           </div>
         </div>

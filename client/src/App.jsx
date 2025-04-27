@@ -29,7 +29,7 @@ function Home() {
         <div className="flex items-center space-x-8">
           {/* Image */}
           <img
-            src="/cutehello.gif"
+            src="/worldglobeflags.jpg"
             alt="cartoon rabbits coming out to say hello in hangeul"
             className="w-80 h-auto rounded-xl"
           />

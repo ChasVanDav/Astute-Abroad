@@ -26,6 +26,11 @@ export default function Login() {
 
   // user registration
   const handleSignUp = async () => {
+    e.preventDefault()
+    if (!recaptchaToken) {
+      alert("Please verify you're not a robot")
+      return
+    }
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -46,6 +51,12 @@ export default function Login() {
   }
 
   const handleSignIn = async () => {
+    e.preventDefault()
+    if (!recaptchaToken) {
+      alert("Please verify you're not a robot")
+      return
+    }
+
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,

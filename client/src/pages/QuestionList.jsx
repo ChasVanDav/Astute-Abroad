@@ -18,7 +18,7 @@ function QuestionList({ questions, savedQuestions }) {
   return (
     <div className="space-y-4">
       {/* Filter form - Always visible */}
-      <form className="mb-6 p-4 bg-sky-400 rounded-lg shadow-md border border-black space-y-4">
+      <form className="mb-6 p-4 bg-orange-300 rounded-lg shadow-md border border-black space-y-4">
         <label className="block text-medium font-light text-black">
           Category:{" "}
           <select

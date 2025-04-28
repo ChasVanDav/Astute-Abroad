@@ -61,11 +61,14 @@ wss.on("connection", (ws) => {
         }
       })
       .on("data", (data) => {
-        // console.log("Raw Google STT Response:", JSON.stringify(data, null, 2))
-        const transcript =
-          data.results?.[0]?.alternatives?.[0]?.transcript || ""
+        console.log("Raw Google STT Response:", JSON.stringify(data, null, 2))
+
         const isFinal = data.results?.[0]?.isFinal
-        ws.send(JSON.stringify({ transcript, isFinal }))
+        const transcript = data.results?.[0]?.alternatives?.[0].transcript
+        const confidence = data.results?.[0]?.alternatives?.[0].confidence
+        if (isFinal) {
+          ws.send(JSON.stringify({ transcript, isFinal, confidence }))
+        }
       })
   }
 
@@ -107,7 +110,6 @@ app.post("/practice_attempts", async (req, res) => {
   }
 
   try {
-    // 🧠 1. Get question text from DB
     const questionRes = await db.query(
       "SELECT question_text FROM questions WHERE id = $1",
       [questionId]
@@ -150,16 +152,14 @@ app.post("/practice_attempts", async (req, res) => {
        - Final flag: “Relevant: Yes” or “Relevant: No”
     
     Return your answer in the following format:
-    ---
-    Transcript: "<insert the transcript>"
+
     1. Answered the question: <Yes or No> + (short explanation)
     2. Mispronunciations: <details or "None">
     3. Pronunciation Score: <0–10>
     4. Content Score: <0–10>
     5. Relevant: Yes/No
-    ---
     `
-    // 🧠 3. Call OpenAI
+
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [{ role: "user", content: prompt }],
@@ -167,17 +167,14 @@ app.post("/practice_attempts", async (req, res) => {
 
     const feedback = completion.choices[0].message.content
 
-    // 🎯 4. Extract content score
     const contentMatch = feedback.match(/score.*?(\d{1,2})/i)
     const contentScore = contentMatch ? parseInt(contentMatch[1]) : null
 
-    // 🔍 5. Extract relevance
     const relevanceMatch = feedback.match(/relevant:\s*(yes|no)/i)
     const isRelevant = relevanceMatch
       ? relevanceMatch[1].toLowerCase() === "yes"
       : null
 
-    // 💾 6. Save in DB
     const insertQuery = `
       INSERT INTO practice_attempts (
         user_id, question_id, spoken_text, transcription_confidence,

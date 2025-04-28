@@ -3,6 +3,7 @@ import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "../firebase"
 import QuestionDetail from "./QuestionDetail"
 import QuestionList from "./QuestionList"
+import CompletedQuestionsList from "./completedQuestionsList"
 
 function Dashboard() {
   const [user, setUser] = useState(null)
@@ -146,7 +147,10 @@ function Dashboard() {
               />
             ) : (
               // <completedQuestionsList />
-              "testing 123"
+              <CompletedQuestionsList
+                completedQuestions={Array.from(completedQuestions)}
+                allQuestions={questions}
+              />
             )}
           </div>
           {/* Main Practice Area */}

@@ -14,6 +14,9 @@ function Dashboard() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [activeTab, setActiveTab] = useState("search") //default displays question search
+  const [page, setPage] = useState(1)
+  const limit = 10
+  const [hasmore, setHasMore] = useState(true)
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -28,10 +31,18 @@ function Dashboard() {
     const fetchQuestions = async () => {
       try {
         setLoading(true)
-        const res = await fetch("http://localhost:5000/questions")
+
+        const query = new URLSearchParams()
+        query.append("page", page)
+        query.append("limit", limit)
+
+        const res = await fetch(
+          `http://localhost:5000/questions?${query.toString()}`
+        )
         if (!res.ok) throw new Error("Failed to fetch questions")
         const data = await res.json()
         setQuestions(data)
+        setHasMore(data.length === limit)
         setCurrentIndex(0)
       } catch (err) {
         setError(err.message)

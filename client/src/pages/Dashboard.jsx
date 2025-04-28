@@ -3,7 +3,7 @@ import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "../firebase"
 import QuestionDetail from "./QuestionDetail"
 import QuestionList from "./QuestionList"
-import CompletedQuestionsList from "./completedQuestionsList"
+import CompletedQuestionsList from "./CompletedQuestionsList"
 
 function Dashboard() {
   const [user, setUser] = useState(null)
@@ -16,7 +16,7 @@ function Dashboard() {
   const [activeTab, setActiveTab] = useState("search") //default displays question search
   const [page, setPage] = useState(1)
   const limit = 10
-  const [hasmore, setHasMore] = useState(true)
+  const [hasMore, setHasMore] = useState(true)
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -76,9 +76,10 @@ function Dashboard() {
         )
         if (!res.ok) throw new Error("Failed to fetch completed questions")
         const data = await res.json()
-        setCompletedQuestions(new Set(data))
+        setCompletedQuestions(new Set(data.map((q) => q.question_id)))
       } catch (err) {
         console.error("Error fetching completed questions")
+        setError("Error fetching completed questions")
       }
     }
 
@@ -102,10 +103,8 @@ function Dashboard() {
 
   return (
     <div className="space-y-10">
-      {/* Title */}
       <h2 className="text-2xl font-bold text-black">My Practice Dashboard</h2>
 
-      {/* Progress Bar */}
       <div className="w-full bg-white border border-black rounded-full h-4 overflow-hidden">
         <div
           className="bg-green-500 h-full transition-all duration-300"
@@ -126,8 +125,35 @@ function Dashboard() {
         <p className="text-red-600">Error: {error}</p>
       ) : (
         <div className="flex flex-col lg:flex-row gap-10">
-          {/* Side Left  Panel - Question List - Completed Questions - Buttons */}
-          <div className="w-full lg:w-1/3 p-4 bg-white rounded-lg shadow-md">
+          {/* Main Practice Area */}
+          <div className="flex-1 space-y-6">
+            {allComplete ? (
+              <div className="text-green-600 font-semibold text-lg">
+                🎉 Great job! You've completed all {questions.length} questions.
+              </div>
+            ) : !question ? (
+              <p>No questions found.</p>
+            ) : (
+              <>
+                <p className="text-gray-600">
+                  Question {currentIndex + 1} of {questions.length}
+                </p>
+                <QuestionDetail
+                  question={question}
+                  user={user}
+                  onComplete={() => {
+                    markQuestionComplete(currentIndex)
+                    setTimeout(() => {
+                      handleNext()
+                    }, 10000)
+                  }}
+                />
+              </>
+            )}
+          </div>
+
+          {/* Left Panel */}
+          <div className="w-full lg:w-1/2 p-4 bg-white rounded-lg shadow-md">
             <div className="flex justify-center gap-4 mb-4">
               <button
                 onClick={() => setActiveTab("search")}
@@ -151,44 +177,16 @@ function Dashboard() {
               </button>
             </div>
 
-            {activeTab === "search" ? (
+            {activeTab === "completed" ? (
+              <CompletedQuestionsList
+                completedQuestions={completedQuestions}
+                allQuestions={questions}
+              />
+            ) : (
               <QuestionList
                 questions={questions}
                 savedQuestions={savedQuestions}
               />
-            ) : (
-              // <completedQuestionsList />
-              <CompletedQuestionsList
-                completedQuestions={Array.from(completedQuestions)}
-                allQuestions={questions}
-              />
-            )}
-          </div>
-          {/* Main Practice Area */}
-          <div className="flex-1 space-y-6">
-            {allComplete ? (
-              <div className="text-green-600 font-semibold text-lg">
-                🎉 Great job! You've completed all {questions.length} questions.
-              </div>
-            ) : !question ? (
-              <p>No questions found.</p>
-            ) : (
-              <>
-                <p className="text-gray-600">
-                  Question {currentIndex + 1} of {questions.length}
-                </p>
-
-                <QuestionDetail
-                  question={question}
-                  user={user}
-                  onComplete={() => {
-                    markQuestionComplete(currentIndex)
-                    setTimeout(() => {
-                      handleNext()
-                    }, 10000)
-                  }}
-                />
-              </>
             )}
           </div>
         </div>

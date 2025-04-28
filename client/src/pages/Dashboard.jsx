@@ -12,7 +12,7 @@ function Dashboard() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [showSavedModal, setShowSavedModal] = useState(false)
+  const [activeTab, setActiveTab] = useState("search") //default displays question search
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -57,8 +57,22 @@ function Dashboard() {
       }
     }
 
+    const fetchCompletedQuestions = async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:5000/completedQuestions/${user.uid}`
+        )
+        if (!res.ok) throw new Error("Failed to fetch completed questions")
+        const data = await res.json()
+        setCompletedQuestions(new Set(data))
+      } catch (err) {
+        console.error("Error fetching completed questions")
+      }
+    }
+
     fetchQuestions()
     fetchSavedQuestions()
+    fetchCompletedQuestions()
   }, [user])
 
   const markQuestionComplete = (index) => {
@@ -100,15 +114,40 @@ function Dashboard() {
         <p className="text-red-600">Error: {error}</p>
       ) : (
         <div className="flex flex-col lg:flex-row gap-10">
-          {/* Side Panel - Question List */}
+          {/* Side Left  Panel - Question List - Completed Questions - Buttons */}
           <div className="w-full lg:w-1/3 p-4 bg-white rounded-lg shadow-md">
-            <h3 className="text-xl font-bold mb-4 text-center text-black">
-              Search Questions
-            </h3>
-            <QuestionList
-              questions={questions}
-              savedQuestions={savedQuestions}
-            />
+            <div className="flex justify-center gap-4 mb-4">
+              <button
+                onClick={() => setActiveTab("search")}
+                className={`px-4 py-2 rounded ${
+                  activeTab === "search"
+                    ? "bg-sky-500 text-white"
+                    : "bg-white border"
+                }`}
+              >
+                Search All Questions
+              </button>
+              <button
+                onClick={() => setActiveTab("completed")}
+                className={`px-4 py-2 rounded ${
+                  activeTab === "completed"
+                    ? "bg-sky-500 text-white"
+                    : "bg-white border"
+                }`}
+              >
+                View Completed Questions
+              </button>
+            </div>
+
+            {activeTab === "search" ? (
+              <QuestionList
+                questions={questions}
+                savedQuestions={savedQuestions}
+              />
+            ) : (
+              // <completedQuestionsList />
+              "testing 123"
+            )}
           </div>
           {/* Main Practice Area */}
           <div className="flex-1 space-y-6">
@@ -131,7 +170,7 @@ function Dashboard() {
                     markQuestionComplete(currentIndex)
                     setTimeout(() => {
                       handleNext()
-                    }, 7000)
+                    }, 10000)
                   }}
                 />
               </>

@@ -18,27 +18,28 @@ function Home() {
   const navigate = useNavigate()
 
   return (
-    <div className="bg-white border border-black rounded-2xl p-6 shadow-md text-center space-y-4">
+    <div className="bg-white rounded-2xl p-6 shadow-md text-center space-y-4">
       {/* Heading */}
       <h2 className="text-3xl font-bold text-black text-center leading-tight mt-8 mb-4">
-        Boarding Soon: Your Journey to Korean Fluency! <br />
+        Now Boarding: Your Journey to Fluency!
+        <br />
         <span className="text-xl font-medium text-gray-600">
           powered by ChatGPT
         </span>
       </h2>
 
-      <section className="bg-white rounded-2xl p-6 shadow-md text-center space-y-8 mt-10">
+      <section className="bg-white rounded-2xl p-2 shadow-md text-center space-y-8 mt-10">
         {/* Flex container for image and paragraph */}
-        <div className="flex flex-col sm:flex-row items-center space-y-6 sm:space-y-0 sm:space-x-8">
+        <div className="flex flex-col sm:flex-row items-center p-2 space-y-6 sm:space-y-0 sm:space-x-8">
           {/* Gif */}
           <img
             src="/airplanegif2.gif"
             alt="airplane flying through the clouds"
-            className="w-75 h-auto rounded-xl max-w-xs sm:max-w-sm object-cover"
+            className="w-70 h-auto rounded-xl max-w-xl sm:max-w-sm object-cover"
           />
 
           {/* Paragraph */}
-          <p className="text-gray-700 max-w-lg text-xl text-center sm:text-left">
+          <p className="text-gray-700 max-w-xs text-med text-center sm:text-left">
             Do you feel nervous speaking in front of others? Do you wish to gain
             confidence to travel overseas & meet new friends? Start speaking
             Korean more fluently and improve your pronunciation! Register with

@@ -9,6 +9,7 @@ function Dashboard() {
   const [user, setUser] = useState(null)
   const [questions, setQuestions] = useState([])
   const [completedQuestions, setCompletedQuestions] = useState(new Set())
+  const [completedQuestionObjects, setCompletedQuestionObjects] = useState([])
   const [savedQuestions, setSavedQuestions] = useState([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [loading, setLoading] = useState(true)
@@ -77,6 +78,7 @@ function Dashboard() {
         if (!res.ok) throw new Error("Failed to fetch completed questions")
         const data = await res.json()
         setCompletedQuestions(new Set(data.map((q) => q.question_id)))
+        setCompletedQuestionObjects(data)
       } catch (err) {
         console.error("Error fetching completed questions")
         setError("Error fetching completed questions")
@@ -179,8 +181,7 @@ function Dashboard() {
 
             {activeTab === "completed" ? (
               <CompletedQuestionsList
-                completedQuestions={completedQuestions}
-                allQuestions={questions}
+                completedQuestions={completedQuestionObjects}
               />
             ) : (
               <QuestionList

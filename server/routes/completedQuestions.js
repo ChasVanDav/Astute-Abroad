@@ -20,12 +20,21 @@ router.get("/:userId", async (req, res) => {
     const dbUserId = userResult.rows[0].id
 
     const query = `
-      SELECT p.question_id, q.question_text
+      SELECT 
+      DISTINCT ON (p.question_id) 
+      p.question_id,
+      q.question_text,
+      p.spoken_text,
+      p.content_score,
+      p.pronunciation_score,
+      p.ai_feedback,
+      p.attempted_at
       FROM practice_attempts p
       JOIN questions q ON q.id = p.question_id
-      WHERE p.user_id = $1 
-      ORDER BY p.attempted_at
+     WHERE p.user_id = $1
+     ORDER BY p.question_id, p.attempted_at DESC
     `
+
     const result = await pool.query(query, [dbUserId])
     console.log("Completed Questions Result:", result.rows)
 

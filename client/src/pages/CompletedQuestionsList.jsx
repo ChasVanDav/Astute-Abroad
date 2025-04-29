@@ -1,19 +1,27 @@
-function CompletedQuestionsList({ completedQuestions, allQuestions }) {
-  const completed = allQuestions.filter(
-    (q) => completedQuestions.has(q.id) // Check if the question id is in the completed set
-  )
+import CompletedQuestionDetail from "./CompletedQuestionDetail"
 
-  if (completed.length === 0) {
-    return <p className="text-center text-gray-500">No completed questions.</p>
+function CompletedQuestionsList({ completedQuestions }) {
+  if (!Array.isArray(completedQuestions)) {
+    console.warn("Invalid completedQuestions:", completedQuestions)
+    return (
+      <p className="text-center text-gray-500">
+        Error loading completed questions.
+      </p>
+    )
+  }
+
+  if (completedQuestions.length === 0) {
+    return (
+      <p className="text-center text-gray-500">
+        You have not completed any questions yet.
+      </p>
+    )
   }
 
   return (
     <div className="space-y-4">
-      {completed.map((q) => (
-        <div key={q.id}>
-          <p>{q.question_text}</p>
-          {/* You can add additional question details or components here */}
-        </div>
+      {completedQuestions.map((q) => (
+        <CompletedQuestionDetail key={q.id} question={q} />
       ))}
     </div>
   )

@@ -10,6 +10,7 @@ import OpenAI from "openai"
 import db from "./db.js"
 import authRoute from "./routes/authRoutes.js"
 import faveQuestionsRoute from "./routes/faveQuestions.js"
+import completedQuestionsRoute from "./routes/completedQuestions.js"
 
 dotenv.config()
 
@@ -27,6 +28,7 @@ app.use("/api", authRoute)
 app.use("/questions", questionsRoute)
 // display, add, delete favorite questions
 app.use("/favequestions", faveQuestionsRoute)
+app.use("/completedQuestions", completedQuestionsRoute)
 
 // import credentials from dotenv file
 const credentials = JSON.parse(process.env.GOOGLE_STT_API_KEY)

@@ -180,14 +180,9 @@ function Dashboard() {
             </div>
 
             {activeTab === "completed" ? (
-              <CompletedQuestionsList
-                completedQuestions={completedQuestionObjects}
-              />
+              <CompletedQuestionsList userId={user.uid} />
             ) : (
-              <QuestionList
-                questions={questions}
-                savedQuestions={savedQuestions}
-              />
+              <QuestionList userId={user.uid} savedQuestions={savedQuestions} />
             )}
           </div>
         </div>

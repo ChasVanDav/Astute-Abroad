@@ -22,7 +22,7 @@ export default function Login() {
   }
 
   const handleCaptchaChange = (token) => {
-    console.log("reCAPTCHA token: ", token)
+    console.log("reCAPTCHA token acquired!🪙")
     setRecaptchaToken(token)
   }
 

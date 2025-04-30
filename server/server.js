@@ -7,20 +7,47 @@ import http from "http"
 import { WebSocketServer } from "ws"
 import speech from "@google-cloud/speech"
 import OpenAI from "openai"
+import pool from "./db.js"
 import db from "./db.js"
 import authRoute from "./routes/authRoutes.js"
 import faveQuestionsRoute from "./routes/faveQuestions.js"
 import completedQuestionsRoute from "./routes/completedQuestions.js"
+import scrapeRouter, { scrapeAndInsert } from "./scraper/scrape.js"
 
 dotenv.config()
 
 const app = express()
+const PORT = process.env.DB_PORT || 5000
+
 app.use(cors())
 app.use(express.json())
 
 app.get("/", (req, res) => {
   res.send("Hello from the Astute Abroad's backend!")
 })
+
+app.use("/scrape", scrapeRouter)
+
+const bootstrap = async () => {
+  try {
+    const { rows } = await pool.query("SELECT COUNT(*) FROM questions")
+    const count = Number(rows[0].count)
+
+    if (count === 0) {
+      console.log("📥 No questions found — scraping now...")
+      await scrapeAndInsert()
+    } else {
+      console.log(`✅ Questions exist: ${count} rows found. Skipping scrape.`)
+    }
+
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running at http://localhost:${PORT}`)
+    })
+  } catch (err) {
+    console.error("❌ Startup error:", err)
+    process.exit(1)
+  }
+}
 
 // user registration and login
 app.use("/api", authRoute)
@@ -224,6 +251,7 @@ app.post("/practice_attempts", async (req, res) => {
   }
 })
 
+bootstrap()
 server.listen(5000, () => {
   logger.info("Server running on http://localhost:5000")
 })

@@ -57,14 +57,21 @@ function Dashboard() {
         const res = await fetch(
           `http://localhost:5000/faveQuestions/${user.uid}`
         )
-        if (!res.ok) throw new Error("Failed to fetch saved questions")
-        const data = await res.json()
+        if (!res.ok) {
+          if (res.status === 404) {
+            setSavedQuestions([])
+          } else {
+            throw new Error("Failed to fetch saved questions")
+          }
+        } else {
+          const data = await res.json()
 
-        const normalized = data.map((q) => ({
-          id: q.question_id,
-          question_text: q.question_text,
-        }))
-        setSavedQuestions(normalized)
+          const normalized = data.map((q) => ({
+            id: q.question_id,
+            question_text: q.question_text,
+          }))
+          setSavedQuestions(normalized)
+        }
       } catch (err) {
         console.error("Error fetching saved questions:", err)
       }
@@ -75,10 +82,18 @@ function Dashboard() {
         const res = await fetch(
           `http://localhost:5000/completedQuestions/${user.uid}`
         )
-        if (!res.ok) throw new Error("Failed to fetch completed questions")
-        const data = await res.json()
-        setCompletedQuestions(new Set(data.map((q) => q.question_id)))
-        setCompletedQuestionObjects(data)
+        if (!res.ok) {
+          if (res.status === 404) {
+            setCompletedQuestions(new Set())
+            setCompletedQuestionObjects([])
+          } else {
+            throw new Error("Failed to fetch completed questions")
+          }
+        } else {
+          const data = await res.json()
+          setCompletedQuestions(new Set(data.map((q) => q.question_id)))
+          setCompletedQuestionObjects(data)
+        }
       } catch (err) {
         console.error("Error fetching completed questions")
         setError("Error fetching completed questions")
@@ -88,7 +103,7 @@ function Dashboard() {
     fetchQuestions()
     fetchSavedQuestions()
     fetchCompletedQuestions()
-  }, [user])
+  }, [user]) // Only `user` is a dependency now; page is handled inside the fetch function
 
   const markQuestionComplete = (index) => {
     setCompletedQuestions((prev) => new Set(prev).add(index))
@@ -180,7 +195,19 @@ function Dashboard() {
             </div>
 
             {activeTab === "completed" ? (
-              <CompletedQuestionsList userId={user.uid} />
+              completedQuestionObjects.length === 0 ? (
+                <p>
+                  You haven't completed any questions yet. Start practicing to
+                  track your progress!
+                </p>
+              ) : (
+                <CompletedQuestionsList userId={user.uid} />
+              )
+            ) : savedQuestions.length === 0 ? (
+              <p>
+                You haven't saved any questions yet. Browse through questions to
+                save them!
+              </p>
             ) : (
               <QuestionList userId={user.uid} savedQuestions={savedQuestions} />
             )}

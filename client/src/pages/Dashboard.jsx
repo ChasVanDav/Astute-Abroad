@@ -16,7 +16,7 @@ function Dashboard() {
   const [error, setError] = useState(null)
   const [activeTab, setActiveTab] = useState("search") //default displays question search
   const [page, setPage] = useState(1)
-  const limit = 10
+  const limit = 20
   const [hasMore, setHasMore] = useState(true)
 
   useEffect(() => {

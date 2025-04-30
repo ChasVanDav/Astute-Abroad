@@ -114,7 +114,7 @@ function QuestionList({ userId, savedQuestions }) {
       </form>
 
       {/* Pagination Controls */}
-      <div className="flex justify-between mb-4 text-sm text-gray-600">
+      <div className="flex justify-between mb-4 text-med text-gray-600">
         <button onClick={handlePrev} disabled={page === 1}>
           ◀ Prev
         </button>

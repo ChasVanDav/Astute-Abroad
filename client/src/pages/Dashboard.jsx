@@ -16,7 +16,7 @@ function Dashboard() {
   const [error, setError] = useState(null)
   const [activeTab, setActiveTab] = useState("search") //default displays question search
   const [page, setPage] = useState(1)
-  const limit = 10
+  const limit = 20
   const [hasMore, setHasMore] = useState(true)
 
   useEffect(() => {
@@ -180,14 +180,9 @@ function Dashboard() {
             </div>
 
             {activeTab === "completed" ? (
-              <CompletedQuestionsList
-                completedQuestions={completedQuestionObjects}
-              />
+              <CompletedQuestionsList userId={user.uid} />
             ) : (
-              <QuestionList
-                questions={questions}
-                savedQuestions={savedQuestions}
-              />
+              <QuestionList userId={user.uid} savedQuestions={savedQuestions} />
             )}
           </div>
         </div>

@@ -14,7 +14,7 @@ function Dashboard() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [activeTab, setActiveTab] = useState("search") //default displays question search
+  const [activeTab, setActiveTab] = useState("search") // default displays question search
   const [page, setPage] = useState(1)
   const limit = 20
   const [hasMore, setHasMore] = useState(true)
@@ -42,6 +42,7 @@ function Dashboard() {
         )
         if (!res.ok) throw new Error("Failed to fetch questions")
         const data = await res.json()
+        console.log("Fetched Questions: ", data) // Add this to check the response
         setQuestions(data)
         setHasMore(data.length === limit)
         setCurrentIndex(0)
@@ -203,11 +204,9 @@ function Dashboard() {
               ) : (
                 <CompletedQuestionsList userId={user.uid} />
               )
-            ) : savedQuestions.length === 0 ? (
-              <p>
-                You haven't saved any questions yet. Browse through questions to
-                save them!
-              </p>
+            ) : // Display all questions when "Search All Questions" is active
+            questions.length === 0 ? (
+              <p>No questions found.</p>
             ) : (
               <QuestionList userId={user.uid} savedQuestions={savedQuestions} />
             )}

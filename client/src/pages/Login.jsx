@@ -40,7 +40,7 @@ export default function Login() {
         password
       )
       const idToken = await userCredential.user.getIdToken()
-      console.log("Registration ID Token retrieved 🪙", idToken)
+      console.log("Registration ID Token retrieved 🪙")
 
       await sendUserToBackend(idToken)
 
@@ -81,6 +81,12 @@ export default function Login() {
   // send firebase ID token to backend for authentication and save in database
   const sendUserToBackend = async (token) => {
     console.log("Sending token to backend 🪙")
+
+    // Get user details from Firebase
+    const user = auth.currentUser
+    const firebase_uid = user.uid // Firebase UID
+    const email = user.email // User email
+
     try {
       const response = await fetch("http://localhost:5000/api/auth", {
         method: "POST",
@@ -88,6 +94,10 @@ export default function Login() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify({
+          firebase_uid, // Send firebase_uid
+          email, // Send email
+        }),
       })
 
       const responseText = await response.text()

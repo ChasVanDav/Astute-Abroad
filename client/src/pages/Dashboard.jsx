@@ -122,17 +122,20 @@ function Dashboard() {
   return (
     <div className="space-y-10">
       <h2 className="text-2xl font-bold text-black">My Practice Dashboard</h2>
-
-      <div className="w-full bg-white border border-black rounded-full h-4 overflow-hidden">
-        <div
-          className="bg-green-500 h-full transition-all duration-300"
-          style={{
-            width:
-              questions.length > 0
-                ? `${(completedQuestions.size / questions.length) * 100}%`
-                : "0%",
-          }}
-        ></div>
+      <div>
+        {" "}
+        <h3 className="text-gray-600">Progress Bar</h3>
+        <div className="w-full bg-white border border-black rounded-full h-4 overflow-hidden">
+          <div
+            className="bg-green-500 h-full transition-all duration-300"
+            style={{
+              width:
+                questions.length > 0
+                  ? `${(completedQuestions.size / questions.length) * 100}%`
+                  : "0%",
+            }}
+          ></div>
+        </div>
       </div>
 
       {!user ? (
@@ -156,6 +159,17 @@ function Dashboard() {
                 <p className="text-gray-600">
                   Question {currentIndex + 1} of {questions.length}
                 </p>
+                <p>
+                  {" "}
+                  Instructions: Click the question below to begin your speaking
+                  practice. Click the start button to record your response. When
+                  you see your transcript appear in the `Live Transcript`
+                  console, click the stop button. AI generated feedback will
+                  appear. After a few seconds, it will move to the next
+                  question. You may revisit the question and feedback in the
+                  `View Completed` section. Click the star to add question to
+                  favorites.
+                </p>
                 <QuestionDetail
                   question={question}
                   user={user}
@@ -177,11 +191,11 @@ function Dashboard() {
                 onClick={() => setActiveTab("search")}
                 className={`px-4 py-2 rounded ${
                   activeTab === "search"
-                    ? "bg-sky-500 text-white"
+                    ? "bg-sky-400 text-white"
                     : "bg-white border"
                 }`}
               >
-                Search All Questions
+                Search All
               </button>
               <button
                 onClick={() => setActiveTab("completed")}
@@ -191,7 +205,7 @@ function Dashboard() {
                     : "bg-white border"
                 }`}
               >
-                View Completed Questions
+                View Completed
               </button>
             </div>
 

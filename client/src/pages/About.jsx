@@ -7,15 +7,10 @@ export default function About() {
           Meet the Creator of Astute Abroad
         </h1>
         <p className="text-gray-700 text-lg leading-relaxed max-w-3xl mx-auto">
-          <span className="font-bold text-2xl text-black">Astute Abroad</span>{" "}
-          was founded by <span className="font-semibold">Vanessa Davis</span> —
-          a passionate traveler, Korean speaker, and software engineer who
-          believes that language is the bridge to the world. After living in
-          Korea and achieving fluency, Vanessa experienced how speaking the
-          local language opened doors to deeper friendships and unforgettable
-          journeys. Inspired by her global adventures, she created Astute Abroad
-          to help others break language barriers and confidently explore new
-          cultures.
+          Astute Abroad was founded by{" "}
+          <span className="font-semibold">Vanessa Davis</span> — a passionate
+          traveler, Korean speaker, and software engineer who believes that
+          language is the bridge to the world.
         </p>
       </div>
 
@@ -26,7 +21,7 @@ export default function About() {
           <img
             src="/Koreaphoto.jpg"
             alt="Vanessa exploring a temple in Korea"
-            className="rounded-xl w-full md:w-1/2 object-cover max-h-96"
+            className="rounded-xl w-full md:w-1/2 object-cover max-h-70"
           />
           <div className="w-full md:w-1/2 text-gray-700 text-lg leading-relaxed space-y-4">
             <p>
@@ -60,7 +55,7 @@ export default function About() {
           <img
             src="/Chinaphoto.jpg"
             alt="Vanessa traveling in Japan"
-            className="rounded-xl w-full md:w-1/2 object-cover max-h-96"
+            className="rounded-xl w-full md:w-1/2 object-cover max-h-75"
           />
         </div>
 
@@ -69,7 +64,7 @@ export default function About() {
           <img
             src="/Japanphoto.jpg"
             alt="Vanessa traveling in China"
-            className="rounded-xl w-full md:w-1/2 object-cover max-h-96"
+            className="rounded-xl w-full md:w-1/2 object-cover max-h-70"
           />
           <div className="w-full md:w-1/2 text-gray-700 text-lg leading-relaxed space-y-4">
             <p>
@@ -86,18 +81,18 @@ export default function About() {
         </div>
 
         {/* 4th Section - Software Engineering + Vision */}
-        <div className="flex flex-col-reverse md:flex-row items-center md:items-start gap-10">
-          {/* <div className="w-full md:w-1/2 text-gray-700 text-lg leading-relaxed space-y-4"> */}
-          <p>
-            💻 After returning home, Vanessa became a software engineer — but
-            her passion for travel, languages, and connection never left. She
-            realized she could combine her new skills in technology with her
-            lifelong love for culture and communication. Astute Abroad is the
-            result: a platform powered by cutting-edge AI, built from scratch by
-            someone who truly understands the dreams — and challenges — of
-            language learners and global travelers.
-          </p>
-          {/* </div> */}
+        <div className="flex flex-col-reverse md:flex-row text-lg items-center md:items-start gap-10">
+          <div className="w-full text-gray-700 text-lg leading-relaxed space-y-6">
+            <p>
+              After returning home, Vanessa became a software engineer — but her
+              passion for travel, languages, and connection never left. She
+              realized she could combine her new skills in technology with her
+              lifelong love for culture and communication. Astute Abroad is the
+              result: a platform powered by cutting-edge AI, built from scratch
+              by someone who truly understands the dreams — and challenges — of
+              language learners and global travelers.
+            </p>
+          </div>
         </div>
       </div>
     </section>

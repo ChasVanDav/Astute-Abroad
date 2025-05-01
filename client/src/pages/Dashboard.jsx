@@ -122,7 +122,13 @@ function Dashboard() {
   return (
     <div className="space-y-10">
       <h2 className="text-2xl font-bold text-black">My Practice Dashboard</h2>
-      <div>
+      <div
+        role="progressbar"
+        aria-valuemin="0"
+        aria-valuemax={questions.length}
+        aria-valuenow={completedQuestions.size}
+        aria-label="Practice completion progress"
+      >
         {" "}
         <h3 className="text-gray-600">Progress Bar</h3>
         <div className="w-full bg-white border border-black rounded-full h-4 overflow-hidden">

@@ -63,7 +63,7 @@ Astute Abroad provides a **safe and interactive environment** for users to pract
 ## Project Structure
 
 ```
-/AstuteAbroad
+/Astute-Abroad
 ├── client         # React frontend
 │   ├── src
 │   │   ├── pages

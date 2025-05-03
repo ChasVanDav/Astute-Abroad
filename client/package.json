@@ -6,10 +6,15 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest"
   },
   "devDependencies": {
-    "vite": "^6.2.0"
+    "@babel/core": "^7.27.1",
+    "@babel/preset-env": "^7.27.1",
+    "@babel/register": "^7.27.1",
+    "vite": "^6.2.0",
+    "vitest": "^3.1.2"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.3",

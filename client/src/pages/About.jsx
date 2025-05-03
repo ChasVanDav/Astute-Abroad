@@ -3,11 +3,19 @@ export default function About() {
     <section className="bg-white rounded-2xl px-6 py-12 max-w-6xl border border-black mx-auto space-y-16">
       {/* CEO Introduction Section */}
       <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold text-black">
+        <h1
+          className="text-3xl sm:text-4xl font-bold text-black"
+          aria-label="Meet the Creator of Astute Abroad"
+        >
           Meet the Creator of Astute Abroad
         </h1>
-        <p className="text-gray-700 text-lg leading-relaxed max-w-3xl mx-auto">
-          <span className="font-bold text-2xl text-black">Astute Abroad</span>{" "}
+        <p
+          className="text-gray-700 text-base sm:text-lg leading-relaxed max-w-3xl mx-auto"
+          aria-label="CEO introduction paragraph"
+        >
+          <span className="font-bold text-xl sm:text-2xl text-black">
+            Astute Abroad
+          </span>{" "}
           was founded by <span className="font-semibold">Vanessa Davis</span> —
           a passionate traveler, Korean speaker, and software engineer who
           believes that language is the bridge to the world. After living in
@@ -27,8 +35,9 @@ export default function About() {
             src="/Koreaphoto.jpg"
             alt="Vanessa exploring a temple in Korea"
             className="rounded-xl w-full md:w-1/2 object-cover max-h-96"
+            aria-label="Vanessa exploring a temple in Korea"
           />
-          <div className="w-full md:w-1/2 text-gray-700 text-lg leading-relaxed space-y-4">
+          <div className="w-full md:w-1/2 text-gray-700 text-base sm:text-lg leading-relaxed space-y-4">
             <p>
               🇰🇷 Living in Korea was transformative. Through daily immersion,
               Vanessa didn't just memorize phrases — she became fluent.
@@ -44,7 +53,7 @@ export default function About() {
 
         {/* 2nd Section - Travel Japanese */}
         <div className="flex flex-col-reverse md:flex-row items-center md:items-start gap-10">
-          <div className="w-full md:w-1/2 text-gray-700 text-lg leading-relaxed space-y-4">
+          <div className="w-full md:w-1/2 text-gray-700 text-base sm:text-lg leading-relaxed space-y-4">
             <p>
               🇯🇵 In Japan, Vanessa realized how even basic conversational skills
               made travel experiences richer. A simple "ありがとうございます"
@@ -61,6 +70,7 @@ export default function About() {
             src="/Chinaphoto.jpg"
             alt="Vanessa traveling in Japan"
             className="rounded-xl w-full md:w-1/2 object-cover max-h-96"
+            aria-label="Vanessa traveling in Japan"
           />
         </div>
 
@@ -70,8 +80,9 @@ export default function About() {
             src="/Japanphoto.jpg"
             alt="Vanessa traveling in China"
             className="rounded-xl w-full md:w-1/2 object-cover max-h-96"
+            aria-label="Vanessa traveling in China"
           />
-          <div className="w-full md:w-1/2 text-gray-700 text-lg leading-relaxed space-y-4">
+          <div className="w-full md:w-1/2 text-gray-700 text-base sm:text-lg leading-relaxed space-y-4">
             <p>
               🇨🇳 In China, even a few basic phrases helped Vanessa navigate
               bustling cities, connect with locals, and experience authentic
@@ -87,8 +98,7 @@ export default function About() {
 
         {/* 4th Section - Software Engineering + Vision */}
         <div className="flex flex-col-reverse md:flex-row items-center md:items-start gap-10">
-          {/* <div className="w-full md:w-1/2 text-gray-700 text-lg leading-relaxed space-y-4"> */}
-          <p>
+          <p aria-label="Software engineering and vision section">
             💻 After returning home, Vanessa became a software engineer — but
             her passion for travel, languages, and connection never left. She
             realized she could combine her new skills in technology with her
@@ -97,7 +107,6 @@ export default function About() {
             someone who truly understands the dreams — and challenges — of
             language learners and global travelers.
           </p>
-          {/* </div> */}
         </div>
       </div>
     </section>

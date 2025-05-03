@@ -14,7 +14,7 @@ function Dashboard() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [activeTab, setActiveTab] = useState("search") // default displays question search
+  const [activeTab, setActiveTab] = useState("search")
   const [page, setPage] = useState(1)
   const limit = 20
   const [hasMore, setHasMore] = useState(true)
@@ -32,7 +32,6 @@ function Dashboard() {
     const fetchQuestions = async () => {
       try {
         setLoading(true)
-
         const query = new URLSearchParams()
         query.append("page", page)
         query.append("limit", limit)
@@ -42,7 +41,6 @@ function Dashboard() {
         )
         if (!res.ok) throw new Error("Failed to fetch questions")
         const data = await res.json()
-        console.log("Fetched Questions: ", data) // Add this to check the response
         setQuestions(data)
         setHasMore(data.length === limit)
         setCurrentIndex(0)
@@ -66,7 +64,6 @@ function Dashboard() {
           }
         } else {
           const data = await res.json()
-
           const normalized = data.map((q) => ({
             id: q.question_id,
             question_text: q.question_text,
@@ -104,7 +101,7 @@ function Dashboard() {
     fetchQuestions()
     fetchSavedQuestions()
     fetchCompletedQuestions()
-  }, [user]) // Only `user` is a dependency now; page is handled inside the fetch function
+  }, [user])
 
   const markQuestionComplete = (index) => {
     setCompletedQuestions((prev) => new Set(prev).add(index))
@@ -123,30 +120,48 @@ function Dashboard() {
     <div className="space-y-10">
       <h2 className="text-2xl font-bold text-black">My Practice Dashboard</h2>
 
-      <div className="w-full bg-white border border-black rounded-full h-4 overflow-hidden">
-        <div
-          className="bg-green-500 h-full transition-all duration-300"
-          style={{
-            width:
-              questions.length > 0
-                ? `${(completedQuestions.size / questions.length) * 100}%`
-                : "0%",
-          }}
-        ></div>
+      <div
+        role="progressbar"
+        aria-valuemin="0"
+        aria-valuemax={questions.length}
+        aria-valuenow={completedQuestions.size}
+        aria-label="Practice completion progress"
+      >
+        <h3 className="text-gray-600">Progress Bar</h3>
+        <div className="w-full bg-white border border-black rounded-full h-4 overflow-hidden">
+          <div
+            className="bg-green-500 h-full transition-all duration-300"
+            style={{
+              width:
+                questions.length > 0
+                  ? `${(completedQuestions.size / questions.length) * 100}%`
+                  : "0%",
+            }}
+          ></div>
+        </div>
       </div>
 
       {!user ? (
-        <p className="text-red-600">Please log in to view your dashboard.</p>
+        <p className="text-red-600" role="alert">
+          Please log in to view your dashboard.
+        </p>
       ) : loading ? (
-        <p className="text-blue-600">Loading...</p>
+        <p className="text-blue-600" role="status">
+          Loading...
+        </p>
       ) : error ? (
-        <p className="text-red-600">Error: {error}</p>
+        <p className="text-red-600" role="alert">
+          Error: {error}
+        </p>
       ) : (
         <div className="flex flex-col lg:flex-row gap-10">
-          {/* Main Practice Area */}
           <div className="flex-1 space-y-6">
             {allComplete ? (
-              <div className="text-green-600 font-semibold text-lg">
+              <div
+                className="text-green-600 font-semibold text-lg"
+                role="status"
+                aria-live="polite"
+              >
                 🎉 Great job! You've completed all {questions.length} questions.
               </div>
             ) : !question ? (
@@ -155,6 +170,10 @@ function Dashboard() {
               <>
                 <p className="text-gray-600">
                   Question {currentIndex + 1} of {questions.length}
+                </p>
+                <p>
+                  Instructions: Click the question below to begin your speaking
+                  practice. Click the start button to record your response...
                 </p>
                 <QuestionDetail
                   question={question}
@@ -170,46 +189,53 @@ function Dashboard() {
             )}
           </div>
 
-          {/* Left Panel */}
+          {/* Side Panel */}
           <div className="w-full lg:w-1/2 p-4 bg-white rounded-lg shadow-md">
-            <div className="flex justify-center gap-4 mb-4">
+            <div className="flex justify-center gap-4 mb-4" role="tablist">
               <button
                 onClick={() => setActiveTab("search")}
+                aria-label="Show all questions"
+                role="tab"
+                aria-selected={activeTab === "search"}
                 className={`px-4 py-2 rounded ${
                   activeTab === "search"
-                    ? "bg-sky-500 text-white"
+                    ? "bg-sky-400 text-white"
                     : "bg-white border"
                 }`}
               >
-                Search All Questions
+                Search All
               </button>
               <button
                 onClick={() => setActiveTab("completed")}
+                aria-label="Show completed questions"
+                role="tab"
+                aria-selected={activeTab === "completed"}
                 className={`px-4 py-2 rounded ${
                   activeTab === "completed"
                     ? "bg-sky-500 text-white"
                     : "bg-white border"
                 }`}
               >
-                View Completed Questions
+                View Completed
               </button>
             </div>
 
-            {activeTab === "completed" ? (
-              completedQuestionObjects.length === 0 ? (
-                <p>
-                  You haven't completed any questions yet. Start practicing to
-                  track your progress!
-                </p>
+            <div role="tabpanel" aria-live="polite">
+              {activeTab === "completed" ? (
+                completedQuestionObjects.length === 0 ? (
+                  <p>You haven't completed any questions yet.</p>
+                ) : (
+                  <CompletedQuestionsList userId={user.uid} />
+                )
+              ) : questions.length === 0 ? (
+                <p>No questions found.</p>
               ) : (
-                <CompletedQuestionsList userId={user.uid} />
-              )
-            ) : // Display all questions when "Search All Questions" is active
-            questions.length === 0 ? (
-              <p>No questions found.</p>
-            ) : (
-              <QuestionList userId={user.uid} savedQuestions={savedQuestions} />
-            )}
+                <QuestionList
+                  userId={user.uid}
+                  savedQuestions={savedQuestions}
+                />
+              )}
+            </div>
           </div>
         </div>
       )}

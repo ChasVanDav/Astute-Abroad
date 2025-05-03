@@ -121,6 +121,7 @@ export default function Login() {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
             className="w-full px-4 py-2 border border-black rounded-md text-black bg-white"
+            aria-label="Email address"
           />
           <div className="relative">
             <input
@@ -129,10 +130,14 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
               className="w-full px-4 py-2 border border-black rounded-md text-black bg-white"
+              aria-label="Password"
             />
             <span
               onClick={handleToggle}
               className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-600"
+              aria-label={
+                type === "password" ? "Show password" : "Hide password"
+              }
             >
               {type === "password" ? (
                 <FiEyeOff size={20} />
@@ -142,11 +147,16 @@ export default function Login() {
             </span>
           </div>
 
-          <ReCAPTCHA sitekey={siteKey} onChange={handleCaptchaChange} />
+          <ReCAPTCHA
+            sitekey={siteKey}
+            onChange={handleCaptchaChange}
+            aria-label="Please complete the CAPTCHA to verify you're not a robot"
+          />
 
           <button
             onClick={handleSignIn}
             className="w-full py-2 px-4 bg-sky-400 text-white rounded-lg hover:bg-orange-300 transition"
+            aria-label="Log in"
           >
             Log In
           </button>
@@ -154,6 +164,7 @@ export default function Login() {
             type="button"
             onClick={handleSignUp}
             className="w-full py-2 px-4 bg-sky-400 text-white rounded-lg hover:bg-orange-300 transition"
+            aria-label="Register for an account"
           >
             Register
           </button>

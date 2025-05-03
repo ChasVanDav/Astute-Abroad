@@ -26,6 +26,7 @@ app.get("/", (req, res) => {
   res.send("Hello from the Astute Abroad's backend!")
 })
 
+// route to scrape for new database instance
 app.use("/scrape", scrapeRouter)
 
 const bootstrap = async () => {
@@ -39,13 +40,8 @@ const bootstrap = async () => {
     } else {
       console.log(`✅ Questions exist: ${count} rows found. Skipping scrape.`)
     }
-
-    app.listen(PORT, () => {
-      console.log(`🚀 Server running at http://localhost:${PORT}`)
-    })
   } catch (err) {
-    console.error("❌ Startup error:", err)
-    process.exit(1)
+    console.error("error message:", err)
   }
 }
 

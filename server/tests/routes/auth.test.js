@@ -1,17 +1,23 @@
 import { jest } from "@jest/globals"
 
+let mockVerifyIdToken
+
+jest.mock("../../firebaseAdmin.js", () => {
+  mockVerifyIdToken = jest.fn().mockResolvedValue({
+    uid: "fake-uid-123",
+    email: "test@test.com",
+  })
+
+  return {
+    auth: () => ({
+      verifyIdToken: mockVerifyIdToken,
+    }),
+  }
+})
+
 jest.mock("../../db.js", () => ({
   query: jest.fn(),
   end: jest.fn(),
-}))
-
-jest.mock("../../firebaseAdmin.js", () => ({
-  auth: () => ({
-    verifyIdToken: jest.fn().mockResolvedValue({
-      uid: "fake-uid-123",
-      email: "test@test.com",
-    }),
-  }),
 }))
 
 import request from "supertest"
@@ -56,15 +62,35 @@ describe("Auth Routes", () => {
       )
     })
 
-    it("should return 400 if missing field", async () => {
+    it("should return 401 if no auth token is provided", async () => {
+      const res = await request(app).post("/api/auth").send({})
+
+      expect(res.statusCode).toBe(401)
+      expect(res.text).toBe("No token found")
+    })
+
+    it("should return 400 if UID is missing in token", async () => {
+      mockVerifyIdToken.mockResolvedValueOnce({ email: "test@test.com" })
+
       const res = await request(app)
         .post("/api/auth")
-        .set("Authorization", "Bearer fake-id-token")
-        .send({
-          email: "test@test.com",
-        })
+        .set("Authorization", "Bearer fake-token")
+        .send()
+
       expect(res.statusCode).toBe(400)
-      expect(res.body).toHaveProperty("error", "Missing required fields")
+      expect(res.body).toHaveProperty("error", "UID missing from token.")
+    })
+
+    it("should return 400 if email is missing in token", async () => {
+      mockVerifyIdToken.mockResolvedValueOnce({ uid: "fake-uid-123" })
+
+      const res = await request(app)
+        .post("/api/auth")
+        .set("Authorization", "Bearer fake-token")
+        .send()
+
+      expect(res.statusCode).toBe(400)
+      expect(res.body).toHaveProperty("error", "Email missing from token.")
     })
   })
 })

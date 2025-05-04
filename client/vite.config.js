@@ -8,6 +8,11 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     setupFiles: "./vitest.setup.js",
+    coverage: {
+      reporter: ["text", "html"], // 'text' = terminal, 'html' = detailed HTML view
+      all: true, // include files without tests
+      exclude: ["node_modules/", "vite.config.*", "dist/"],
+    },
   },
   server: {
     historyApiFallback: true,

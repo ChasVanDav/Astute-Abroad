@@ -6,11 +6,12 @@ const router = express.Router()
 
 // route to handle user authentication powered by Firebase
 router.post("/auth", async (req, res) => {
-  const { email, password, firebase_uid } = req.body
+  // only for testing
+  // const { email, password, firebase_uid } = req.body
 
-  if (!email || !password || !firebase_uid) {
-    return res.status(400).json({ error: "Missing required fields" })
-  }
+  // if (!email || !password || !firebase_uid) {
+  //   return res.status(400).json({ error: "Missing required fields" })
+  // }
 
   // from authorization header, grab bearer token
   const authHeader = req.headers.authorization || ""

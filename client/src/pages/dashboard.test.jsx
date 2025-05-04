@@ -92,3 +92,29 @@ describe("Dashboard", () => {
     expect(noCompletedMsg).toBeInTheDocument()
   })
 })
+
+// 1. **Test if "Loading..." message is shown initially:**
+test("shows loading message initially", async () => {
+  fetch.mockResolvedValueOnce({
+    ok: true,
+    json: async () => [],
+  })
+
+  render(<Dashboard />)
+
+  // Check if the "Loading..." message appears while data is being fetched.
+  expect(screen.getByText(/loading/i)).toBeInTheDocument()
+})
+
+// 2. **Test if error message is shown when fetch fails:**
+test("shows error message when data fetch fails", async () => {
+  fetch.mockResolvedValueOnce({
+    ok: false,
+    statusText: "Failed to fetch questions",
+  })
+
+  render(<Dashboard />)
+
+  // Check if the error message is displayed when the fetch fails.
+  await waitFor(() => expect(screen.getByText(/error/i)).toBeInTheDocument())
+})

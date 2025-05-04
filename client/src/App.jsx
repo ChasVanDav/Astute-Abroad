@@ -7,7 +7,6 @@ import astuteAbroadLogo from "/favicon.png"
 import About from "./pages/About.jsx"
 import Login from "./pages/Login.jsx"
 import Dashboard from "./pages/Dashboard.jsx"
-import WatchDemo from "./pages/WatchDemo.jsx"
 
 function Home() {
   const navigate = useNavigate()
@@ -183,7 +182,6 @@ function App() {
           <main className="flex-1 p-4 sm:p-6">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/watch-demo" element={<WatchDemo />} />
               <Route path="/about" element={<About />} />
               <Route path="/login" element={<Login />} />
               <Route path="/dashboard" element={<Dashboard />} />
@@ -210,13 +208,6 @@ function App() {
               aria-label="Navigate to About page"
             >
               About
-            </button>
-            <button
-              onClick={() => navigate("/watch-demo")}
-              className="bg-white text-black font-semibold py-3 rounded-2xl border border-black hover:bg-orange-300 transition shadow-sm"
-              aria-label="Navigate to Watch Demo page"
-            >
-              Watch Demo
             </button>
 
             {user ? (
@@ -268,13 +259,7 @@ function App() {
                 >
                   About
                 </button>
-                <button
-                  onClick={() => closeMenuAndNavigate("/watch-demo")}
-                  className="text-black py-3"
-                  aria-label="Navigate to Watch Demo"
-                >
-                  Watch Demo
-                </button>
+
                 {user ? (
                   <>
                     <button

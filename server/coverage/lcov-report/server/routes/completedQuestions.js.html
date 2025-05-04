@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/17</span>
+                <span class='fraction'>17/17</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/17</span>
+                <span class='fraction'>17/17</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -115,26 +115,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -148,13 +146,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -163,24 +163,24 @@
 import pool from "../db.js"
 // import logger from "../logger.js"
 &nbsp;
-const router = <span class="cstat-no" title="statement not covered" >Router()</span>
+const router = Router()
 &nbsp;
-<span class="cstat-no" title="statement not covered" >router.get("/:userId", <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {</span>
-  const { userId: firebaseUid } = <span class="cstat-no" title="statement not covered" >req.params</span>
-<span class="cstat-no" title="statement not covered" >  console.log(`[GET completedQuestions] firebaseUid: ${firebaseUid}`)</span>
+router.get("/:userId", async (req, res) =&gt; {
+  const { userId: firebaseUid } = req.params
+  console.log(`[GET completedQuestions] firebaseUid: ${firebaseUid}`)
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  try {</span>
-    const userQuery = <span class="cstat-no" title="statement not covered" >`SELECT id FROM users WHERE firebase_uid = $1`</span>
-    const userResult = <span class="cstat-no" title="statement not covered" >await pool.query(userQuery, [firebaseUid])</span>
-<span class="cstat-no" title="statement not covered" >    console.log(userQuery, userResult)</span>
+  try {
+    const userQuery = `SELECT id FROM users WHERE firebase_uid = $1`
+    const userResult = await pool.query(userQuery, [firebaseUid])
+    console.log(userQuery, userResult)
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (userResult.rowCount === 0) {</span>
-<span class="cstat-no" title="statement not covered" >      return res.status(404).json({ error: "User not found." })</span>
+    if (userResult.rowCount === 0) {
+      return res.status(404).json({ error: "User not found." })
     }
 &nbsp;
-    const dbUserId = <span class="cstat-no" title="statement not covered" >userResult.rows[0].id</span>
+    const dbUserId = userResult.rows[0].id
 &nbsp;
-    const query = <span class="cstat-no" title="statement not covered" >`</span>
+    const query = `
       SELECT 
       DISTINCT ON (p.question_id) 
       p.question_id,
@@ -196,13 +196,13 @@ const router = <span class="cstat-no" title="statement not covered" >Router()</s
      ORDER BY p.question_id, p.attempted_at DESC
     `
 &nbsp;
-    const result = <span class="cstat-no" title="statement not covered" >await pool.query(query, [dbUserId])</span>
-<span class="cstat-no" title="statement not covered" >    console.log("Completed Questions Result:", result.rows)</span>
+    const result = await pool.query(query, [dbUserId])
+    console.log("Completed Questions Result:", result.rows)
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    res.json(result.rows)</span>
+    res.json(result.rows)
   } catch (err) {
-<span class="cstat-no" title="statement not covered" >    console.error(`[GET /completedQuestions/${firebaseUid}] ${err.message}`)</span>
-<span class="cstat-no" title="statement not covered" >    res.status(500).json({ error: "Failed to fetch completed questions." })</span>
+    console.error(`[GET /completedQuestions/${firebaseUid}] ${err.message}`)
+    res.status(500).json({ error: "Failed to fetch completed questions." })
   }
 })
 &nbsp;
@@ -214,7 +214,7 @@ export default router
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-04-29T17:16:08.274Z
+                at 2025-05-04T20:49:28.006Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

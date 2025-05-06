@@ -11,7 +11,7 @@ import db from "./db.js"
 import authRoute from "./routes/authRoutes.js"
 import faveQuestionsRoute from "./routes/faveQuestions.js"
 import completedQuestionsRoute from "./routes/completedQuestions.js"
-import scrapeRouter, { scrapeAndInsert } from "./scraper/scrape.js"
+import { scrapeAndInsert } from "./scraper/scrape.js"
 
 dotenv.config()
 
@@ -215,11 +215,6 @@ app.post("/practice_attempts", async (req, res) => {
     ]
 
     console.log(`${values}`)
-    // console.log(
-    //   "Pronunciation Score (raw):",
-    //   pronunciationScore,
-    //   transcriptionConfidence
-    // )
 
     const { rows } = await db.query(insertQuery, values)
     if (!rows.length) {
@@ -232,10 +227,6 @@ app.post("/practice_attempts", async (req, res) => {
     res.status(500).json({ error: "Failed to process response" })
   }
 })
-
-// server.listen(5000, () => {
-//   logger.info("Server running on http://localhost:5000")
-// })
 
 const PORT = process.env.PORT || 5000
 
@@ -271,7 +262,6 @@ const init = async () => {
     logger.info("⏳ Starting server...")
     startServer()
 
-    // Run database check and scraping asynchronously without blocking the server startup
     checkDatabaseAndScrape()
   } catch (err) {
     logger.error("❌ Init failed:", err)
@@ -281,45 +271,3 @@ const init = async () => {
 init().catch((err) => {
   console.error("Startup failure:", err)
 })
-
-// app.use("/scrape", scrapeRouter)
-
-// const bootstrap = async () => {
-//   try {
-//     const { rows } = await db.query("SELECT COUNT(*) FROM questions")
-//     const count = Number(rows[0].count)
-//     logger.info(`🔍 Found ${count} questions in DB.`)
-
-//     if (count === 0) {
-//       logger.info("📥 No questions found — running scraper...")
-//       await scrapeAndInsert()
-//       logger.info("✅ Scraping complete.")
-//     } else {
-//       logger.info("✅ Questions already exist. Skipping scrape.")
-//     }
-//   } catch (err) {
-//     logger.error("❌ Bootstrap error:", err)
-//     // You can optionally still start the server even if bootstrap fails
-//   }
-// }
-
-// const startServer = () => {
-//   server.listen(PORT, () => {
-//     logger.info(`Server running on http://localhost:${PORT}`)
-//   })
-// }
-
-// const init = async () => {
-//   try {
-//     logger.info("⏳ Starting bootstrap...")
-//     await bootstrap()
-//     logger.info("✅ Bootstrap complete. Starting server...")
-//     startServer()
-//   } catch (err) {
-//     logger.error("❌ Init failed:", err)
-//   }
-// }
-
-// init().catch((err) => {
-//   console.error("Startup failure:", err)
-// })

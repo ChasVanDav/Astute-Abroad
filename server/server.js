@@ -42,6 +42,8 @@ const server = http.createServer(app)
 const wss = new WebSocketServer({ server })
 
 wss.on("connection", (ws) => {
+  logger.info("🔗 WebSocket client connected")
+
   let recognizeStream = null
 
   const request = {
@@ -65,7 +67,10 @@ wss.on("connection", (ws) => {
         }
       })
       .on("data", (data) => {
-        console.log("Raw Google STT Response:", JSON.stringify(data, null, 2))
+        logger.debug(
+          "📝 Raw Google STT Response:",
+          JSON.stringify(data, null, 2)
+        )
 
         const isFinal = data.results?.[0]?.isFinal
         const transcript = data.results?.[0]?.alternatives?.[0].transcript
@@ -77,7 +82,7 @@ wss.on("connection", (ws) => {
   }
 
   ws.on("message", (msg) => {
-    // console.log("📦 Received audio chunk:", msg.length)
+    logger.debug(`📦 Received audio chunk of length: ${msg.length}`)
     if (!recognizeStream) startRecognitionStream()
     if (recognizeStream?.writable) {
       recognizeStream.write(msg)
@@ -91,6 +96,7 @@ wss.on("connection", (ws) => {
     }
   })
 })
+
 // confirm google stt credentials recognized and connected
 async function quickTest() {
   const [result] = await client.getProjectId()
@@ -227,32 +233,93 @@ app.post("/practice_attempts", async (req, res) => {
   }
 })
 
-// route to scrape for new database instance
-app.use("/scrape", scrapeRouter)
+// server.listen(5000, () => {
+//   logger.info("Server running on http://localhost:5000")
+// })
 
-const bootstrap = async () => {
+const PORT = process.env.PORT || 5000
+
+// Check the database and scrape if needed
+const checkDatabaseAndScrape = async () => {
   try {
     const { rows } = await db.query("SELECT COUNT(*) FROM questions")
     const count = Number(rows[0].count)
+    logger.info(`🔍 Found ${count} questions in DB.`)
 
     if (count === 0) {
-      console.log("📥 No questions found — scraping now...")
-      await scrapeAndInsert()
+      logger.info("📥 No questions found — running scraper...")
+      await scrapeAndInsert() // Run scraping here
+      logger.info("✅ Scraping complete.")
     } else {
-      console.log(`✅ Questions exist: ${count} rows found. Skipping scrape.`)
+      logger.info("✅ Questions already exist. Skipping scrape.")
     }
   } catch (err) {
-    console.error("error message:", err)
+    logger.error("❌ Database check or scraping failed:", err)
   }
 }
 
-const start = async () => {
-  await bootstrap()
-  server.listen(5000, () => {
-    logger.info("Server running on http://localhost:5000")
+const startServer = () => {
+  server.listen(process.env.PORT || 5000, () => {
+    logger.info(
+      `Server running on http://localhost:${process.env.PORT || 5000}`
+    )
   })
 }
 
-start().catch((err) => {
-  console.error("Failed to start server:", err)
+const init = async () => {
+  try {
+    logger.info("⏳ Starting server...")
+    startServer()
+
+    // Run database check and scraping asynchronously without blocking the server startup
+    checkDatabaseAndScrape()
+  } catch (err) {
+    logger.error("❌ Init failed:", err)
+  }
+}
+
+init().catch((err) => {
+  console.error("Startup failure:", err)
 })
+
+// app.use("/scrape", scrapeRouter)
+
+// const bootstrap = async () => {
+//   try {
+//     const { rows } = await db.query("SELECT COUNT(*) FROM questions")
+//     const count = Number(rows[0].count)
+//     logger.info(`🔍 Found ${count} questions in DB.`)
+
+//     if (count === 0) {
+//       logger.info("📥 No questions found — running scraper...")
+//       await scrapeAndInsert()
+//       logger.info("✅ Scraping complete.")
+//     } else {
+//       logger.info("✅ Questions already exist. Skipping scrape.")
+//     }
+//   } catch (err) {
+//     logger.error("❌ Bootstrap error:", err)
+//     // You can optionally still start the server even if bootstrap fails
+//   }
+// }
+
+// const startServer = () => {
+//   server.listen(PORT, () => {
+//     logger.info(`Server running on http://localhost:${PORT}`)
+//   })
+// }
+
+// const init = async () => {
+//   try {
+//     logger.info("⏳ Starting bootstrap...")
+//     await bootstrap()
+//     logger.info("✅ Bootstrap complete. Starting server...")
+//     startServer()
+//   } catch (err) {
+//     logger.error("❌ Init failed:", err)
+//   }
+// }
+
+// init().catch((err) => {
+//   console.error("Startup failure:", err)
+// })

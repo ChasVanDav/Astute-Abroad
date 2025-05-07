@@ -10,8 +10,15 @@ export default defineConfig({
     setupFiles: "./vitest.setup.js",
     coverage: {
       reporter: ["text", "html", "lcov"], // 'text' = terminal, 'html' = detailed HTML view
-      all: true, // include files without tests
-      exclude: ["node_modules/", "vite.config.*", "dist/"],
+      all: false,
+      exclude: [
+        "node_modules/",
+        "dist/",
+        "vite.config.*",
+        "babel.config.*",
+        "postcss.config.*",
+        "tailwindcss.config.*",
+      ],
     },
   },
   server: {

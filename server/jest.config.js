@@ -8,7 +8,7 @@ export default {
     "routes/**/*.js",
     "db.js",
     "logger.js",
-    "server.js",
     "!**/node_modules/**",
+    "app.js",
   ],
 }

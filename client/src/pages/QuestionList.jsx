@@ -75,10 +75,10 @@ function QuestionList({ userId, savedQuestions }) {
             <option value="">View All</option>
             <option value="greeting">Greeting</option>
             <option value="introduction">Introduction</option>
-            <option value="travel">Travel</option>
+            <option value="calendar">Calendar</option>
             <option value="weather">Weather</option>
             <option value="shopping">Shopping</option>
-            <option value="datetime">Date/Time</option>
+            <option value="directions">Directions</option>
           </select>
         </label>
 

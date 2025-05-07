@@ -15,7 +15,7 @@ function Home() {
     <main className="bg-white rounded-2xl p-4 sm:p-6 shadow-md max-w-screen-lg w-full mx-auto">
       <header className="text-center mt-8 mb-4">
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black leading-tight">
-          Now Boarding: Your Journey to Fluency!
+          Now Boarding: Your Journey to Fluency in Korean!
         </h2>
         <p className="text-base sm:text-lg md:text-xl font-medium text-gray-600 mt-2">
           powered by ChatGPT

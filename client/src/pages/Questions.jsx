@@ -12,7 +12,7 @@ function Questions() {
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
 
-  const limit = 20
+  const limit = 30
 
   useEffect(() => {
     const auth = getAuth()
@@ -89,11 +89,10 @@ function Questions() {
             <option value="">View All</option>
             <option value="greeting">Greeting</option>
             <option value="introduction">Introduction</option>
-            <option value="travel">Travel</option>
+            <option value="calendar">Calendar</option>
             <option value="weather">Weather</option>
             <option value="shopping">Shopping</option>
-            <option value="datetime">Date/Time</option>
-            {/* <option value=""></option> */}
+            <option value="directions">Directions</option>
           </select>
         </label>{" "}
         <br></br>

@@ -16,7 +16,7 @@ function Dashboard() {
   const [error, setError] = useState(null)
   const [activeTab, setActiveTab] = useState("search")
   const [page, setPage] = useState(1)
-  const limit = 20
+  const limit = 30
   const [hasMore, setHasMore] = useState(true)
 
   useEffect(() => {
@@ -114,6 +114,10 @@ function Dashboard() {
   }
 
   const allComplete = completedQuestions.size === questions.length
+  console.log("how many questions completed: ", completedQuestions.size)
+  console.log("how many total questions: ", questions.length)
+  console.log("are all questions completed? ", allComplete)
+
   const question = questions[currentIndex]
 
   return (
@@ -127,8 +131,8 @@ function Dashboard() {
         aria-valuenow={completedQuestions.size}
         aria-label="Practice completion progress"
       >
-        <h3 className="text-gray-600">Progress Bar</h3>
-        <div className="w-full bg-white border border-black rounded-full h-4 overflow-hidden">
+        <h3 className="text-gray-600 ">Progress Bar</h3>
+        <div className="w-full bg-white border border-black rounded-full h-10 overflow-hidden">
           <div
             className="bg-green-500 h-full transition-all duration-300"
             style={{
@@ -137,7 +141,11 @@ function Dashboard() {
                   ? `${(completedQuestions.size / questions.length) * 100}%`
                   : "0%",
             }}
-          ></div>
+          >
+            <p className="p-2 ml-4">
+              {(completedQuestions.size / questions.length) * 100}% completed!
+            </p>
+          </div>
         </div>
       </div>
 
@@ -171,10 +179,26 @@ function Dashboard() {
                 <p className="text-gray-600">
                   Question {currentIndex + 1} of {questions.length}
                 </p>
-                <p>
-                  Instructions: Click the question below to begin your speaking
-                  practice. Click the start button to record your response...
-                </p>
+                <>
+                  <strong>How it works:</strong>
+                  <br />
+                  🖱️ Click a question to open it
+                  <br />
+                  🎙️ Click <strong>Start Microphone</strong> when you're ready
+                  <br />
+                  🗣️ Speak your answer clearly
+                  <br />
+                  📝 Wait for your transcript to appear
+                  <br />
+                  🟥 Click the red <strong>Stop</strong> button when finished
+                  <br />
+                  🤖 Read your AI feedback
+                  <br />
+                  ⏭️ The next question will load automatically
+                  <br />
+                  📋 Review past feedback anytime in the panel on the right
+                </>
+
                 <QuestionDetail
                   question={question}
                   user={user}

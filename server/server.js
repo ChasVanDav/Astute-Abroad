@@ -24,6 +24,19 @@ app.get("/", (req, res) => {
   res.send("Hello from the Astute Abroad's backend!")
 })
 
+app.get("/test-db", async (req, res) => {
+  try {
+    const result = await db.query("SELECT NOW()")
+    res.json({
+      message: "✅ Database connected!",
+      time: result.rows[0].now,
+    })
+  } catch (error) {
+    console.error("❌ DB test error:", error)
+    res.status(500).json({ error: "Database connection failed" })
+  }
+})
+
 // user registration and login
 app.use("/api", authRoute)
 // display all questions, with filter options

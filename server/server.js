@@ -131,45 +131,26 @@ app.post("/practice_attempts", async (req, res) => {
       return res.status(404).json({ error: "Question not found." })
     }
 
-    const prompt = `
-    You are evaluating a Korean language learner's spoken response. The only input you receive is:
-    - The question asked: "${questionText}"
-    - The learner's speech-to-text transcript: "${spokenText}"
-    
-    Guidelines:
-    - The transcript reflects what was actually recognized by the speech-to-text engine — base your evaluation strictly on that, and do not assume or add words that aren't there.
-    - There is no "expected" answer provided. Use your knowledge of Korean to assess whether the transcript is a valid, reasonable, and contextually accurate response to the question.
-    - Accept **negative, neutral, or alternate forms** of responses if they make sense as an answer (e.g., "I’m not going anywhere" is a valid response to "Where are you going?").
-    
-    Evaluate the following:
-    
-    1. **Did the learner’s transcript directly answer the question?**
-       - Be generous with phrasing variations, including negative forms.
-       - Mark as a valid answer if it provides a reasonable and understandable response.
-    
-    2. **Pronunciation issues**
-       - If any words in the transcript appear to be the result of **mispronunciation** (i.e., the learner meant something else but it got misrecognized), point them out with the likely intended word(s).
-       - If the transcript looks accurate and natural, state "No mispronunciations detected."
-    
-    3. **Pronunciation Score** (0–10):
-       - Score based on how well the spoken response was **recognized and transcribed**.
-       - 10 = no obvious pronunciation issues; 0 = severely misrecognized or unintelligible.
-    
-    4. **Content Score** (0–10):
-       - Score based on how completely and appropriately the transcript answers the question.
-       - 10 = directly and clearly answers the question.
-    
-    5. **Relevance**:
-       - Final flag: “Relevant: Yes” or “Relevant: No”
-    
-    Return your answer in the following format:
+    const prompt = `You’re evaluating a Korean language learner’s spoken response. You’ll receive two things:
 
-    1. Answered the question: <Yes or No> + (short explanation)
-    2. Mispronunciations: <details or "None">
-    3. Pronunciation Score: <0–10>
-    4. Content Score: <0–10>
-    5. Relevant: Yes/No
-    `
+the question they were asked: "${questionText}"
+
+the speech-to-text transcript of what they said: "${spokenText}"
+
+Your goal is to give warm, second-person feedback that encourages the learner and helps them improve. Only base your comments on what’s in the transcript — don’t guess what they meant to say. There is no single “correct” answer, so it's fine if the learner gives a negative, indirect, or alternate response, as long as it fits the question.
+
+Start by commenting (in a kind and helpful tone) on how well their response answered the question. If the reply was incomplete, unclear, or only partially relevant, point that out in a constructive way. Be supportive and affirm the effort, even if there's room to grow.
+
+Next, look at the pronunciation. If the transcript includes words that were likely misrecognized due to pronunciation issues, gently highlight those and suggest what the learner might have intended. If everything looks accurate and clear, give them credit for that.
+
+Then, offer 1–2 example responses they could use in the future. These should include:
+
+One basic or beginner-friendly version that’s clear and easy to say
+
+One more advanced or detailed version that shows more fluency or nuance
+Each should make sense as a response to the original question. These are for the learner to study and learn from — so aim to model good, usable Korean, not just short phrases.
+
+Wrap everything up in a single friendly paragraph, talking directly to the learner (“you”), highlighting what they did well, what they can work on, and how they might respond even better next time. Keep the tone warm, human, and encouraging — like a thoughtful tutor giving feedback.`
 
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",

@@ -31,3 +31,5 @@ astuteabroad-0525-80e19672d343.json
 dbdump.sql
 
 jsonToString.js
+
+coverage/*

@@ -22,7 +22,7 @@ export default function Login() {
   }
 
   const handleCaptchaChange = (token) => {
-    console.log("reCAPTCHA token: ", token)
+    console.log("reCAPTCHA token acquired!🪙")
     setRecaptchaToken(token)
   }
 
@@ -40,7 +40,7 @@ export default function Login() {
         password
       )
       const idToken = await userCredential.user.getIdToken()
-      console.log("Registration ID Token retrieved 🪙", idToken)
+      console.log("Registration ID Token retrieved 🪙")
 
       await sendUserToBackend(idToken)
 
@@ -81,6 +81,12 @@ export default function Login() {
   // send firebase ID token to backend for authentication and save in database
   const sendUserToBackend = async (token) => {
     console.log("Sending token to backend 🪙")
+
+    // Get user details from Firebase
+    const user = auth.currentUser
+    const firebase_uid = user.uid // Firebase UID
+    const email = user.email // User email
+
     try {
       const response = await fetch("http://localhost:5000/api/auth", {
         method: "POST",
@@ -88,6 +94,10 @@ export default function Login() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify({
+          firebase_uid, // Send firebase_uid
+          email, // Send email
+        }),
       })
 
       const responseText = await response.text()
@@ -103,7 +113,7 @@ export default function Login() {
 
   return (
     <div className="flex items-center justify-center">
-      <div className="max-w-md w-full bg-white p-8 rounded-xl shadow-md border border-black">
+      <div className="max-w-md w-full bg-white p-6 rounded-xl shadow-md">
         <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
           <input
             type="email"
@@ -111,6 +121,7 @@ export default function Login() {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
             className="w-full px-4 py-2 border border-black rounded-md text-black bg-white"
+            aria-label="Email address"
           />
           <div className="relative">
             <input
@@ -119,10 +130,14 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
               className="w-full px-4 py-2 border border-black rounded-md text-black bg-white"
+              aria-label="Password"
             />
             <span
               onClick={handleToggle}
               className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-600"
+              aria-label={
+                type === "password" ? "Show password" : "Hide password"
+              }
             >
               {type === "password" ? (
                 <FiEyeOff size={20} />
@@ -132,11 +147,16 @@ export default function Login() {
             </span>
           </div>
 
-          <ReCAPTCHA sitekey={siteKey} onChange={handleCaptchaChange} />
+          <ReCAPTCHA
+            sitekey={siteKey}
+            onChange={handleCaptchaChange}
+            aria-label="Please complete the CAPTCHA to verify you're not a robot"
+          />
 
           <button
             onClick={handleSignIn}
             className="w-full py-2 px-4 bg-sky-400 text-white rounded-lg hover:bg-orange-300 transition"
+            aria-label="Log in"
           >
             Log In
           </button>
@@ -144,6 +164,7 @@ export default function Login() {
             type="button"
             onClick={handleSignUp}
             className="w-full py-2 px-4 bg-sky-400 text-white rounded-lg hover:bg-orange-300 transition"
+            aria-label="Register for an account"
           >
             Register
           </button>

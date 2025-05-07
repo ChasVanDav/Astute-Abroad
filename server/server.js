@@ -10,10 +10,13 @@ import OpenAI from "openai"
 import db from "./db.js"
 import authRoute from "./routes/authRoutes.js"
 import faveQuestionsRoute from "./routes/faveQuestions.js"
+import completedQuestionsRoute from "./routes/completedQuestions.js"
+import { scrapeAndInsert } from "./scraper/scrape.js"
 
 dotenv.config()
 
 const app = express()
+
 app.use(cors())
 app.use(express.json())
 
@@ -27,6 +30,7 @@ app.use("/api", authRoute)
 app.use("/questions", questionsRoute)
 // display, add, delete favorite questions
 app.use("/favequestions", faveQuestionsRoute)
+app.use("/completedQuestions", completedQuestionsRoute)
 
 // import credentials from dotenv file
 const credentials = JSON.parse(process.env.GOOGLE_STT_API_KEY)
@@ -38,6 +42,8 @@ const server = http.createServer(app)
 const wss = new WebSocketServer({ server })
 
 wss.on("connection", (ws) => {
+  logger.info("🔗 WebSocket client connected")
+
   let recognizeStream = null
 
   const request = {
@@ -61,16 +67,22 @@ wss.on("connection", (ws) => {
         }
       })
       .on("data", (data) => {
-        // console.log("Raw Google STT Response:", JSON.stringify(data, null, 2))
-        const transcript =
-          data.results?.[0]?.alternatives?.[0]?.transcript || ""
+        logger.debug(
+          "📝 Raw Google STT Response:",
+          JSON.stringify(data, null, 2)
+        )
+
         const isFinal = data.results?.[0]?.isFinal
-        ws.send(JSON.stringify({ transcript, isFinal }))
+        const transcript = data.results?.[0]?.alternatives?.[0].transcript
+        const confidence = data.results?.[0]?.alternatives?.[0].confidence
+        if (isFinal) {
+          ws.send(JSON.stringify({ transcript, isFinal, confidence }))
+        }
       })
   }
 
   ws.on("message", (msg) => {
-    // console.log("📦 Received audio chunk:", msg.length)
+    logger.debug(`📦 Received audio chunk of length: ${msg.length}`)
     if (!recognizeStream) startRecognitionStream()
     if (recognizeStream?.writable) {
       recognizeStream.write(msg)
@@ -84,6 +96,7 @@ wss.on("connection", (ws) => {
     }
   })
 })
+
 // confirm google stt credentials recognized and connected
 async function quickTest() {
   const [result] = await client.getProjectId()
@@ -95,6 +108,7 @@ quickTest().catch(console.error)
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
 app.post("/practice_attempts", async (req, res) => {
+  console.log("📩 Received POST /practice_attempts")
   const {
     userId: firebaseUid,
     questionId,
@@ -107,7 +121,6 @@ app.post("/practice_attempts", async (req, res) => {
   }
 
   try {
-    // 🧠 1. Get question text from DB
     const questionRes = await db.query(
       "SELECT question_text FROM questions WHERE id = $1",
       [questionId]
@@ -118,48 +131,27 @@ app.post("/practice_attempts", async (req, res) => {
       return res.status(404).json({ error: "Question not found." })
     }
 
-    const prompt = `
-    You are evaluating a Korean language learner's spoken response. The only input you receive is:
-    - The question asked: "${questionText}"
-    - The learner's speech-to-text transcript: "${spokenText}"
-    
-    Guidelines:
-    - The transcript reflects what was actually recognized by the speech-to-text engine — base your evaluation strictly on that, and do not assume or add words that aren't there.
-    - There is no "expected" answer provided. Use your knowledge of Korean to assess whether the transcript is a valid, reasonable, and contextually accurate response to the question.
-    - Accept **negative, neutral, or alternate forms** of responses if they make sense as an answer (e.g., "I’m not going anywhere" is a valid response to "Where are you going?").
-    
-    Evaluate the following:
-    
-    1. **Did the learner’s transcript directly answer the question?**
-       - Be generous with phrasing variations, including negative forms.
-       - Mark as a valid answer if it provides a reasonable and understandable response.
-    
-    2. **Pronunciation issues**
-       - If any words in the transcript appear to be the result of **mispronunciation** (i.e., the learner meant something else but it got misrecognized), point them out with the likely intended word(s).
-       - If the transcript looks accurate and natural, state "No mispronunciations detected."
-    
-    3. **Pronunciation Score** (0–10):
-       - Score based on how well the spoken response was **recognized and transcribed**.
-       - 10 = no obvious pronunciation issues; 0 = severely misrecognized or unintelligible.
-    
-    4. **Content Score** (0–10):
-       - Score based on how completely and appropriately the transcript answers the question.
-       - 10 = directly and clearly answers the question.
-    
-    5. **Relevance**:
-       - Final flag: “Relevant: Yes” or “Relevant: No”
-    
-    Return your answer in the following format:
-    ---
-    Transcript: "<insert the transcript>"
-    1. Answered the question: <Yes or No> + (short explanation)
-    2. Mispronunciations: <details or "None">
-    3. Pronunciation Score: <0–10>
-    4. Content Score: <0–10>
-    5. Relevant: Yes/No
-    ---
-    `
-    // 🧠 3. Call OpenAI
+    const prompt = `You’re evaluating a Korean language learner’s spoken response. You’ll receive two things:
+
+the question they were asked: "${questionText}"
+
+the speech-to-text transcript of what they said: "${spokenText}"
+
+Your goal is to give warm, second-person feedback that encourages the learner and helps them improve. Only base your comments on what’s in the transcript — don’t guess what they meant to say. There is no single “correct” answer, so it's fine if the learner gives a negative, indirect, or alternate response, as long as it fits the question.
+
+Start by commenting (in a kind and helpful tone) on how well their response answered the question. If the reply was incomplete, unclear, or only partially relevant, point that out in a constructive way. Be supportive and affirm the effort, even if there's room to grow.
+
+Next, look at the pronunciation. If the transcript includes words that were likely misrecognized due to pronunciation issues, gently highlight those and suggest what the learner might have intended. If everything looks accurate and clear, give them credit for that.
+
+Then, offer 1–2 example responses they could use in the future. These should include:
+
+One basic or beginner-friendly version that’s clear and easy to say
+
+One more advanced or detailed version that shows more fluency or nuance
+Each should make sense as a response to the original question. These are for the learner to study and learn from — so aim to model good, usable Korean, not just short phrases.
+
+Wrap everything up in a single friendly paragraph, talking directly to the learner (“you”), highlighting what they did well, what they can work on, and how they might respond even better next time. Keep the tone warm, human, and encouraging — like a thoughtful tutor giving feedback.`
+
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [{ role: "user", content: prompt }],
@@ -167,17 +159,14 @@ app.post("/practice_attempts", async (req, res) => {
 
     const feedback = completion.choices[0].message.content
 
-    // 🎯 4. Extract content score
     const contentMatch = feedback.match(/score.*?(\d{1,2})/i)
     const contentScore = contentMatch ? parseInt(contentMatch[1]) : null
 
-    // 🔍 5. Extract relevance
     const relevanceMatch = feedback.match(/relevant:\s*(yes|no)/i)
     const isRelevant = relevanceMatch
       ? relevanceMatch[1].toLowerCase() === "yes"
       : null
 
-    // 💾 6. Save in DB
     const insertQuery = `
       INSERT INTO practice_attempts (
         user_id, question_id, spoken_text, transcription_confidence,
@@ -207,11 +196,6 @@ app.post("/practice_attempts", async (req, res) => {
     ]
 
     console.log(`${values}`)
-    // console.log(
-    //   "Pronunciation Score (raw):",
-    //   pronunciationScore,
-    //   transcriptionConfidence
-    // )
 
     const { rows } = await db.query(insertQuery, values)
     if (!rows.length) {
@@ -225,6 +209,46 @@ app.post("/practice_attempts", async (req, res) => {
   }
 })
 
-server.listen(5000, () => {
-  logger.info("Server running on http://localhost:5000")
+const PORT = process.env.PORT || 5000
+
+// Check the database and scrape if needed
+const checkDatabaseAndScrape = async () => {
+  try {
+    const { rows } = await db.query("SELECT COUNT(*) FROM questions")
+    const count = Number(rows[0].count)
+    logger.info(`🔍 Found ${count} questions in DB.`)
+
+    if (count === 0) {
+      logger.info("📥 No questions found — running scraper...")
+      await scrapeAndInsert() // Run scraping here
+      logger.info("✅ Scraping complete.")
+    } else {
+      logger.info("✅ Questions already exist. Skipping scrape.")
+    }
+  } catch (err) {
+    logger.error("❌ Database check or scraping failed:", err)
+  }
+}
+
+const startServer = () => {
+  server.listen(process.env.PORT || 5000, () => {
+    logger.info(
+      `Server running on http://localhost:${process.env.PORT || 5000}`
+    )
+  })
+}
+
+const init = async () => {
+  try {
+    logger.info("⏳ Starting server...")
+    startServer()
+
+    checkDatabaseAndScrape()
+  } catch (err) {
+    logger.error("❌ Init failed:", err)
+  }
+}
+
+init().catch((err) => {
+  console.error("Startup failure:", err)
 })

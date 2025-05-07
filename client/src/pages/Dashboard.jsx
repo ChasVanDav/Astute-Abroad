@@ -78,7 +78,7 @@ function Dashboard() {
     const fetchCompletedQuestions = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/completedQuestions/${user.uid}`
+          `http://astute-abroad.onrender.com/completedQuestions/${user.uid}`
         )
         if (!res.ok) {
           if (res.status === 404) {

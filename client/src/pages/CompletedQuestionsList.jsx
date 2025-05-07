@@ -23,7 +23,7 @@ function CompletedQuestionsList({ userId }) {
         query.append("limit", limit)
 
         const res = await fetch(
-          `http://localhost:5000/completedQuestions/${userId}?${query.toString()}`
+          `http://astute-abroad.onrender.com/completedQuestions/${userId}?${query.toString()}`
         )
 
         if (!res.ok) throw new Error("Failed to fetch completed questions")

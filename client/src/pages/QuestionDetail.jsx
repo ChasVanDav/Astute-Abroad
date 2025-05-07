@@ -26,7 +26,7 @@ function QuestionDetail({ question, user, onComplete }) {
       const checkFavoriteStatus = async () => {
         try {
           const res = await fetch(
-            `http://localhost:5000/faveQuestions/${user.uid}`
+            `http://astute-abroad.onrender.com/faveQuestions/${user.uid}`
           )
           const data = await res.json()
           console.log(data)
@@ -67,16 +67,19 @@ function QuestionDetail({ question, user, onComplete }) {
     setStatus("processing")
 
     try {
-      const res = await fetch("http://localhost:5000/practice_attempts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId: user.uid,
-          questionId: question.id,
-          spokenText: transcript,
-          transcriptionConfidence: confidence,
-        }),
-      })
+      const res = await fetch(
+        "http://astute-abroad.onrender.com/practice_attempts",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: user.uid,
+            questionId: question.id,
+            spokenText: transcript,
+            transcriptionConfidence: confidence,
+          }),
+        }
+      )
 
       const data = await res.json()
 
@@ -115,7 +118,7 @@ function QuestionDetail({ question, user, onComplete }) {
 
   const handleToggleFavorite = async () => {
     if (!user || !user.uid) return
-    const url = `http://localhost:5000/faveQuestions/${user.uid}`
+    const url = `http://astute-abroad.onrender.com/faveQuestions/${user.uid}`
     const method = isFavorited ? "DELETE" : "POST"
     const targetUrl = isFavorited ? `${url}/${question.id}` : url
 

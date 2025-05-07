@@ -42,7 +42,7 @@ function Questions() {
         query.append("limit", limit)
 
         const res = await fetch(
-          `http://localhost:5000/questions?${query.toString()}`
+          `http://astute-abroad.onrender.com/questions?${query.toString()}`
         )
         if (!res.ok) throw new Error("Failed to fetch questions")
         const data = await res.json()

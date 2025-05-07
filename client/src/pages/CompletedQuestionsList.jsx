@@ -8,7 +8,7 @@ function CompletedQuestionsList({ userId }) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  const limit = 10
+  const limit = 5
 
   useEffect(() => {
     if (!userId) return

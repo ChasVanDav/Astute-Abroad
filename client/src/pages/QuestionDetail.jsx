@@ -205,6 +205,10 @@ function QuestionDetail({ question, user, onComplete }) {
                       <p>{Math.round(pronunciationScore * 10)}%</p>
                     </div>
                   )}
+                  {/* <div>
+                    <h3 className="text-md font-semibold">🧠 Content Score</h3>
+                    <p className="text-green-700 ml-2">{contentScore}/10</p>
+                  </div> */}
                 </div>
 
                 <div>

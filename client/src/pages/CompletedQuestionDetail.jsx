@@ -40,12 +40,12 @@ function CompletedQuestionDetail({ question }) {
                   <p>{Math.round(question.pronunciation_score * 10)}%</p>
                 </div>
               )}
-              <div>
+              {/* <div>
                 <h3 className="text-md font-semibold">🧠 Content Score</h3>
                 <p className="text-green-700 ml-2">
-                  {question.content_score || "N/A"}/10
+                  // {question.content_score || "N/A"}/10
                 </p>
-              </div>
+              </div> */}
             </div>
 
             <div>

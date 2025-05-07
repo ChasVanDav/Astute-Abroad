@@ -142,6 +142,7 @@ function QuestionDetail({ question, user, onComplete }) {
     <div className="mb-6 border border-gray-300 rounded-md bg-white p-4 shadow-sm">
       <div className="flex items-center justify-between">
         <button
+          aria-label="add question to favorites"
           onClick={handleToggleFavorite}
           className="text-yellow-400 hover:text-yellow-500 text-2xl focus:outline-none"
           title={isFavorited ? "Unfavorite" : "Favorite"}
@@ -204,10 +205,10 @@ function QuestionDetail({ question, user, onComplete }) {
                       <p>{Math.round(pronunciationScore * 10)}%</p>
                     </div>
                   )}
-                  <div>
+                  {/* <div>
                     <h3 className="text-md font-semibold">🧠 Content Score</h3>
                     <p className="text-green-700 ml-2">{contentScore}/10</p>
-                  </div>
+                  </div> */}
                 </div>
 
                 <div>

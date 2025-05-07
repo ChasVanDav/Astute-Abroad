@@ -1,38 +1,84 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
-function QuestionList({ questions, savedQuestions }) {
+function QuestionList({ userId, savedQuestions }) {
+  const [questions, setQuestions] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
   const [category, setCategory] = useState("")
   const [difficulty, setDifficulty] = useState("")
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
 
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(true)
+
+  const limit = 5
+
   const savedIds = new Set(savedQuestions.map((q) => q.id))
 
-  const filteredQuestions = questions.filter((q) => {
-    return (
-      (category ? q.category === category : true) &&
-      (difficulty ? q.difficulty === difficulty : true) &&
-      (showFavoritesOnly ? savedIds.has(q.id) : true)
-    )
-  })
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        setLoading(true)
+        setError(null)
+
+        const query = new URLSearchParams()
+        query.append("page", page)
+        query.append("limit", limit)
+        if (category) query.append("category", category)
+        if (difficulty) query.append("difficulty", difficulty)
+
+        const res = await fetch(
+          `http://localhost:5000/questions?${query.toString()}`
+        )
+        if (!res.ok) throw new Error("Failed to fetch questions")
+        const data = await res.json()
+
+        setQuestions(data)
+        setHasMore(data.length === limit)
+      } catch (err) {
+        setError(err.message || "Unknown error")
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchQuestions()
+  }, [page, category, difficulty])
+
+  const handlePrev = () => {
+    if (page > 1) setPage((prev) => prev - 1)
+  }
+
+  const handleNext = () => {
+    if (hasMore) setPage((prev) => prev + 1)
+  }
+
+  const filtered = showFavoritesOnly
+    ? questions.filter((q) => savedIds.has(q.id))
+    : questions
 
   return (
     <div className="space-y-4">
-      {/* Filter form - Always visible */}
+      {/* Filter UI */}
       <form className="mb-6 p-4 bg-orange-300 rounded-lg shadow-md border border-black space-y-4">
         <label className="block text-medium font-light text-black">
           Category:{" "}
           <select
             value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="mt-2 p-2 w-full border bg-white border-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={(e) => {
+              setCategory(e.target.value)
+              setPage(1)
+            }}
+            className="mt-2 p-2 w-full border bg-white border-black rounded-md"
           >
             <option value="">View All</option>
             <option value="greeting">Greeting</option>
             <option value="introduction">Introduction</option>
-            <option value="travel">Travel</option>
+            <option value="calendar">Calendar</option>
             <option value="weather">Weather</option>
             <option value="shopping">Shopping</option>
-            <option value="datetime">Date/Time</option>
+            <option value="directions">Directions</option>
           </select>
         </label>
 
@@ -40,8 +86,11 @@ function QuestionList({ questions, savedQuestions }) {
           Difficulty:{" "}
           <select
             value={difficulty}
-            onChange={(e) => setDifficulty(e.target.value)}
-            className="mt-2 p-2 w-full bg-white border border-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={(e) => {
+              setDifficulty(e.target.value)
+              setPage(1)
+            }}
+            className="mt-2 p-2 w-full bg-white border border-black rounded-md"
           >
             <option value="">View All</option>
             <option value="beginner">Beginner</option>
@@ -50,7 +99,6 @@ function QuestionList({ questions, savedQuestions }) {
           </select>
         </label>
 
-        {/* Favorite Filter Button */}
         <div className="flex items-center gap-2 mt-4">
           <button
             type="button"
@@ -65,11 +113,26 @@ function QuestionList({ questions, savedQuestions }) {
         </div>
       </form>
 
-      {/* Question List */}
-      {filteredQuestions.length === 0 ? (
+      {/* Pagination Controls */}
+      <div className="flex justify-between mb-4 text-med text-gray-600">
+        <button onClick={handlePrev} disabled={page === 1}>
+          ◀ Prev
+        </button>
+        <span>Page {page}</span>
+        <button onClick={handleNext} disabled={!hasMore}>
+          Next ▶
+        </button>
+      </div>
+
+      {/* Error/Loading/Results */}
+      {loading ? (
+        <p className="text-center text-blue-500">Loading questions...</p>
+      ) : error ? (
+        <p className="text-center text-red-500">Error: {error}</p>
+      ) : filtered.length === 0 ? (
         <p className="text-center text-gray-500">No questions available.</p>
       ) : (
-        filteredQuestions.map((q) => (
+        filtered.map((q) => (
           <div
             key={q.id}
             className="p-4 bg-white border border-black rounded-lg shadow-md flex justify-between items-center"

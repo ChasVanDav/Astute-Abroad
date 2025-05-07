@@ -3,7 +3,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth"
-import { auth } from "../../../server/firebase"
+import { auth } from "./firebase"
 
 // Sign up new user
 export async function signUp(email, password) {

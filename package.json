@@ -12,6 +12,7 @@
     "@google-cloud/speech": "^7.0.1",
     "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-node-resolve": "^16.0.1",
+    "express-rate-limit": "^7.5.0",
     "rollup": "^4.40.0",
     "winston": "^3.17.0"
   }

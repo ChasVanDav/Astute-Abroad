@@ -63,7 +63,7 @@ Astute Abroad provides a **safe and interactive environment** for users to pract
 ## Project Structure
 
 ```
-/AstuteAbroad
+/Astute-Abroad
 ├── client         # React frontend
 │   ├── src
 │   │   ├── pages
@@ -88,8 +88,9 @@ Astute Abroad provides a **safe and interactive environment** for users to pract
 
 1. **Clone Repo**:
    ```bash
-   git clone https://github.com/ChasVanDav/AstuteAbroad.git
-   cd AstuteAbroad
+   git clone https://github.com/ChasVanDav/Astute-Abroad.git
+   cd AstuteA-
+   broad
    ```
 2. **Environment Variables**:
    - Client `.env`:

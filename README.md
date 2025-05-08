@@ -6,7 +6,7 @@ Astute Abroad is a web app designed to help users practice and improve their spo
 **Currently focused on Korean**, but with plans to expand to **more languages** as the platform grows.  
 Inspired by Vanessa's experience living overseas in Korea as an expat, Astute Abroad is the first step in helping learners gain the confidence to travel, connect, and speak freely.
 
-![Astute Abroad's Dashbooard](photo path)
+![Astute Abroad's Dashbooard](DashboardScreenshot.png)
 
 ---
 

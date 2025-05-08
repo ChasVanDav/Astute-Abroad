@@ -37,7 +37,7 @@ function Dashboard() {
         query.append("limit", limit)
 
         const res = await fetch(
-          `http://localhost:5000/questions?${query.toString()}`
+          `https://astute-abroad.onrender.com/questions?${query.toString()}`
         )
         if (!res.ok) throw new Error("Failed to fetch questions")
         const data = await res.json()
@@ -54,7 +54,7 @@ function Dashboard() {
     const fetchSavedQuestions = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/faveQuestions/${user.uid}`
+          `https://astute-abroad.onrender.com/faveQuestions/${user.uid}`
         )
         if (!res.ok) {
           if (res.status === 404) {
@@ -78,7 +78,7 @@ function Dashboard() {
     const fetchCompletedQuestions = async () => {
       try {
         const res = await fetch(
-          `http://astute-abroad.onrender.com/completedQuestions/${user.uid}`
+          `https://astute-abroad.onrender.com/completedQuestions/${user.uid}`
         )
         if (!res.ok) {
           if (res.status === 404) {

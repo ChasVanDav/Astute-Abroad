@@ -29,7 +29,7 @@ function QuestionList({ userId, savedQuestions }) {
         if (difficulty) query.append("difficulty", difficulty)
 
         const res = await fetch(
-          `http://astute-abroad.onrender.com/questions?${query.toString()}`
+          `https://astute-abroad.onrender.com/questions?${query.toString()}`
         )
         if (!res.ok) throw new Error("Failed to fetch questions")
         const data = await res.json()

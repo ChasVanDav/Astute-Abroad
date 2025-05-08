@@ -26,7 +26,7 @@ function QuestionDetail({ question, user, onComplete }) {
       const checkFavoriteStatus = async () => {
         try {
           const res = await fetch(
-            `http://astute-abroad.onrender.com/faveQuestions/${user.uid}`
+            `https://astute-abroad.onrender.com/faveQuestions/${user.uid}`
           )
           const data = await res.json()
           console.log(data)
@@ -68,7 +68,7 @@ function QuestionDetail({ question, user, onComplete }) {
 
     try {
       const res = await fetch(
-        "http://astute-abroad.onrender.com/practice_attempts",
+        "https://astute-abroad.onrender.com/practice_attempts",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -118,7 +118,7 @@ function QuestionDetail({ question, user, onComplete }) {
 
   const handleToggleFavorite = async () => {
     if (!user || !user.uid) return
-    const url = `http://astute-abroad.onrender.com/faveQuestions/${user.uid}`
+    const url = `https://astute-abroad.onrender.com/faveQuestions/${user.uid}`
     const method = isFavorited ? "DELETE" : "POST"
     const targetUrl = isFavorited ? `${url}/${question.id}` : url
 

@@ -89,7 +89,7 @@ export default function Login() {
 
     try {
       const response = await fetch(
-        "http://astute-abroad.onrender.com/api/auth",
+        "https://astute-abroad.onrender.com/api/auth",
         {
           method: "POST",
           headers: {

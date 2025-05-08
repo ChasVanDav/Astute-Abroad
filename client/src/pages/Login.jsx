@@ -88,17 +88,20 @@ export default function Login() {
     const email = user.email // User email
 
     try {
-      const response = await fetch("http://localhost:5000/api/auth", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          firebase_uid, // Send firebase_uid
-          email, // Send email
-        }),
-      })
+      const response = await fetch(
+        "https://astute-abroad.onrender.com/api/auth",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            firebase_uid, // Send firebase_uid
+            email, // Send email
+          }),
+        }
+      )
 
       const responseText = await response.text()
       console.log("Backend response:", response.status, responseText)

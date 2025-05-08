@@ -4,7 +4,9 @@
 
 Astute Abroad is a web app designed to help users practice and improve their spoken Korean with real-time AI feedback.  
 **Currently focused on Korean**, but with plans to expand to **more languages** as the platform grows.  
-Inspired by Vanessa\'s experience living overseas in Korea as an expat, Astute Abroad is the first step in helping learners gain the confidence to travel, connect, and speak freely.
+Inspired by Vanessa's experience living overseas in Korea as an expat, Astute Abroad is the first step in helping learners gain the confidence to travel, connect, and speak freely.
+
+![Astute Abroad's Dashbooard](photo path)
 
 ---
 
@@ -13,15 +15,12 @@ Inspired by Vanessa\'s experience living overseas in Korea as an expat, Astute A
 - [Project Overview](#project-overview)
 - [Features](#features)
 - [Technology Stack](#technology-stack)
-- [Project Structure](#project-structure)
-- [Setup Instructions](#setup-instructions)
-- [Developer Guide](#developer-guide)
+- [Setup (Developer)](#-setup-developer)
 - [User Guide](#user-guide)
 - [API Documentation](#api-documentation)
-- [Component Breakdown](#component-breakdown)
+- [External API Integrations](#external-api-integration)
+- [Testing Instructions](#-running-tests)
 - [Reflection](#reflection)
-- [Future Roadmap](#future-roadmap)
-- [Screenshots](#screenshots)
 
 ---
 
@@ -54,67 +53,72 @@ Astute Abroad provides a **safe and interactive environment** for users to pract
 - **Speech Recognition**: Google Cloud Speech-to-Text API
 - **AI Feedback**: OpenAI GPT-3.5 Turbo
 - **Authentication**: Firebase Authentication, Google reCAPTCHA v2
-- **Database**: PostgreSQL (Dockerized)
-- **Containerization**: Docker & Docker Compose
+- **Database**: PostgreSQL
 - **Environment**: dotenv for managing secrets
 
 ---
 
-## Project Structure
+## ⚙️ Setup (Developer)
+
+### 1. Clone and install
+
+```bash
+git clone https://github.com/ChasVanDav/Astute-Abroad.git
+cd Astute-Abroad
+```
+
+### 2. Environment variables
+
+#### `client/.env`
 
 ```
-/Astute-Abroad
-├── client         # React frontend
-│   ├── src
-│   │   ├── pages
-│   │   │   ├── Dashboard.jsx
-│   │   │   ├── QuestionDetail.jsx
-│   │   │   ├── QuestionList.jsx
-│   │   │   └── ...
-│   │   └── components
-│   └── vite.config.js
-├── server         # Express backend
-│   ├── routes
-│   ├── db.js
-│   ├── server.js
-│   └── ...
-├── docker-compose.yaml
-└── .env
+VITE_RECAPTCHA_SITE_KEY=your_site_key
 ```
+
+#### `server/.env`
+
+```
+OPENAI_API_KEY=your-openai-key
+GOOGLE_STT_API_KEY={JSON_CREDENTIALS}
+DATABASE_URL=postgresql://user:pass@localhost:5432/astuteabroad
+```
+
+### 3. Run locally
+
+```bash
+# Backend
+cd server
+npm install
+node server.js
+
+# Frontend
+cd client
+npm install
+npm run dev
+```
+
+- Frontend: http://localhost:5173
+- Backend API: http://localhost:5000
 
 ---
 
-## Setup Instructions
+## 🧪 Running Tests
 
-1. **Clone Repo**:
-   ```bash
-   git clone https://github.com/ChasVanDav/Astute-Abroad.git
-   cd AstuteA-
-   broad
-   ```
-2. **Environment Variables**:
-   - Client `.env`:
-     ```env
-     VITE_RECAPTCHA_SITE_KEY=your_site_key
-     VITE_RECAPTCHA_SECRET_KEY=your_secret_key
-     ```
-   - Server `.env`:
-     ```env
-     OPENAI_API_KEY=your-openai-key
-     GOOGLE_STT_API_KEY={JSON_CREDENTIALS}
-     DATABASE_URL=postgresql://user:pass@db:5432/astuteabroad
-     ```
-3. **Docker Compose**:
+### Client (React)
 
-   ```bash
-   docker-compose up --build
-   ```
+```bash
+cd client
+npm run test        # or
+npx vitest run --coverage
+```
 
-   Visit http://localhost:5173 (frontend) and http://localhost:5000 (API).
+### Server (Node/Express)
 
-4. **Local Dev without Docker**:
-   - Backend: `cd server && npm install && npm run dev`
-   - Frontend: `cd client && npm install && npm run dev`
+```bash
+cd server
+npm test            # or
+npm run test:coverage
+```
 
 ---
 
@@ -129,7 +133,7 @@ Astute Abroad provides a **safe and interactive environment** for users to pract
    - Click the stop button when you are complete and your transcription appears.
    - Upon completion, receive AI feedback (transcript, pronunciation score, content score, and comments).
    - The app will automatically advance to the next question.
-4. **Completion**: Practice ends when you've answered all questions in the set.
+4. **Completion**: Practice ends when you've answered all questions in the set. You may view your feedback on all completed questions in the completed questions tab.
 5. **Save Favorites**: Mark questions you’d like to revisit and access them via the favorites star button.
 
 ---
@@ -143,15 +147,69 @@ Astute Abroad provides a **safe and interactive environment** for users to pract
 - **POST /favequestions/:uid**: Add favorite question
 - **DELETE /favequestions/:uid/:qid**: Remove favorite
 - **POST /practice_attempts**: Submit spoken response for AI evaluation
+- **POST /completedquestions/:uid**:
+  Add completed questions from practice attempts completed by user
+- **GET /completedquestions/:uid**:
+  Fetch completed questioons by user
 
 ---
 
-## Component Breakdown
+## External API Integrations
 
-- **Dashboard.jsx**: Manages user state, fetches question data, tracks progress, and renders `QuestionList` and `QuestionDetail`.
-- **QuestionList.jsx**: Displays searchable, paginated list of questions with favorite star indicators.
-- **QuestionDetail.jsx**: Handles question expansion, audio recording with `LiveTranscription`, AI feedback submission, and displays scores and comments.
-- **LiveTranscription.jsx**: Streams audio via WebSocket to backend, receives interim and final transcriptions, and passes data back.
+Astute Abroad relies on the following third-party APIs to deliver real-time speech processing, AI-powered feedback, and secure user authentication:
+
+### 🔊 Google Cloud Speech-to-Text API
+
+- **Purpose**: Converts user audio into live text for evaluation.
+- **How it's used**: Streams audio via WebSocket to Google STT for transcription.
+- **Setup**:
+  - Requires a JSON credentials object in your server `.env` as:
+    ```env
+    GOOGLE_STT_API_KEY={ ...your JSON credentials... }
+    ```
+  - Ensure the service account has permission for the Speech-to-Text API.
+
+### 🧠 OpenAI GPT-3.5 API
+
+- **Purpose**: Analyzes spoken responses and provides personalized feedback.
+- **How it's used**: The backend sends transcripts and prompts to the API for evaluation.
+- **Setup**:
+  - Add your API key in the server `.env`:
+    ```env
+    OPENAI_API_KEY=your-api-key
+    ```
+
+### 🔐 Firebase Authentication
+
+- **Purpose**: Handles user registration, login, and authentication state.
+- **How it's used**: Frontend uses Firebase SDK to register and sign in users. The backend maps Firebase UID to internal user records.
+- **Setup**:
+
+  - Configure Firebase project in your client-side code using:
+
+    ```js
+    import { initializeApp } from "firebase/app";
+
+    const firebaseConfig = {
+      apiKey: "your-api-key",
+      authDomain: "your-app.firebaseapp.com",
+      ...
+    };
+
+    initializeApp(firebaseConfig);
+    ```
+
+### 🛡️ Google reCAPTCHA v2
+
+- **Purpose**: Protects against bot signups and abuse.
+- **How it's used**: Shown on the registration/login forms and verified before backend processing.
+- **Setup**:
+  - Add keys to your client and server `.env` files:
+    ```env
+    VITE_RECAPTCHA_SITE_KEY=your_site_key
+    VITE_RECAPTCHA_SECRET_KEY=your_secret_key
+    ```
+  - Frontend uses the `react-google-recaptcha` package for integration.
 
 ---
 
@@ -163,26 +221,17 @@ Building Astute Abroad deepened my skills in:
 - Prompt engineering for AI feedback
 - Secure authentication flows with Firebase and reCAPTCHA
 - Designing responsive, animated UIs with Framer Motion
-- Dockerization of full-stack apps
+- Structuring and deploying full-stack applications
+
+Lessons learned:
+
+- The importance of clear API documentation and test coverage
+- Balancing user experience with security measures like rate limiting and reCAPTCHA
+
+I truly enjoyed building this app, which felt like a labor of love. Astute Abroad combines my passion for travel, language learning (particularly Korean), and my budding talent in software engineering. Thank you for taking a look into a project I am super proud of.
+
+With Gratitude,
+Vanessa
 
 ---
 
-## Future Roadmap
-
-- **Multi-language support** (Spanish, Japanese, French)
-- **Gamification**: leaderboards, badges
-- **Mobile app** using React Native
-- **CI/CD pipelines** with GitHub Actions
-- **Production deployment** on AWS EKS/ECS
-
----
-
-## Screenshots
-
-- Dashboard View
-- Live Practice Session
-- AI Feedback Display
-
----
-
-_Thank you for exploring Astute Abroad!_

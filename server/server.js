@@ -12,6 +12,7 @@ import authRoute from "./routes/authRoutes.js"
 import faveQuestionsRoute from "./routes/faveQuestions.js"
 import completedQuestionsRoute from "./routes/completedQuestions.js"
 import { scrapeAndInsert } from "./scraper/scrape.js"
+import rateLimit from "express-rate-limit"
 
 dotenv.config()
 
@@ -37,8 +38,15 @@ app.get("/test-db", async (req, res) => {
   }
 })
 
+// Limited to 2 login/reg attempts per minute
+const authLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 2,
+  message: "Too many login or registration attempts. Please try again shortly.",
+})
+
 // user registration and login
-app.use("/api", authRoute)
+app.use("/api", authLimiter, authRoute)
 // display all questions, with filter options
 app.use("/questions", questionsRoute)
 // display, add, delete favorite questions

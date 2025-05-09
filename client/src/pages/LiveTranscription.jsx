@@ -23,7 +23,7 @@ export default function LiveTranscription({
     setTranscriptLines([])
 
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-    socketRef.current = new WebSocket("ws://astute-abroad.onrender.com")
+    socketRef.current = new WebSocket("wss://astute-abroad.onrender.com")
 
     socketRef.current.onmessage = (message) => {
       const {

@@ -16,6 +16,9 @@ import rateLimit from "express-rate-limit"
 
 dotenv.config()
 
+const PORT = process.env.PORT || 5000
+console.log(PORT)
+
 const app = express()
 
 app.use(cors())
@@ -238,8 +241,6 @@ Wrap everything up in a single friendly paragraph, talking directly to the learn
   }
 })
 
-const PORT = process.env.PORT || 5000
-
 // Check the database and scrape if needed
 const checkDatabaseAndScrape = async () => {
   try {
@@ -260,10 +261,8 @@ const checkDatabaseAndScrape = async () => {
 }
 
 const startServer = () => {
-  server.listen(process.env.PORT || 5000, () => {
-    logger.info(
-      `Server running on http://localhost:${process.env.PORT || 5000}`
-    )
+  server.listen(PORT, () => {
+    logger.info(`Server running on https://localhost:${PORT}`)
   })
 }
 

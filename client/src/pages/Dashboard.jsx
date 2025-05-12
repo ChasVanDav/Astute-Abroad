@@ -108,9 +108,7 @@ function Dashboard() {
   }
 
   const handleNext = () => {
-    setCurrentIndex((prevIndex) =>
-      Math.min(prevIndex + 1, questions.length - 1)
-    )
+    setCurrentIndex((prevIndex) => Math.min(prevIndex + 1, questions.length))
   }
 
   const allComplete = completedQuestions.size === questions.length

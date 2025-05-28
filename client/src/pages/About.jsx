@@ -1,113 +1,135 @@
+import { useState } from "react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
+
+function PhotoCarousel() {
+  const carouselData = [
+    {
+      img: "/Koreaphoto.jpg",
+      alt: "Vanessa exploring a temple in Korea",
+      headline: "Fluency through immersion",
+      subtext:
+        "Living in Korea helped Vanessa become fluent by connecting with locals every day.",
+    },
+    {
+      img: "/Japanphoto.jpg",
+      alt: "Vanessa in Japan",
+      headline: "Small phrases, big connections",
+      subtext:
+        'A simple "ありがとう" opened doors to real cultural moments in Japan.',
+    },
+    {
+      img: "/Chinaphoto.jpg",
+      alt: "Vanessa in China",
+      headline: "Beyond tourist spots",
+      subtext:
+        "Even basic Chinese let Vanessa explore local life and make real connections.",
+    },
+  ]
+
+  const [index, setIndex] = useState(0)
+
+  const prevSlide = () => {
+    setIndex((prev) => (prev === 0 ? carouselData.length - 1 : prev - 1))
+  }
+
+  const nextSlide = () => {
+    setIndex((prev) => (prev + 1) % carouselData.length)
+  }
+
+  return (
+    <div className="relative max-w-4xl mx-auto">
+      {/* slides */}
+      <div className="overflow-hidden rounded-xl shadow-lg">
+        <div
+          className="flex transition-transform duration-500"
+          style={{ transform: `translateX(-${index * 100}%)` }}
+        >
+          {carouselData.map((item, i) => (
+            <div
+              key={i}
+              className="min-w-full flex flex-col md:flex-row items-center gap-6 bg-white p-10"
+            >
+              <img
+                src={item.img}
+                alt={item.alt}
+                className="rounded-lg w-full md:w-1/2 object-cover max-h-96"
+              />
+              <div className="text-left space-y-2 md:w-1/2">
+                <h3 className="text-xl font-semibold text-black">
+                  {item.headline}
+                </h3>
+                <p className="text-gray-600 text-sm">{item.subtext}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Arrows */}
+      {/* Left Arrow */}
+      <button
+        onClick={prevSlide}
+        className="absolute top-1/2 -left-8 -translate-y-1/2 z-20 bg-white border border-gray-300 p-4 rounded-full shadow hover:bg-gray-100"
+        aria-label="Previous slide"
+      >
+        <ChevronLeft className="w-5 h-5 text-black" />
+      </button>
+
+      {/* Right Arrow */}
+      <button
+        onClick={nextSlide}
+        className="absolute top-1/2 -right-8 -translate-y-1/2 z-20 bg-white border border-gray-300 p-4 rounded-full shadow hover:bg-gray-100"
+        aria-label="Next slide"
+      >
+        <ChevronRight className="w-5 h-5 text-black" />
+      </button>
+
+      {/* Dots */}
+      <div className="flex justify-center mt-4 gap-2">
+        {carouselData.map((_, i) => (
+          <button
+            key={i}
+            className={`h-2 w-2 rounded-full ${
+              i === index ? "bg-black" : "bg-gray-300"
+            }`}
+            onClick={() => setIndex(i)}
+            aria-label={`Go to slide ${i + 1}`}
+          ></button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export default function About() {
   return (
-    <section className="bg-white rounded-2xl px-6 py-12 max-w-6xl border border-black mx-auto space-y-16">
-      {/* CEO Introduction Section */}
-      <div className="text-center space-y-4">
-        <h1
-          className="text-3xl sm:text-4xl font-bold text-black"
-          aria-label="Meet the Creator of Astute Abroad"
-        >
+    <section className="bg-white rounded-2xl px-6 py-20 max-w-6xl mx-auto space-y-24 border border-gray-200 shadow-md">
+      {/* Header */}
+      <div className="text-center space-y-6">
+        {/* <h1 className="text-4xl sm:text-5xl font-bold text-black">
           Meet the Creator of Astute Abroad
-        </h1>
-        <p
-          className="text-gray-700 text-base sm:text-lg leading-relaxed max-w-3xl mx-auto"
-          aria-label="CEO introduction paragraph"
-        >
-          <span className="font-bold text-xl sm:text-2xl text-black">
-            Astute Abroad
-          </span>{" "}
-          was founded by <span className="font-semibold">Vanessa Davis</span> —
-          a passionate traveler, Korean speaker, and software engineer who
-          believes that language is the bridge to the world. After living in
-          Korea and achieving fluency, Vanessa experienced how speaking the
-          local language opened doors to deeper friendships and unforgettable
-          journeys. Inspired by her global adventures, she created Astute Abroad
-          to help others break language barriers and confidently explore new
-          cultures.
+        </h1> */}
+        <p className="text-gray-700 text-lg sm:text-xl max-w-3xl mx-auto leading-relaxed">
+          Astute Abroad was founded by{" "}
+          <span className="font-semibold">Vanessa Davis</span> — a traveler,
+          Korean speaker, and engineer on a mission to make speaking another
+          language feel natural and empowering.
         </p>
       </div>
 
-      {/* Image + Text Sections */}
-      <div className="space-y-16">
-        {/* 1st Section - Korea */}
-        <div className="flex flex-col md:flex-row items-center md:items-start gap-10">
-          <img
-            src="/Koreaphoto.jpg"
-            alt="Vanessa exploring a temple in Korea"
-            className="rounded-xl w-full md:w-1/2 object-cover max-h-96"
-            aria-label="Vanessa exploring a temple in Korea"
-          />
-          <div className="w-full md:w-1/2 text-gray-700 text-base sm:text-lg leading-relaxed space-y-4">
-            <p>
-              🇰🇷 Living in Korea was transformative. Through daily immersion,
-              Vanessa didn't just memorize phrases — she became fluent.
-              Conversations with locals, street food vendors, and coworkers gave
-              her real-world speaking skills and lifelong friendships.
-            </p>
-            <p>
-              Astute Abroad brings that immersive spirit to you — helping you
-              not just *study* a language, but truly *live it*.
-            </p>
-          </div>
-        </div>
+      {/* Carousel */}
+      <div className="relative z-10">
+        <PhotoCarousel />
+      </div>
 
-        {/* 2nd Section - Travel Japanese */}
-        <div className="flex flex-col-reverse md:flex-row items-center md:items-start gap-10">
-          <div className="w-full md:w-1/2 text-gray-700 text-base sm:text-lg leading-relaxed space-y-4">
-            <p>
-              🇯🇵 In Japan, Vanessa realized how even basic conversational skills
-              made travel experiences richer. A simple "ありがとうございます"
-              (thank you) brought smiles, insider tips, and deeper cultural
-              exchanges that most tourists miss.
-            </p>
-            <p>
-              That's why Astute Abroad teaches you traveler-focused
-              conversations — so you can open those same doors, no matter where
-              you go.
-            </p>
-          </div>
-          <img
-            src="/Chinaphoto.jpg"
-            alt="Vanessa traveling in Japan"
-            className="rounded-xl w-full md:w-1/2 object-cover max-h-96"
-            aria-label="Vanessa traveling in Japan"
-          />
-        </div>
-
-        {/* 3rd Section - Travel Chinese */}
-        <div className="flex flex-col md:flex-row items-center md:items-start gap-10">
-          <img
-            src="/Japanphoto.jpg"
-            alt="Vanessa traveling in China"
-            className="rounded-xl w-full md:w-1/2 object-cover max-h-96"
-            aria-label="Vanessa traveling in China"
-          />
-          <div className="w-full md:w-1/2 text-gray-700 text-base sm:text-lg leading-relaxed space-y-4">
-            <p>
-              🇨🇳 In China, even a few basic phrases helped Vanessa navigate
-              bustling cities, connect with locals, and experience authentic
-              daily life beyond tourist hotspots.
-            </p>
-            <p>
-              Astute Abroad equips you with the essential tools to break through
-              language barriers and connect meaningfully — even if you're just
-              visiting.
-            </p>
-          </div>
-        </div>
-
-        {/* 4th Section - Software Engineering + Vision */}
-        <div className="flex flex-col-reverse md:flex-row items-center md:items-start gap-10">
-          <p aria-label="Software engineering and vision section">
-            💻 After returning home, Vanessa became a software engineer — but
-            her passion for travel, languages, and connection never left. She
-            realized she could combine her new skills in technology with her
-            lifelong love for culture and communication. Astute Abroad is the
-            result: a platform powered by cutting-edge AI, built from scratch by
-            someone who truly understands the dreams — and challenges — of
-            language learners and global travelers.
-          </p>
-        </div>
+      {/* Vision Section */}
+      <div className="text-center space-y-6 max-w-3xl mx-auto">
+        <p className="text-gray-700 text-lg sm:text-xl leading-relaxed">
+          After becoming a software engineer, Vanessa realized she could build
+          more than just apps — she could build bridges. Astute Abroad blends
+          real-world conversation with smart technology so learners can speak,
+          not just memorize.
+        </p>
       </div>
     </section>
   )

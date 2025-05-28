@@ -47,7 +47,7 @@ function PhotoCarousel() {
           {carouselData.map((item, i) => (
             <div
               key={i}
-              className="min-w-full flex flex-col md:flex-row items-center gap-6 bg-white p-10"
+              className="min-w-full flex flex-col md:flex-row items-center gap-6 bg-white p-5"
             >
               <img
                 src={item.img}
@@ -69,7 +69,7 @@ function PhotoCarousel() {
       {/* Left Arrow */}
       <button
         onClick={prevSlide}
-        className="absolute top-1/2 -left-8 -translate-y-1/2 z-20 bg-white border border-gray-300 p-4 rounded-full shadow hover:bg-gray-100"
+        className="absolute top-1/2 -left-8 -translate-y-1/2 z-30 bg-white border border-gray-300 p-4 rounded-full shadow hover:bg-gray-100"
         aria-label="Previous slide"
       >
         <ChevronLeft className="w-5 h-5 text-black" />
@@ -78,7 +78,7 @@ function PhotoCarousel() {
       {/* Right Arrow */}
       <button
         onClick={nextSlide}
-        className="absolute top-1/2 -right-8 -translate-y-1/2 z-20 bg-white border border-gray-300 p-4 rounded-full shadow hover:bg-gray-100"
+        className="absolute top-1/2 -right-8 -translate-y-1/2 z-30 bg-white border border-gray-300 p-4 rounded-full shadow hover:bg-gray-100"
         aria-label="Next slide"
       >
         <ChevronRight className="w-5 h-5 text-black" />
@@ -103,33 +103,27 @@ function PhotoCarousel() {
 
 export default function About() {
   return (
-    <section className="bg-white rounded-2xl px-6 py-20 max-w-6xl mx-auto space-y-24 border border-gray-200 shadow-md">
+    <section className="bg-white rounded-2xl px-3 py-10 max-w-6xl mx-auto space-y-24 border border-gray-200 shadow-md">
       {/* Header */}
       <div className="text-center space-y-6">
-        {/* <h1 className="text-4xl sm:text-5xl font-bold text-black">
-          Meet the Creator of Astute Abroad
-        </h1> */}
+        <h1 className="text-4xl sm:text-5xl font-bold text-black">
+          About Astute Abroad
+        </h1>
         <p className="text-gray-700 text-lg sm:text-xl max-w-3xl mx-auto leading-relaxed">
           Astute Abroad was founded by{" "}
           <span className="font-semibold">Vanessa Davis</span> — a traveler,
           Korean speaker, and engineer on a mission to make speaking another
-          language feel natural and empowering.
+          language feel natural and empowering. <br />
+          After becoming a software engineer, Vanessa realized she could build
+          more than just apps — she could build bridges. Astute Abroad blends
+          real-world conversation with smart technology so learners can speak,
+          not just memorize.
         </p>
       </div>
 
       {/* Carousel */}
       <div className="relative z-10">
         <PhotoCarousel />
-      </div>
-
-      {/* Vision Section */}
-      <div className="text-center space-y-6 max-w-3xl mx-auto">
-        <p className="text-gray-700 text-lg sm:text-xl leading-relaxed">
-          After becoming a software engineer, Vanessa realized she could build
-          more than just apps — she could build bridges. Astute Abroad blends
-          real-world conversation with smart technology so learners can speak,
-          not just memorize.
-        </p>
       </div>
     </section>
   )
